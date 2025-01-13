@@ -32,21 +32,19 @@ This project builds a system that can extract data from a PDF book and allow use
    - Store embeddings in a database (e.g., MySQL or PostgreSQL) or as .parquet files for easy access.
 
 ### 5. **Question Answering**
-   - Use a pre-trained language model (e.g., Mistral-7B) to answer questions.
-   - Perform semantic search to find the most relevant sections of the PDF based on user queries.
+   - Using a pre-trained language model (e.g., Mistral-7B) to answer questions.
+   - Performing a semantic search to find the most relevant sections of the PDF based on user queries.
 
 ### 6. **Evaluation**
-   - Metrics: Accuracy, F1-Score, Exact Match, and BLEU.
-   - Ensure the system retrieves and ranks answers effectively.
+   -  custom Python scripts
 
 ---
 
 ## Tools and Libraries
 - **PDF Text Extraction**: PyPDF2, pdfplumber, PyMuPDF.
-- **Data Processing**: NLTK, spaCy, or custom Python scripts.
-- **Embedding Generation**: Sentence-Transformers.
-- **Database**: MySQL, PostgreSQL, or .parquet files.
-- **Language Model**: Mistral-7B (locally hosted or via Hugging Face).
-- **Evaluation**: scikit-learn, NLTK, or custom metrics implementation.
+- **Data Processing**: Tokenzation, steeming,lemmtazation.
+- **Embedding Generation**: Lamaindex.
+- **Database**: FAISS.
+- **Language Model**: Mistral-7B. 
 
 
