@@ -1,0 +1,52 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+env/
+
+# Distribution files
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Test results
+.tox/
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Logs
+*.log
+*.out
+*.err
+
+# Environment files
+.env
+.env.*
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Book
+Becketts Industrial Chocolate Manufacture and Use (Beckett, S. T. Fowler, Mark Ziegler etc.) (Z-Library).pdf
+
