@@ -1,0 +1,43 @@
+Folder Structure by Teams:
+
+project/
+│
+├── data_extraction/          # Files managed by the Data Extraction team
+│   ├── scripts/              # Scripts for extracting data
+│   ├── configs/              # Configuration files (e.g., API keys, endpoints)
+│   └── logs/                 # Logs of extraction processes
+│
+├── preprocessing/            # Files managed by the Preprocessing team
+│   ├── cleaning/             # Data cleaning scripts
+│   ├── feature_engineering/  # Scripts for feature extraction and transformation
+│   ├── configs/              # Configuration files for preprocessing
+│   └── tests/                # Tests for preprocessing scripts
+│
+├── backend/                  # Files managed by the Backend team
+│   ├── api/                  # API endpoints and services
+│   ├── database/             # Database schema and migration files
+│   ├── models/               # Backend business logic and models
+│   ├── tests/                # Unit and integration tests
+│   └── configs/              # Backend-specific configurations
+│
+├── frontend/                 # Files managed by the Frontend team
+│   ├── src/                  # Source files (React, Vue, or similar frameworks)
+│   ├── public/               # Static files
+│   ├── tests/                # Frontend tests (e.g., Jest, Cypress)
+│   └── configs/              # Frontend-specific configurations
+│
+├── shared/                   # Shared resources across teams
+│   ├── data/                 # Shared datasets or files
+│   ├── utils/                # Shared helper functions or utilities
+│   ├── configs/              # Global configuration files
+│   └── documentation/        # Shared documentation (e.g., API docs)
+│
+├── reports/                  # Final reports and outputs
+│   ├── figures/              # Figures for the reports
+│   └── results/              # Summary results, tables, etc.
+│
+├── requirements.txt          # Python dependencies (if applicable)
+├── environment.yml           # Conda environment configuration
+├── .gitignore                # Git ignore file
+├── README.md                 # Project overview and instructions
+└── setup.py                  # For packaging the project (if needed)
