@@ -24,7 +24,7 @@ def extract_text_from_pdf(pdf_file_path):
     return documents
 
 # Example usage:
-pdf_file_path = "Becketts_Industrial_Chocolate_Manufacture_and_Use.pdf"
+pdf_file_path = "book.pdf"
 documents = extract_text_from_pdf(pdf_file_path)
 
 # Print the content of each document
@@ -79,7 +79,7 @@ def save_to_faiss(clean_data, faiss_index_path="faiss_indexes/faiss_index"):
 
 def main():
     # Path to your PDF file
-    pdf_path = "your_pdf_book.pdf"
+    pdf_path = "book.pdf"
 
     # Step 1: Extract text
     documents = extract_text_from_pdf(pdf_path)

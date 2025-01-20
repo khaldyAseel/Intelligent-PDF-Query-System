@@ -48,5 +48,6 @@ pip-delete-this-directory.txt
 Thumbs.db
 
 # Book
-Becketts Industrial Chocolate Manufacture and Use (Beckett, S. T. Fowler, Mark Ziegler etc.) (Z-Library).pdf
+data_extraction/*.pdf
+
 
