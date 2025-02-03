@@ -1,3 +1,4 @@
+import os
 import string
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -9,6 +10,9 @@ nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
 nltk.download('punkt_tab')
+
+# Define the folder path
+data_folder = "../../data_extraction/parsed_text_output"
 
 # Abbreviation dictionary
 abbreviation_dict = {
@@ -68,9 +72,22 @@ def clean_text(paragraph):
 
     return cleaned_text
 
+# Process all text files in myData folder
+txt_files = [f for f in os.listdir(data_folder) if f.endswith(".txt")]
 
-# Example usage
-text = "  The temp of the solution was measured at 25°C, and the visc was recorded at 50 rpm.   "
-cleaned_text = clean_text(text)
-print("Original Text:", text)
-print("Cleaned Text:", cleaned_text)
+for file_name in txt_files:
+    file_path = os.path.join(data_folder, file_name)
+
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    print(f"Processing {file_name}...\n")
+
+    # Clean the content
+    processed_content = clean_text(content)
+
+    # Print a preview of cleaned content
+    print("Original Content Preview:\n", content[:300])
+    print("\nCleaned Content Preview:\n", processed_content[:300])
+    print("\n" + "-"*50 + "\n")
+
