@@ -1,122 +1,151 @@
-from llama_index.core import SimpleDirectoryReader, GPTVectorStoreIndex, Document
-import pinecone
 from llama_index.readers.llama_parse import LlamaParse
-from pinecone import Pinecone, ServerlessSpec
 from PyPDF2 import PdfReader
+import re
+import json
 import os
-print("Current working directory:", os.getcwd())
+import unicodedata
 
 
-# Step 1: Function to extract text from the PDF
+# Step 1: Extract text from PDF
 def extract_text_from_pdf(pdf_path):
-    reader = PdfReader(pdf_path)
-    text = ""
-    for page in reader.pages:
-        text += page.extract_text()
-    return text
+	reader = PdfReader(pdf_path)
+	text = ""
+	for page in reader.pages:
+		page_text = page.extract_text()
+		if page_text:
+			text += page_text + "\n"
+	return text.strip()
 
 
-# Step 2: Function to parse the layout of the PDF using LlamaParser
-def parse_pdf_layout(text):
-# Instantiate the LlamaParser
-    llama_parser = LlamaParse(api_key="llx-r1MMT3h23EfJxwhDsigRJaWSYLfj6yDP7p84wAxZ0KfjiaWf")
-# Parse the extracted text (assumes the text has some identifiable layout structure)
-    parsed_data = llama_parser.load_data(text)
-# The parsed data will be structured into chapters, subchapters, etc.
-    return parsed_data
+# Step 2: Parse TOC Manually (Use Provided TOC Text)
+def parse_toc(toc_text):
+	toc = []
+	current_chapter = None
+	current_subchapter = None
 
-# Step 3: Function to save parsed data into a structured format (chapters, subchapters, etc.)
-def save_parsed_data(parsed_data):
-	structured_data = {}
-	# Assuming parsed_data is in a nested structure, we can loop through and save it
-	for chapter in parsed_data:
-		chapter_title = chapter['title']
-		chapter_content = chapter['content']
-		# Save chapters, subchapters, and sub-subchapters in a nested dictionary
-		structured_data[chapter_title] = {
-			"content": chapter_content,
-			"subchapters": {}
-		}
-		for subchapter in chapter.get('subchapters', []):
-			subchapter_title = subchapter['title']
-			subchapter_content = subchapter['content']
-			structured_data[chapter_title]["subchapters"][subchapter_title] = {
-				"content": subchapter_content,
-				"subsubchapters": {}
+	lines = toc_text.strip().split("\n")
+	chapter_pattern = re.compile(r'^(\d+) (.+), (\d+)$')
+	subchapter_pattern = re.compile(r'^(\d+\.\d+) (.+), (\d+)$')
+	subsubchapter_pattern = re.compile(r'^(\d+\.\d+\.\d+) (.+), (\d+)$')
+
+	for line in lines:
+		line = line.strip()
+		chapter_match = chapter_pattern.match(line)
+		subchapter_match = subchapter_pattern.match(line)
+		subsubchapter_match = subsubchapter_pattern.match(line)
+
+		if chapter_match:
+			chapter_number, chapter_title, page = chapter_match.groups()
+			current_chapter = {
+				"title": f"Chapter {chapter_number}: {chapter_title}",
+				"page": int(page),
+				"subchapters": []
 			}
-			for subsubchapter in subchapter.get('subsubchapters', []):
-				subsubchapter_title = subsubchapter['title']
-				subsubchapter_content = subsubchapter['content']
-				structured_data[chapter_title]["subchapters"][subchapter_title]["subsubchapters"][
-					subsubchapter_title] = subsubchapter_content
+			toc.append(current_chapter)
 
-	return structured_data
+		elif subchapter_match and current_chapter:
+			sub_number, sub_title, page = subchapter_match.groups()
+			current_subchapter = {
+				"title": f"Subchapter {sub_number}: {sub_title}",
+				"page": int(page),
+				"subsubchapters": []
+			}
+			current_chapter["subchapters"].append(current_subchapter)
 
+		elif subsubchapter_match and current_subchapter:
+			subsub_number, subsub_title, page = subsubchapter_match.groups()
+			subsubchapter = {
+				"title": f"Sub-subchapter {subsub_number}: {subsub_title}",
+				"page": int(page)
+			}
+			current_subchapter["subsubchapters"].append(subsubchapter)
 
-# Step 4: Function to save the parsed and structured data to Pinecone database
-def save_to_pinecone(structured_data, pinecone_index):
-    # For each section, store the text in Pinecone with a unique ID (e.g., chapter ID)
-    for chapter_title, chapter_data in structured_data.items():
-        # Store the chapter
-        pinecone_index.upsert(vectors=[(chapter_title, chapter_data['content'])])
-        for subchapter_title, subchapter_data in chapter_data["subchapters"].items():
-            # Store the subchapter
-            pinecone_index.upsert(vectors=[(subchapter_title, subchapter_data['content'])])
-            for subsubchapter_title, subsubchapter_content in subchapter_data["subsubchapters"].items():
-                # Store the sub-subchapter
-                pinecone_index.upsert(vectors=[(subsubchapter_title, subsubchapter_content)])
-
-
-# Step 5: Main function to process the PDF, parse it, save structured data, and upload to Pinecone
-def process_pdf_and_save_to_db(pdf_path, pinecone_index):
-	# Extract text from the PDF
-	text = extract_text_from_pdf(pdf_path)
-	# Parse the text using layout parsing method
-	parsed_data = parse_pdf_layout(text)
-	# Save the parsed data in a structured format
-	structured_data = save_parsed_data(parsed_data)
-	# Save the structured data to Pinecone
-	save_to_pinecone(structured_data, pinecone_index)
-
-	return structured_data
+	return toc
 
 
-# Main workflow
+# Step 3: Extract content for each section
+def extract_text_from_pdf_by_range(pdf_path, start_page, end_page):
+	reader = PdfReader(pdf_path)
+	extracted_text = ""
+
+	for page_num in range(start_page - 1, min(end_page, len(reader.pages))):
+		extracted_text += reader.pages[page_num].extract_text() + "\n"
+
+	return extracted_text.strip()
+
+
+# function to extract the title of chapter/subchapter
+def sanitize_filename(title, max_length=30):
+	title = title.replace("\xa0", " ")  # Fix non-breaking spaces
+	title = unicodedata.normalize("NFKD", title).encode("ascii", "ignore").decode(
+		"ascii")  # Remove accents & symbols
+	title = re.sub(r'[<>:"/\\|?*]', '', title)  # Remove invalid characters
+	title = title.replace(" ", "_")[:max_length]  # Replace spaces & limit length
+	return title
+
+
+# Step 4: Save structured data
+def save_chapters_to_json(pdf_path, toc, output_dir):
+	if not os.path.exists(output_dir):
+		os.makedirs(output_dir)
+
+	for i, chapter in enumerate(toc):
+		start_page = chapter["page"]
+		end_page = toc[i + 1]["page"] if i + 1 < len(toc) else len(PdfReader(pdf_path).pages)
+
+		chapter_data = {
+			"title": chapter["title"],
+			"content": extract_text_from_pdf_by_range(pdf_path, start_page, end_page),
+			"metadata": {
+				"page": start_page,
+				"type": "chapter"
+			}
+		}
+
+		chapter_filename = os.path.join(output_dir, f"{sanitize_filename(chapter['title'])}.json")
+		with open(chapter_filename, "w", encoding="utf-8") as f:
+			json.dump(chapter_data, f, indent=4)
+
+		for subchapter in chapter["subchapters"]:
+			sub_start_page = subchapter["page"]
+			sub_end_page = end_page
+
+			sub_data = {
+				"title": subchapter["title"],
+				"content": extract_text_from_pdf_by_range(pdf_path, sub_start_page, sub_end_page),
+				"metadata": {
+					"page": sub_start_page,
+					"parent": chapter["title"],
+					"type": "subchapter"
+				}
+			}
+
+			sub_filename = os.path.join(output_dir, f"{sanitize_filename(subchapter['title'])}.json")
+			with open(sub_filename, "w", encoding="utf-8") as f:
+				json.dump(sub_data, f, indent=4)
+
+			for subsubchapter in subchapter["subsubchapters"]:
+				subsub_start_page = subsubchapter["page"]
+				subsub_data = {
+					"title": subsubchapter["title"],
+					"content": extract_text_from_pdf_by_range(pdf_path, subsub_start_page, sub_end_page),
+					"metadata": {
+						"page": subsub_start_page,
+						"parent": subchapter["title"],
+						"type": "sub-subchapter"
+					}
+				}
+
+				subsub_filename = os.path.join(output_dir, f"{sanitize_filename(subsubchapter['title'])}.json")
+				with open(subsub_filename, "w", encoding="utf-8") as f:
+					json.dump(subsub_data, f, indent=4)
+
+
+# Main execution
 if __name__ == "__main__":
 	pdf_path = "data_extraction/Scripts/book.pdf"
-# Step 1: Set up Pinecone API key and environment
-	pc = Pinecone(
-		api_key="pcsk_Jhg12_6pdd8fhxkVouchXp7i1Ev8y3JffU7VnRjZzuqbazwe3XhxMTKecLVDJKB3hy9aJ")
-	INDEX_NAME = "pdf-vector-index"
-
-	if INDEX_NAME not in pc.list_indexes().names():
-		pc.create_index(
-			name=INDEX_NAME,
-			dimension=384,  # Model dimensions (though not used in this case)
-			metric="cosine",  # Model metric
-			spec=ServerlessSpec(
-				cloud="aws",
-				region="us-east-1"
-			)
-		)
-	pinecone_index = pinecone.Index(INDEX_NAME, "https://pdf-vector-index-wckyov5.svc.aped-4627-b74a.pinecone.io")
-
-	# Step 2: Process PDF and save to Pinecone
-	structured_data = process_pdf_and_save_to_db(pdf_path, pinecone_index)
-
-	# Print the structured data (for visualization)
-    # Print the first chapter, subchapter, and sub-subchapter
-
-	print("Extracted and Structured Data:")
-   
-	# for chapter_title, chapter_data in structured_data.items():
-	# 	print(f"Chapter: {chapter_title}")
-	# 	print(f"Content: {chapter_data['content']}")
-    #
-	# 	for subchapter_title, subchapter_data in chapter_data["subchapters"].items():
-	# 		print(f"  Subchapter: {subchapter_title}")
-	# 		print(f"  Content: {subchapter_data['content']}")
-    #
-	# 		for subsubchapter_title, subsubchapter_content in subchapter_data["subsubchapters"].items():
-	# 			print(f"    Sub-subchapter: {subsubchapter_title}")
-	# 			print(f"    Content: {subsubchapter_content}")
+	output_dir = "data_extraction/parsed_text_output"
+	toc_text = extract_text_from_pdf(pdf_path)
+	parsed_toc = parse_toc(toc_text)
+	save_chapters_to_json(pdf_path, parsed_toc, output_dir)
+	print(f"Extracted data saved in: {output_dir}")
