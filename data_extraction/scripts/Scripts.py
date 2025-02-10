@@ -21,20 +21,6 @@ def extract_toc(pdf_path):
 
     return toc_list
 
-# def extract_toc(pdf_path):
-#     doc = fitz.open(pdf_path)
-#     # Extract the table of contents (outline)
-#     toc = doc.get_toc()
-#     # Format the TOC into a list of dictionaries
-#     formatted_toc = []
-#     for level, title, page in toc:
-#         formatted_toc.append({
-#             "title": title,
-#             "page": page  # PyMuPDF uses 0-based page numbers, so add 1
-#         })
-#
-#     return formatted_toc
-
 
 # Step 2: Extract content for each section
 def extract_text_from_pdf_by_range(pdf_path, start_page, end_page):
