@@ -72,8 +72,8 @@ def clean_text(paragraph):
 
     return cleaned_text
 
-# Process all text files in myData folder
-txt_files = [f for f in os.listdir(data_folder) if f.endswith(".txt")]
+# Process all json files in myData folder
+txt_files = [f for f in os.listdir(data_folder) if f.endswith(".json")]
 
 for file_name in txt_files:
     file_path = os.path.join(data_folder, file_name)
