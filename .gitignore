@@ -52,6 +52,7 @@ data_extraction/*.pdf
 
 #data_folder
 data_extraction/parsed_text_output
+parsed_text_output/
 
 
 

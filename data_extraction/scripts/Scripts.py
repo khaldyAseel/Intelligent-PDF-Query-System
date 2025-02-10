@@ -85,8 +85,8 @@ def save_chapters_to_json(pdf_path, toc, output_dir):
 
 # Main execution
 if __name__ == "__main__":
-    pdf_path = "data_extraction/Scripts/book.pdf"
-    output_dir = "data_extraction/parsed_text_output"
+    pdf_path = "book.pdf"
+    output_dir = "parsed_text_output"
     toc_text = extract_toc(pdf_path)
     #print(toc_text)
     save_chapters_to_json(pdf_path, toc_text, output_dir)
