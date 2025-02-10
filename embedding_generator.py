@@ -3,10 +3,10 @@ import json
 from sentence_transformers import SentenceTransformer
 
 # Load pre-trained embedding model
-model = SentenceTransformer("all-MiniLM-L6-v2")  # Change model if needed
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 # Directory where JSON files are stored
-json_dir = "path/to/json_files"
+json_dir = "parsed_data"
 
 # Process each JSON file
 for filename in os.listdir(json_dir):
