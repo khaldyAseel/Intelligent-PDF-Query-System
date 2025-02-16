@@ -23,14 +23,36 @@ def extract_toc(pdf_path):
 
 
 # Step 2: Extract content for each section
-def extract_text_from_pdf_by_range(pdf_path, start_page, end_page):
+def extract_text_from_pdf_by_range(pdf_path, start_page, end_page, current_title=None, next_title=None):
     reader = PdfReader(pdf_path)
     extracted_text = ""
 
     for page_num in range(start_page - 1, min(end_page, len(reader.pages))):
-        extracted_text += reader.pages[page_num].extract_text() + "\n"
+        page_text = reader.pages[page_num].extract_text()
+
+        if not page_text:
+            continue  # Skip empty pages
+
+        # If this is the first page, start from the title
+        if page_num == start_page - 1 and current_title:
+            title_match = re.search(re.escape(current_title), page_text)
+            if title_match:
+                page_text = page_text[title_match.end():]  # Remove everything before the title
+
+        # Stop extracting when the next title appears
+        if next_title:
+            next_match = re.search(re.escape(next_title), page_text)
+            if next_match:
+                extracted_text += page_text[:next_match.start()]  # Keep only text before next title
+                break  # Stop processing further pages
+            else:
+                extracted_text += page_text + "\n"
+        else:
+            extracted_text += page_text + "\n"
 
     return extracted_text.strip()
+
+
 
 
 # Step 3: function to extract the title of chapter/subchapter
@@ -41,30 +63,25 @@ def sanitize_filename(title):
 
 # Step 4: Save structured data
 def save_chapters_to_json(pdf_path, toc, output_dir):
-    """Saves chapters, subchapters, and sub-subchapters with proper hierarchy tracking."""
-
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    parent_stack = []  # Stack to track parent-child relationships
+    parent_stack = []
 
     for i, entry in enumerate(toc):
         start_page = entry["page"]
         end_page = toc[i + 1]["page"] if i + 1 < len(toc) else len(PdfReader(pdf_path).pages)
+        next_title = toc[i + 1]["title"] if i + 1 < len(toc) else None
 
-        # Determine hierarchy level
         level = entry.get("level", 1)
 
-        # Extract text for the section
-        content = extract_text_from_pdf_by_range(pdf_path, start_page, end_page)
-
-        # Find the correct parent
         while parent_stack and parent_stack[-1]["level"] >= level:
-            parent_stack.pop()  # Remove higher or equal-level parents
+            parent_stack.pop()
 
         parent_title = parent_stack[-1]["title"] if parent_stack else None
 
-        # Build structured data
+        content = extract_text_from_pdf_by_range(pdf_path, start_page, end_page, current_title=entry["title"],next_title=next_title)
+
         entry_data = {
             "title": entry["title"],
             "content": content,
@@ -75,13 +92,12 @@ def save_chapters_to_json(pdf_path, toc, output_dir):
             }
         }
 
-        # Save to JSON
         filename = os.path.join(output_dir, f"{sanitize_filename(entry['title'])}.json")
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(entry_data, f, indent=4)
 
-        # Add to parent stack
         parent_stack.append({"title": entry["title"], "level": level})
+
 
 # Main execution
 if __name__ == "__main__":
