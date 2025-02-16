@@ -113,7 +113,8 @@ def view_database():
         print(f"Content: {row[1]}")
         print("-" * 50)
 
-# Process all JSON files in the data folder
+
+# Process all json files in myData folder
 txt_files = [f for f in os.listdir(data_folder) if f.endswith(".json")]
 
 for file_name in txt_files:
@@ -131,6 +132,7 @@ for file_name in txt_files:
     print("Original Content Preview:\n", content[:300])
     print("\nCleaned Content Preview:\n", processed_content[:300])
     print("\n" + "-"*50 + "\n")
+
 
     # Save the cleaned content to SQLite
     save_to_sqlite(file_name, processed_content)
