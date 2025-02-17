@@ -1,0 +1,143 @@
+Pipeline Overview
+Here’s how we can build the system:
+
+1. Preprocessing
+    - Break down the chapter into smaller, meaningful sections (paragraphs or subchapters).
+    - Generate embeddings for each section for semantic similarity comparison.
+2. Embedding and Indexing
+    - Use a vector-based similarity search to find the most relevant section.
+    - Store embeddings in an efficient vector database (e.g., FAISS or a LlamaIndex vector index).
+3. Query Processing
+    - Embed the user query and compare it against the stored embeddings.
+    - Return the section with the highest similarity score.
+4. Refinement and Context
+    - refine results using an LLM to provide additional context or combine adjacent sections.
+
+The system will consist of the following components:
+    - LlamaIndex handles text chunking, embedding, and indexing.
+    - LangChain orchestrates the query flow and integrates LLMs for response refinement.
+    - RAG combines retrieval (from LlamaIndex) with generation (via LLM) for better results.
+
+
+
+
+### **2. Workflow**
+
+#### **Agent 1: Chapter Finder**
+- **Task**: Identify the most relevant chapter for a given query.
+- **Tools**: Use **LlamaIndex** to index chapters and retrieve the most relevant one.
+- **Implementation**:
+  - Preprocess the book into chapter-level documents.
+  - Build a **vector index** using **LlamaIndex**.
+  - Query the index to find the most relevant chapter.
+
+**Code Location**: `agents/agent_1_chapter_finder.py`
+
+---
+
+#### **Agent 2: Paragraph Finder**
+- **Task**: Given a chapter, identify the most relevant paragraph or subchapter.
+- **Tools**: Use **LlamaIndex** or **FAISS** for paragraph-level indexing and retrieval. Optionally integrate an **LLM** for refining the response.
+- **Implementation**:
+  - Split the chapter into paragraphs or subchapters.
+  - Build a **vector index** for the sections using **LlamaIndex**.
+  - Query the index to retrieve the most relevant paragraph.
+
+**Code Location**: `agents/agent_2_paragraph_finder.py`
+
+---
+
+#### **Agent 3: General Question Handler**
+- **Task**: Handle general questions unrelated to the book.
+- **Tools**: Use **LangChain** with an LLM (e.g., OpenAI GPT) to process general queries.
+- **Implementation**:
+  - Use LangChain’s `RetrievalQA` or `ConversationalRetrievalChain`.
+  - Set up a fallback mechanism for handling questions that don't relate to the book.
+
+**Code Location**: `agents/agent_3_general_handler.py`
+
+---
+
+#### **Preprocessing**
+- **Task**: Convert raw book data (e.g., PDF) into preprocessed text files, split into chapters and sections.
+- **Tools**: Use Python utilities like `pdfplumber` or custom scripts.
+- **Implementation**:
+  - Extract text from PDFs.
+  - Split text into chapters and paragraphs.
+  - Save preprocessed data to `data/chapters/`.
+
+**Code Location**: `preprocessing/preprocess.py`
+
+---
+
+#### **Utilities**
+- **Task**: Provide helper functions for splitting text, managing metadata, or working with embeddings.
+- **Tools**: Plain Python or custom libraries.
+- **Implementation**:
+  - Create reusable functions for text splitting, embedding, etc.
+  - Example: A utility to split text into paragraphs based on double newlines.
+
+**Code Location**: `utils/text_splitter.py`
+
+---
+
+#### **Integration in `main.py`**
+The main entry point orchestrates the agents and combines their outputs.
+
+**Flow Example**:
+```python
+from agents.agent_1_chapter_finder import find_relevant_chapter
+from agents.agent_2_paragraph_finder import find_relevant_paragraph
+from agents.agent_3_general_handler import handle_general_query
+
+def main(query):
+    # Step 1: Use Agent 1 to find the relevant chapter
+    relevant_chapter = find_relevant_chapter(query)
+
+    if relevant_chapter:
+        # Step 2: Use Agent 2 to find the relevant paragraph
+        relevant_paragraph = find_relevant_paragraph(relevant_chapter, query)
+        print(f"Answer from book:\n{relevant_paragraph}")
+    else:
+        # Step 3: Use Agent 3 for general questions
+        general_answer = handle_general_query(query)
+        print(f"General Answer:\n{general_answer}")
+
+if __name__ == "__main__":
+    user_query = input("Enter your question: ")
+    main(user_query)
+```
+
+---
+
+### **How Tools Fit Together**
+
+| **Component**          | **Tool**                     | **Purpose**                                                             |
+|-------------------------|------------------------------|-------------------------------------------------------------------------|
+| **Text Preprocessing**  | Python utilities (`pdfplumber`) | Extract raw text and split into chapters, paragraphs, or subchapters.  |
+| **Chapter Retrieval**   | LlamaIndex                  | Efficiently retrieve relevant chapters based on user queries.           |
+| **Paragraph Retrieval** | LlamaIndex, FAISS, LLMs     | Retrieve the most relevant paragraph or subchapter within a chapter.    |
+| **General Questioning** | LangChain, OpenAI GPT       | Handle queries unrelated to the book.                                   |
+| **Integration**         | LangChain                   | Combine all agents into a single pipeline.                              |
+
+---
+
+### **Why This Approach Works**
+1. **Modularity**: Agents are independent, so you can improve each without affecting others.
+2. **Scalability**: Works well for books of any size and easily extends to multiple books.
+3. **Flexibility**: LangChain and LlamaIndex make it easy to integrate retrieval and LLMs.
+
+---
+
+### **Next Steps**
+1. **Set Up Preprocessing**:
+   - Ensure the chapters are extracted and saved properly.
+2. **Build Agent 1**:
+   - Use LlamaIndex for chapter-level retrieval.
+3. **Build Agent 2**:
+   - Use LlamaIndex or FAISS for paragraph-level retrieval.
+   - Integrate with LangChain for LLM-based refinement.
+4. **Test the Pipeline**:
+   - Test end-to-end functionality and refine each component.
+
+Let me know if you want detailed guidance on implementing any specific part!
