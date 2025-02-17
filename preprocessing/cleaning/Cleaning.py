@@ -13,7 +13,7 @@ nltk.download('wordnet')
 nltk.download('punkt_tab')
 
 # Define the folder path containing your JSON files
-data_folder = "../../data_extraction/scripts/parsed_text_output"
+data_folder = r"C:\Users\Kareen\PycharmProjects\Intelligent-PDF-Query-System\parsed_text_output"
 
 # Abbreviation dictionary
 abbreviation_dict = {
@@ -86,16 +86,31 @@ def clean_text(paragraph):
 
     return cleaned_text
 
+# def save_to_sqlite(file_name, cleaned_content):
+#     """
+#     Saves the cleaned content to the SQLite database.
+#     """
+#     # Use the file name as the unique ID
+#     unique_id = file_name.replace(".json", "")
+
+#     # Insert the text into the database
+#     cursor.execute("INSERT INTO documents (id, content) VALUES (?, ?)", (unique_id, cleaned_content))
+#     conn.commit()
+
 def save_to_sqlite(file_name, cleaned_content):
     """
     Saves the cleaned content to the SQLite database.
+    If the ID already exists, it updates the existing record.
     """
-    # Use the file name as the unique ID
     unique_id = file_name.replace(".json", "")
 
-    # Insert the text into the database
-    cursor.execute("INSERT INTO documents (id, content) VALUES (?, ?)", (unique_id, cleaned_content))
+    cursor.execute("""
+        INSERT INTO documents (id, content) VALUES (?, ?)
+        ON CONFLICT(id) DO UPDATE SET content = excluded.content
+    """, (unique_id, cleaned_content))
+
     conn.commit()
+
 
 def view_database():
     """
