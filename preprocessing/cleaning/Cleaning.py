@@ -1,6 +1,7 @@
 import os
 import string
 import sqlite3
+import json
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
@@ -10,7 +11,6 @@ import nltk
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
-nltk.download('punkt_tab')
 
 # Define the folder path containing your JSON files
 data_folder = "../../data_extraction/scripts/parsed_text_output"
@@ -33,7 +33,7 @@ cursor = conn.cursor()
 # Create a table to store the cleaned text
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS documents (
-    id TEXT PRIMARY KEY,  -- Unique ID for each document
+    id TEXT PRIMARY KEY,  -- Unique ID for each document (title from JSON)
     content TEXT         -- Cleaned text content
 )
 """)
@@ -57,6 +57,7 @@ def clean_text(paragraph):
     4. Expanding abbreviations
     5. Removing stopwords
     6. Lemmatizing words
+    7. Removing unwanted Unicode characters
     """
     # Step 1: Convert to lowercase
     paragraph = paragraph.lower()
@@ -70,14 +71,17 @@ def clean_text(paragraph):
     # Step 4: Expand abbreviations
     paragraph = expand_abbreviations(paragraph, abbreviation_dict)
 
-    # Step 5: Tokenize the text
+    # Step 5: Remove unwanted Unicode characters (e.g., \u201325 \u00b0)
+    paragraph = paragraph.encode('ascii', 'ignore').decode('ascii')
+
+    # Step 6: Tokenize the text
     tokens = word_tokenize(paragraph)
 
-    # Step 6: Remove stopwords
-    stop_words = set(stopwords.words('english'))
-    tokens = [word for word in tokens if word not in stop_words]
+    # Step 7: Remove stopwords
+  #  stop_words = set(stopwords.words('english'))
+ #  tokens = [word for word in tokens if word not in stop_words]
 
-    # Step 7: Lemmatize words
+    # Step 8: Lemmatize words
     lemmatizer = WordNetLemmatizer()
     tokens = [lemmatizer.lemmatize(word) for word in tokens]
 
@@ -86,15 +90,12 @@ def clean_text(paragraph):
 
     return cleaned_text
 
-def save_to_sqlite(file_name, cleaned_content):
+def save_to_sqlite(unique_id, cleaned_content):
     """
     Saves the cleaned content to the SQLite database.
     """
-    # Use the file name as the unique ID
-    unique_id = file_name.replace(".json", "")
-
     # Insert the text into the database
-    cursor.execute("INSERT INTO documents (id, content) VALUES (?, ?)", (unique_id, cleaned_content))
+    cursor.execute("INSERT OR REPLACE INTO documents (id, content) VALUES (?, ?)", (unique_id, cleaned_content))
     conn.commit()
 
 def view_database():
@@ -114,14 +115,18 @@ def view_database():
         print("-" * 50)
 
 
-# Process all json files in myData folder
-txt_files = [f for f in os.listdir(data_folder) if f.endswith(".json")]
+# Process all JSON files in the data folder
+json_files = [f for f in os.listdir(data_folder) if f.endswith(".json")]
 
-for file_name in txt_files:
+for file_name in json_files:
     file_path = os.path.join(data_folder, file_name)
 
     with open(file_path, "r", encoding="utf-8") as f:
-        content = f.read()
+        data = json.load(f)  # Load JSON data
+
+    # Extract title and content from JSON
+    title = data.get("title", file_name.replace(".json", ""))  # Use title or fallback to file name
+    content = data.get("content", "")  # Extract content
 
     print(f"Processing {file_name}...\n")
 
@@ -133,9 +138,8 @@ for file_name in txt_files:
     print("\nCleaned Content Preview:\n", processed_content[:300])
     print("\n" + "-"*50 + "\n")
 
-
-    # Save the cleaned content to SQLite
-    save_to_sqlite(file_name, processed_content)
+    # Save the cleaned content to SQLite using the title as the unique ID
+    save_to_sqlite(title, processed_content)
 
 print("All files processed and saved to SQLite database.")
 
