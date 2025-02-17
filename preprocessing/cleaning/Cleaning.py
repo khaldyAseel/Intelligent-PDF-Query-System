@@ -30,11 +30,14 @@ abbreviation_dict = {
 conn = sqlite3.connect("text_database.db")
 cursor = conn.cursor()
 
-# Create a table to store the cleaned text
+# Create a table to store the cleaned text and metadata
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS documents (
     id TEXT PRIMARY KEY,  -- Unique ID for each document (title from JSON)
-    content TEXT         -- Cleaned text content
+    content TEXT,        -- Cleaned text content
+    parent TEXT,         -- Parent metadata
+    page INTEGER,        -- Page metadata
+    type TEXT            -- Type metadata
 )
 """)
 conn.commit()
@@ -78,8 +81,8 @@ def clean_text(paragraph):
     tokens = word_tokenize(paragraph)
 
     # Step 7: Remove stopwords
-  #  stop_words = set(stopwords.words('english'))
- #  tokens = [word for word in tokens if word not in stop_words]
+    stop_words = set(stopwords.words('english'))
+    tokens = [word for word in tokens if word not in stop_words]
 
     # Step 8: Lemmatize words
     lemmatizer = WordNetLemmatizer()
@@ -90,12 +93,15 @@ def clean_text(paragraph):
 
     return cleaned_text
 
-def save_to_sqlite(unique_id, cleaned_content):
+def save_to_sqlite(unique_id, cleaned_content, metadata):
     """
-    Saves the cleaned content to the SQLite database.
+    Saves the cleaned content and metadata to the SQLite database.
     """
-    # Insert the text into the database
-    cursor.execute("INSERT OR REPLACE INTO documents (id, content) VALUES (?, ?)", (unique_id, cleaned_content))
+    # Insert the text and metadata into the database
+    cursor.execute("""
+        INSERT OR REPLACE INTO documents (id, content, parent, page, type)
+        VALUES (?, ?, ?, ?, ?)
+    """, (unique_id, cleaned_content, metadata.get("parent"), metadata.get("page"), metadata.get("type")))
     conn.commit()
 
 def view_database():
@@ -112,6 +118,9 @@ def view_database():
     for row in rows:
         print(f"ID: {row[0]}")
         print(f"Content: {row[1]}")
+        print(f"Parent: {row[2]}")
+        print(f"Page: {row[3]}")
+        print(f"Type: {row[4]}")
         print("-" * 50)
 
 
@@ -124,9 +133,10 @@ for file_name in json_files:
     with open(file_path, "r", encoding="utf-8") as f:
         data = json.load(f)  # Load JSON data
 
-    # Extract title and content from JSON
+    # Extract title, content, and metadata from JSON
     title = data.get("title", file_name.replace(".json", ""))  # Use title or fallback to file name
     content = data.get("content", "")  # Extract content
+    metadata = data.get("metadata", {})  # Extract metadata
 
     print(f"Processing {file_name}...\n")
 
@@ -138,8 +148,8 @@ for file_name in json_files:
     print("\nCleaned Content Preview:\n", processed_content[:300])
     print("\n" + "-"*50 + "\n")
 
-    # Save the cleaned content to SQLite using the title as the unique ID
-    save_to_sqlite(title, processed_content)
+    # Save the cleaned content and metadata to SQLite using the title as the unique ID
+    save_to_sqlite(title, processed_content, metadata)
 
 print("All files processed and saved to SQLite database.")
 
