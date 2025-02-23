@@ -1,5 +1,15 @@
 pinecone~=5.4.2
 llama-index-core~=0.12.14
 langchain~=0.3.15
-PyPDF2
+PyPDF2~=3.0.1
 langchain-community~=0.3.15
+numpy~=1.26.4
+rank-bm25~=0.2.2
+sentence-transformers~=3.4.0
+together~=1.4.0
+python-dotenv~=1.0.1
+nltk~=3.9.1
+scikit-learn~=1.6.1
+fitz~=0.0.1.dev2
+megaparse~=0.0.55
+langchain-openai~=0.3.6

@@ -16,7 +16,6 @@ def extract_toc(pdf_path):
     toc_list = []
     for level, title, page in toc:
         toc_list.append({"level": level, "title": title, "page": page})
-
     return toc_list
 
 
@@ -99,15 +98,34 @@ def save_chapters_to_json(pdf_path, toc, output_dir):
             }
         }
 
-        # Save as JSON
-        filename = os.path.join(output_dir, f"{sanitize_filename(entry['title'])}.json")
-        with open(filename, "w", encoding="utf-8") as f:
-            json.dump(entry_data, f, indent=4)
+        # Save only if it's not a level 1 chapter
+        if level != 1:
+            # If it's a subchapter, include the parent chapter's content
+            if parent_title:
+                # Find the parent chapter's content
+                parent_content = ""
+                for parent_entry in toc:
+                    if parent_entry["title"] == parent_title and parent_entry.get("level", 1) == 1:
+                        parent_start_page = parent_entry["page"]
+                        parent_end_page = toc[i]["page"]  # End at the current subchapter
+                        parent_content = extract_text_from_pdf_by_range(
+                            pdf_path, parent_start_page, parent_end_page,
+                            current_title=parent_title, next_title=entry["title"]
+                        )
+                        break
 
+                # Add parent content to the subchapter's content
+                entry_data["content"] = f"{parent_content}\n\n{entry_data['content']}"
+
+            # Save as JSON
+            filename = os.path.join(output_dir, f"{sanitize_filename(entry['title'])}.json")
+            with open(filename, "w", encoding="utf-8") as f:
+                json.dump(entry_data, f, indent=4)
+
+        # Update parent stack
         parent_stack.append({"title": entry["title"], "level": level})
 
     print("Chapters saved successfully!")
-
 
 
 # Main execution
@@ -119,3 +137,4 @@ if __name__ == "__main__":
     toc_text = extract_toc(pdf_path)
     save_chapters_to_json(pdf_path, toc_text, output_dir)
     print(f"Extracted data saved in: {output_dir}")
+
