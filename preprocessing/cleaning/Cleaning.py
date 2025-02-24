@@ -6,6 +6,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import nltk
+import re
 
 # Download necessary NLTK data
 nltk.download('punkt')
@@ -54,37 +55,44 @@ def expand_abbreviations(text, abbreviation_dict):
 def clean_text(paragraph):
     """
     Cleans the input paragraph by:
-    1. Converting text to lowercase
-    2. Removing punctuation
-    3. Stripping extra whitespace
-    4. Expanding abbreviations
-    5. Removing stopwords
-    6. Lemmatizing words
-    7. Removing unwanted Unicode characters
+    1. Removing figure and diagram references
+    2. Converting text to lowercase
+    3. Removing punctuation
+    4. Stripping extra whitespace
+    5. Expanding abbreviations
+    6. Removing stopwords
+    7. Lemmatizing words
+    8. Removing unwanted Unicode characters
     """
-    # Step 1: Convert to lowercase
+    # Step 1: Remove unwanted references (e.g., "see Figure 2.5", "see diagram")
+    paragraph = re.sub(r'\(see\s(?:Figure|Diagram|Table)?\s?\d*\.?\d*\)', '', paragraph, flags=re.IGNORECASE)
+    paragraph = re.sub(r'\bsee\s(chapter|section|table)?\s?\d+\.?\d*\b', '', paragraph, flags=re.IGNORECASE)
+    paragraph = re.sub(r'\b(given|refer to|as shown in|as seen in)\s(table|figure|diagram|section)?\s?\d+\.?\d*\b', '',
+                       paragraph, flags=re.IGNORECASE)
+
+    # Step 2: Convert to lowercase
     paragraph = paragraph.lower()
 
-    # Step 2: Remove punctuation
+    # Step 3: Remove punctuation
     paragraph = paragraph.translate(str.maketrans("", "", string.punctuation))
 
-    # Step 3: Strip extra whitespace
+    # Step 4: Strip extra whitespace
     paragraph = " ".join(paragraph.split())
 
-    # Step 4: Expand abbreviations
+    # Step 5: Expand abbreviations
     paragraph = expand_abbreviations(paragraph, abbreviation_dict)
 
-    # Step 5: Remove unwanted Unicode characters (e.g., \u201325 \u00b0)
+    # Step 6: Remove unwanted Unicode characters (e.g., \u201325 \u00b0)
     paragraph = paragraph.encode('ascii', 'ignore').decode('ascii')
 
-    # Step 6: Tokenize the text
+    # Step 7: Tokenize the text
     tokens = word_tokenize(paragraph)
 
-    # Step 7: Remove stopwords
+    # Step 8: Remove stopwords
     stop_words = set(stopwords.words('english'))
     tokens = [word for word in tokens if word not in stop_words]
 
-    # Step 8: Lemmatize words
+    # Step 9: Lemmatize words
     lemmatizer = WordNetLemmatizer()
     tokens = [lemmatizer.lemmatize(word) for word in tokens]
 
@@ -148,8 +156,9 @@ for file_name in json_files:
     print("\nCleaned Content Preview:\n", processed_content[:300])
     print("\n" + "-"*50 + "\n")
 
-    # Save the cleaned content and metadata to SQLite using the title as the unique ID
-    save_to_sqlite(title, processed_content, metadata)
+    # Save only if the type is "subchapter"
+    if metadata.get("type") == "subchapter":
+        save_to_sqlite(title, processed_content, metadata)
 
 print("All files processed and saved to SQLite database.")
 
