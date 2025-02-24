@@ -67,6 +67,8 @@ def clean_text(paragraph):
     # Step 1: Remove unwanted references (e.g., "see Figure 2.5", "see diagram")
     paragraph = re.sub(r'\(see\s(?:Figure|Diagram|Table)?\s?\d*\.?\d*\)', '', paragraph, flags=re.IGNORECASE)
     paragraph = re.sub(r'\bsee\s(chapter|section|table)?\s?\d+\.?\d*\b', '', paragraph, flags=re.IGNORECASE)
+    paragraph = re.sub(r'\b(given|refer to|as shown in|as seen in)\s(table|figure|diagram|section)?\s?\d+\.?\d*\b', '',
+                       paragraph, flags=re.IGNORECASE)
 
     # Step 2: Convert to lowercase
     paragraph = paragraph.lower()
