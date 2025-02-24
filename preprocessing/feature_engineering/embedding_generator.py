@@ -2,6 +2,7 @@ import sqlite3
 from sentence_transformers import SentenceTransformer
 import ast
 import numpy as np
+from preprocessing.cleaning.Cleaning import view_database
 
 # Load the pre-trained embedding model
 model = SentenceTransformer('BAAI/bge-large-en')
@@ -23,7 +24,7 @@ def generate_and_save_embeddings():
 		  so splitting the text into smaller chunks helps avoid truncation issues.
 	"""
 	# Connect to the database
-	conn = sqlite3.connect("../../text_database.db")
+	conn = sqlite3.connect("../../backend/database/text_database.db")
 	cursor = conn.cursor()
 
 	# Create the 'embedding' column if it does not exist
@@ -67,4 +68,20 @@ def generate_and_save_embeddings():
 
 	# Commit all changes and close the connection.
 	conn.commit()
+
+	def view_database(db_path="../../backend/database/text_database.db"):
+		"""
+		Connects to the SQLite database and prints out all rows from the 'documents' table.
+		"""
+		conn = sqlite3.connect(db_path)
+		cursor = conn.cursor()
+
+		# Retrieve all columns from the documents table
+		cursor.execute("SELECT * FROM documents")
+		rows = cursor.fetchall()
+
+		# Print each row
+		for row in rows:
+			print(row)
 	conn.close()
+	view_database()

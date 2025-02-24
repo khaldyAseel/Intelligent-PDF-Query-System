@@ -28,7 +28,7 @@ abbreviation_dict = {
 }
 
 # Connect to SQLite database (or create it if it doesn't exist)
-conn = sqlite3.connect("text_database.db")
+conn = sqlite3.connect("../../backend/database/text_database.db")
 cursor = conn.cursor()
 
 # Create a table to store the cleaned text and metadata
@@ -112,26 +112,6 @@ def save_to_sqlite(unique_id, cleaned_content, metadata):
     """, (unique_id, cleaned_content, metadata.get("parent"), metadata.get("page"), metadata.get("type")))
     conn.commit()
 
-def view_database():
-    """
-    Queries and displays all records from the SQLite database.
-    """
-    # Query all documents
-    cursor.execute("SELECT * FROM documents")
-    rows = cursor.fetchall()
-
-    # Print the results
-    print("\nViewing Database Contents:")
-    print("-" * 50)
-    for row in rows:
-        print(f"ID: {row[0]}")
-        print(f"Content: {row[1]}")
-        print(f"Parent: {row[2]}")
-        print(f"Page: {row[3]}")
-        print(f"Type: {row[4]}")
-        print("-" * 50)
-
-
 # Process all JSON files in the data folder
 json_files = [f for f in os.listdir(data_folder) if f.endswith(".json")]
 
@@ -162,6 +142,24 @@ for file_name in json_files:
 
 print("All files processed and saved to SQLite database.")
 
+def view_database():
+    """
+    Queries and displays all records from the SQLite database.
+    """
+    # Query all documents
+    cursor.execute("SELECT * FROM documents")
+    rows = cursor.fetchall()
+
+    # Print the results
+    print("\nViewing Database Contents:")
+    print("-" * 50)
+    for row in rows:
+        print(f"ID: {row[0]}")
+        print(f"Content: {row[1]}")
+        print(f"Parent: {row[2]}")
+        print(f"Page: {row[3]}")
+        print(f"Type: {row[4]}")
+        print("-" * 50)
 # View the database contents
 view_database()
 
