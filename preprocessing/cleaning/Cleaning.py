@@ -139,6 +139,7 @@ print("All files processed and saved to SQLite database.")
 
 # View the database contents
 view_database()
+# "//"
 
 # Close the database connection
 conn.close()
