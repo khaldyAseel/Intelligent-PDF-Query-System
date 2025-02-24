@@ -113,34 +113,35 @@ def save_to_sqlite(unique_id, cleaned_content, metadata):
     conn.commit()
 
 # Process all JSON files in the data folder
-json_files = [f for f in os.listdir(data_folder) if f.endswith(".json")]
+def process_json_files():
+    json_files = [f for f in os.listdir(data_folder) if f.endswith(".json")]
 
-for file_name in json_files:
-    file_path = os.path.join(data_folder, file_name)
+    for file_name in json_files:
+        file_path = os.path.join(data_folder, file_name)
 
-    with open(file_path, "r", encoding="utf-8") as f:
-        data = json.load(f)  # Load JSON data
+        with open(file_path, "r", encoding="utf-8") as f:
+            data = json.load(f)  # Load JSON data
 
-    # Extract title, content, and metadata from JSON
-    title = data.get("title", file_name.replace(".json", ""))  # Use title or fallback to file name
-    content = data.get("content", "")  # Extract content
-    metadata = data.get("metadata", {})  # Extract metadata
+        # Extract title, content, and metadata from JSON
+        title = data.get("title", file_name.replace(".json", ""))  # Use title or fallback to file name
+        content = data.get("content", "")  # Extract content
+        metadata = data.get("metadata", {})  # Extract metadata
 
-    print(f"Processing {file_name}...\n")
+        print(f"Processing {file_name}...\n")
 
-    # Clean the content
-    processed_content = clean_text(content)
+        # Clean the content
+        processed_content = clean_text(content)
 
-    # Print a preview of cleaned content
-    print("Original Content Preview:\n", content[:300])
-    print("\nCleaned Content Preview:\n", processed_content[:300])
-    print("\n" + "-"*50 + "\n")
+        # Print a preview of cleaned content
+        print("Original Content Preview:\n", content[:300])
+        print("\nCleaned Content Preview:\n", processed_content[:300])
+        print("\n" + "-"*50 + "\n")
 
-    # Save only if the type is "subchapter"
-    if metadata.get("type") == "subchapter":
-        save_to_sqlite(title, processed_content, metadata)
+        # Save only if the type is "subchapter"
+        if metadata.get("type") == "subchapter":
+            save_to_sqlite(title, processed_content, metadata)
 
-print("All files processed and saved to SQLite database.")
+    print("All files processed and saved to SQLite database.")
 
 def view_database():
     """
@@ -160,6 +161,7 @@ def view_database():
         print(f"Page: {row[3]}")
         print(f"Type: {row[4]}")
         print("-" * 50)
+process_json_files()
 # View the database contents
 view_database()
 
