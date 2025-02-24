@@ -59,73 +59,45 @@ def save_chapters_to_json(pdf_path, toc, output_dir):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    parent_stack = []
-
     # Find the "Glossary" section page number
     glossary_page = next((entry["page"] for entry in toc if "glossary" in entry["title"].lower()), None)
 
+    parent_chapter = None  # Track the last seen chapter (Level 1)
+
     for i, entry in enumerate(toc):
-        start_page = entry["page"]
-
-        # Determine the end page
-        if i + 1 < len(toc):
-            end_page = toc[i + 1]["page"]  # Stop at the next chapter
-        elif glossary_page:
-            end_page = glossary_page  # Stop at "Glossary"
-        else:
-            end_page = len(PdfReader(pdf_path).pages)  # Fallback: Last page
-
-        next_title = toc[i + 1]["title"] if i + 1 < len(toc) else None
         level = entry.get("level", 1)
+        if level == 1:
+            parent_chapter = entry["title"]  # Store the main chapter title
+            continue  # Skip saving level 1 chapters
 
-        # Handle hierarchy levels
-        while parent_stack and parent_stack[-1]["level"] >= level:
-            parent_stack.pop()
+        if level > 2:
+            continue  # Skip sub-subchapters (level 3+)
 
-        parent_title = parent_stack[-1]["title"] if parent_stack else None
+        start_page = entry["page"]
+        next_title = toc[i + 1]["title"] if i + 1 < len(toc) else None
+        end_page = toc[i + 1]["page"] if i + 1 < len(toc) else glossary_page or len(PdfReader(pdf_path).pages)
 
-        # Extract chapter content
-        content = extract_text_from_pdf_by_range(pdf_path, start_page, end_page, current_title=entry["title"], next_title=next_title)
+        # Extract content for subchapter
+        content = extract_text_from_pdf_by_range(pdf_path, start_page, end_page, current_title=entry["title"],
+                                                 next_title=next_title)
 
-        # Structure chapter data
+        # Structure subchapter data
         entry_data = {
             "title": entry["title"],
             "content": content,
             "metadata": {
                 "page": start_page,
-                "type": "chapter" if level == 1 else "subchapter" if level == 2 else "sub-subchapter",
-                "parent": parent_title
+                "type": "subchapter",
+                "parent": parent_chapter  # Attach the last seen chapter
             }
         }
 
-        # Save only if it's not a level 1 chapter
-        if level != 1:
-            # If it's a subchapter, include the parent chapter's content
-            if parent_title:
-                # Find the parent chapter's content
-                parent_content = ""
-                for parent_entry in toc:
-                    if parent_entry["title"] == parent_title and parent_entry.get("level", 1) == 1:
-                        parent_start_page = parent_entry["page"]
-                        parent_end_page = toc[i]["page"]  # End at the current subchapter
-                        parent_content = extract_text_from_pdf_by_range(
-                            pdf_path, parent_start_page, parent_end_page,
-                            current_title=parent_title, next_title=entry["title"]
-                        )
-                        break
+        # Save as JSON
+        filename = os.path.join(output_dir, f"{sanitize_filename(entry['title'])}.json")
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(entry_data, f, indent=4)
 
-                # Add parent content to the subchapter's content
-                entry_data["content"] = f"{parent_content}\n\n{entry_data['content']}"
-
-            # Save as JSON
-            filename = os.path.join(output_dir, f"{sanitize_filename(entry['title'])}.json")
-            with open(filename, "w", encoding="utf-8") as f:
-                json.dump(entry_data, f, indent=4)
-
-        # Update parent stack
-        parent_stack.append({"title": entry["title"], "level": level})
-
-    print("Chapters saved successfully!")
+    print("Subchapters saved successfully!")
 
 
 # Main execution
