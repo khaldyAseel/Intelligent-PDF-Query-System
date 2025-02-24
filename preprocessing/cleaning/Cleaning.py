@@ -1,7 +1,10 @@
 import os
 import string
 import sqlite3
+<<<<<<< HEAD
 import json
+=======
+>>>>>>> d55120a (updates)
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
@@ -11,6 +14,10 @@ import nltk
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
+<<<<<<< HEAD
+=======
+nltk.download('punkt_tab')
+>>>>>>> d55120a (updates)
 
 # Define the folder path containing your JSON files
 data_folder = "../../data_extraction/scripts/parsed_text_output"
@@ -30,6 +37,7 @@ abbreviation_dict = {
 conn = sqlite3.connect("text_database.db")
 cursor = conn.cursor()
 
+<<<<<<< HEAD
 # Create a table to store the cleaned text and metadata
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS documents (
@@ -38,6 +46,13 @@ CREATE TABLE IF NOT EXISTS documents (
     parent TEXT,         -- Parent metadata
     page INTEGER,        -- Page metadata
     type TEXT            -- Type metadata
+=======
+# Create a table to store the cleaned text
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS documents (
+    id TEXT PRIMARY KEY,  -- Unique ID for each document
+    content TEXT         -- Cleaned text content
+>>>>>>> d55120a (updates)
 )
 """)
 conn.commit()
@@ -60,7 +75,10 @@ def clean_text(paragraph):
     4. Expanding abbreviations
     5. Removing stopwords
     6. Lemmatizing words
+<<<<<<< HEAD
     7. Removing unwanted Unicode characters
+=======
+>>>>>>> d55120a (updates)
     """
     # Step 1: Convert to lowercase
     paragraph = paragraph.lower()
@@ -74,6 +92,7 @@ def clean_text(paragraph):
     # Step 4: Expand abbreviations
     paragraph = expand_abbreviations(paragraph, abbreviation_dict)
 
+<<<<<<< HEAD
     # Step 5: Remove unwanted Unicode characters (e.g., \u201325 \u00b0)
     paragraph = paragraph.encode('ascii', 'ignore').decode('ascii')
 
@@ -85,6 +104,16 @@ def clean_text(paragraph):
     tokens = [word for word in tokens if word not in stop_words]
 
     # Step 8: Lemmatize words
+=======
+    # Step 5: Tokenize the text
+    tokens = word_tokenize(paragraph)
+
+    # Step 6: Remove stopwords
+    stop_words = set(stopwords.words('english'))
+    tokens = [word for word in tokens if word not in stop_words]
+
+    # Step 7: Lemmatize words
+>>>>>>> d55120a (updates)
     lemmatizer = WordNetLemmatizer()
     tokens = [lemmatizer.lemmatize(word) for word in tokens]
 
@@ -93,6 +122,7 @@ def clean_text(paragraph):
 
     return cleaned_text
 
+<<<<<<< HEAD
 def save_to_sqlite(unique_id, cleaned_content, metadata):
     """
     Saves the cleaned content and metadata to the SQLite database.
@@ -102,6 +132,17 @@ def save_to_sqlite(unique_id, cleaned_content, metadata):
         INSERT OR REPLACE INTO documents (id, content, parent, page, type)
         VALUES (?, ?, ?, ?, ?)
     """, (unique_id, cleaned_content, metadata.get("parent"), metadata.get("page"), metadata.get("type")))
+=======
+def save_to_sqlite(file_name, cleaned_content):
+    """
+    Saves the cleaned content to the SQLite database.
+    """
+    # Use the file name as the unique ID
+    unique_id = file_name.replace(".json", "")
+
+    # Insert the text into the database
+    cursor.execute("INSERT INTO documents (id, content) VALUES (?, ?)", (unique_id, cleaned_content))
+>>>>>>> d55120a (updates)
     conn.commit()
 
 def view_database():
@@ -118,6 +159,7 @@ def view_database():
     for row in rows:
         print(f"ID: {row[0]}")
         print(f"Content: {row[1]}")
+<<<<<<< HEAD
         print(f"Parent: {row[2]}")
         print(f"Page: {row[3]}")
         print(f"Type: {row[4]}")
@@ -137,6 +179,18 @@ for file_name in json_files:
     title = data.get("title", file_name.replace(".json", ""))  # Use title or fallback to file name
     content = data.get("content", "")  # Extract content
     metadata = data.get("metadata", {})  # Extract metadata
+=======
+        print("-" * 50)
+
+# Process all JSON files in the data folder
+txt_files = [f for f in os.listdir(data_folder) if f.endswith(".json")]
+
+for file_name in txt_files:
+    file_path = os.path.join(data_folder, file_name)
+
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+>>>>>>> d55120a (updates)
 
     print(f"Processing {file_name}...\n")
 
@@ -148,8 +202,13 @@ for file_name in json_files:
     print("\nCleaned Content Preview:\n", processed_content[:300])
     print("\n" + "-"*50 + "\n")
 
+<<<<<<< HEAD
     # Save the cleaned content and metadata to SQLite using the title as the unique ID
     save_to_sqlite(title, processed_content, metadata)
+=======
+    # Save the cleaned content to SQLite
+    save_to_sqlite(file_name, processed_content)
+>>>>>>> d55120a (updates)
 
 print("All files processed and saved to SQLite database.")
 

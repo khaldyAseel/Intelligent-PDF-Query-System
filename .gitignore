@@ -53,7 +53,10 @@ data_extraction/*.pdf
 #data_folder
 data_extraction/parsed_text_output
 parsed_text_output/
+<<<<<<< HEAD
 chunks/
+=======
+>>>>>>> d55120a (updates)
 
 
 

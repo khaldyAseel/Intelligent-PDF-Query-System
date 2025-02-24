@@ -132,8 +132,11 @@ def save_chapters_to_json(pdf_path, toc, output_dir):
 if __name__ == "__main__":
     pdf_path = "book.pdf"
     output_dir = "parsed_text_output"
+<<<<<<< HEAD
     script_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(script_dir)
+=======
+>>>>>>> d55120a (updates)
     toc_text = extract_toc(pdf_path)
     save_chapters_to_json(pdf_path, toc_text, output_dir)
     print(f"Extracted data saved in: {output_dir}")
