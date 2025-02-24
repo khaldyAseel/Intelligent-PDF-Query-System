@@ -156,8 +156,9 @@ for file_name in json_files:
     print("\nCleaned Content Preview:\n", processed_content[:300])
     print("\n" + "-"*50 + "\n")
 
-    # Save the cleaned content and metadata to SQLite using the title as the unique ID
-    save_to_sqlite(title, processed_content, metadata)
+    # Save only if the type is "subchapter"
+    if metadata.get("type") == "subchapter":
+        save_to_sqlite(title, processed_content, metadata)
 
 print("All files processed and saved to SQLite database.")
 
