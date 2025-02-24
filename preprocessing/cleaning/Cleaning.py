@@ -1,154 +1,157 @@
 import os
+import json
 import string
 import sqlite3
-import json
+import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
-import nltk
 
-# Download necessary NLTK data
+# Download necessary NLTK data if not already installed
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
 
-# Define the folder path containing your JSON files
-data_folder = "../../data_extraction/scripts/parsed_text_output"
+# Define the folder path containing JSON files
+folder_path = "../../data_extraction/scripts/parsed_text_output"
 
-# Abbreviation dictionary
-abbreviation_dict = {
-    "temp": "temperature",
-    "visc": "viscosity",
-    "haccp": "Hazard Analysis Critical Control Point",
-    "cfu": "colony-forming units",
-    "ppm": "parts per million",
-    "rpm": "revolutions per minute",
-    "ph": "potential of hydrogen"
-}
-
-# Connect to SQLite database (or create it if it doesn't exist)
+# Connect to SQLite database
 conn = sqlite3.connect("text_database.db")
 cursor = conn.cursor()
 
-# Create a table to store the cleaned text and metadata
+# Create the 'chunks' table if not already created
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS documents (
-    id TEXT PRIMARY KEY,  -- Unique ID for each document (title from JSON)
-    content TEXT,         -- Cleaned text content
-    parent TEXT,          -- Parent metadata
-    page INTEGER,         -- Page metadata
-    type TEXT             -- Type metadata
+CREATE TABLE IF NOT EXISTS chunks (
+    id TEXT PRIMARY KEY,        -- Unique ID for each chunk
+    chunks TEXT,                -- The chunk of content
+    title TEXT,                 -- The title (id from JSON)
+    subchapter TEXT,            -- Subchapter information (if available)
+    parent TEXT,                -- Parent metadata
+    page INTEGER                -- Page metadata
 )
 """)
 conn.commit()
 
 def expand_abbreviations(text, abbreviation_dict):
-    """
-    Expands abbreviations in the text using the provided dictionary.
-    """
+    """Expands abbreviations in the text using the provided dictionary."""
     words = text.split()
     expanded_words = [abbreviation_dict.get(word, word) for word in words]
-    expanded_text = " ".join(expanded_words)
-    return expanded_text
+    return " ".join(expanded_words)
 
 def clean_text(paragraph):
-    """
-    Cleans the input paragraph by:
-    1. Converting text to lowercase
-    2. Removing punctuation
-    3. Stripping extra whitespace
-    4. Expanding abbreviations
-    5. Removing stopwords
-    6. Lemmatizing words
-    """
-    # Step 1: Convert to lowercase
-    paragraph = paragraph.lower()
+    """Cleans input text: lowercase, remove punctuation, expand abbreviations, remove stopwords, and lemmatize."""
 
-    # Step 2: Remove punctuation
-    paragraph = paragraph.translate(str.maketrans("", "", string.punctuation))
+    abbreviation_dict = {
+        "etc.": "et cetera",
+        "e.g.": "for example",
+        "i.e.": "that is",
+        "vs.": "versus",
+        "hr.": "hour",
+        "min.": "minute"
+    }
 
-    # Step 3: Strip extra whitespace
-    paragraph = " ".join(paragraph.split())
-
-    # Step 4: Expand abbreviations
+    # Convert to lowercase and remove punctuation
+    paragraph = paragraph.lower().translate(str.maketrans("", "", string.punctuation))
     paragraph = expand_abbreviations(paragraph, abbreviation_dict)
 
-    # Step 5: Tokenize the text
+    # Tokenize
     tokens = word_tokenize(paragraph)
 
-    # Step 6: Remove stopwords
-    stop_words = set(stopwords.words('english'))
+    # Remove stopwords (handling potential missing stopwords issue)
+    try:
+        stop_words = set(stopwords.words('english'))
+    except LookupError:
+        nltk.download('stopwords')
+        stop_words = set(stopwords.words('english'))
+
     tokens = [word for word in tokens if word not in stop_words]
 
-    # Step 7: Lemmatize words
+    # Lemmatize words
     lemmatizer = WordNetLemmatizer()
-    tokens = [lemmatizer.lemmatize(word) for word in tokens]
-
-    # Join tokens back into a single string
-    cleaned_text = " ".join(tokens)
+    cleaned_text = " ".join([lemmatizer.lemmatize(word) for word in tokens])
 
     return cleaned_text
 
-def save_to_sqlite(unique_id, cleaned_content, metadata):
-    """
-    Saves the cleaned content and metadata to the SQLite database.
-    """
-    # Insert the text and metadata into the database
-    cursor.execute("""
-        INSERT OR REPLACE INTO documents (id, content, parent, page, type)
-        VALUES (?, ?, ?, ?, ?)
-    """, (unique_id, cleaned_content, metadata.get("parent"), metadata.get("page"), metadata.get("type")))
+def chunk_content(content, chunk_size=500):
+    """Splits the content into chunks of a specified size (tokens)."""
+    tokens = word_tokenize(content)
+    chunks = [" ".join(tokens[i:i + chunk_size]) for i in range(0, len(tokens), chunk_size)]
+    return chunks
+
+def save_chunk_to_sqlite(unique_id, chunks, title, subchapter, parent, page):
+    """Saves chunks and metadata into the SQLite database."""
+    for idx, chunk in enumerate(chunks):
+        chunk_id = f"{unique_id}_chunk_{idx+1}"  # Ensure unique chunk ID
+        try:
+            cursor.execute("""
+                INSERT OR IGNORE INTO chunks (id, chunks, title, subchapter, parent, page)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (chunk_id, chunk, title, subchapter, parent, page))
+        except sqlite3.IntegrityError:
+            print(f"Skipping duplicate entry: {chunk_id}")
     conn.commit()
 
+def process_json_files(folder_path):
+    """Reads JSON files, cleans and chunks text, and saves them to the database."""
+    json_files = [f for f in os.listdir(folder_path) if f.endswith('.json')]
+
+    if not json_files:
+        print("No JSON files found in the directory!")
+        return
+
+    for json_file in json_files:
+        json_path = os.path.join(folder_path, json_file)
+        with open(json_path, "r", encoding="utf-8") as file:
+            try:
+                data = json.load(file)
+
+                # Extract metadata from JSON
+                doc_id = data.get("id", json_file.replace(".json", ""))
+                content = data.get("content", "").strip()
+                parent = data.get("parent") if data.get("parent") else "Unknown Parent"
+                page = int(data.get("page", 0))
+                subchapter = data.get("subchapter", "Unknown Subchapter")
+
+                if not content:
+                    print(f"Skipping {json_file}: No content found.")
+                    continue
+
+                print(f"Processing {json_file} (ID: {doc_id})...\n")
+
+                # Clean, chunk, and store the content
+                cleaned_content = clean_text(content)
+                chunks = chunk_content(cleaned_content)
+                save_chunk_to_sqlite(doc_id, chunks, doc_id, subchapter, parent, page)
+
+            except json.JSONDecodeError:
+                print(f"Error reading {json_file}: Invalid JSON format.")
+            except Exception as e:
+                print(f"Unexpected error processing {json_file}: {e}")
+
+# Run the function to process JSON files
+process_json_files(folder_path)
+
 def view_database():
-    """
-    Queries and displays all records from the SQLite database.
-    """
-    # Query all documents
-    cursor.execute("SELECT * FROM documents")
+    """Queries and displays all records from the SQLite database."""
+    cursor.execute("SELECT * FROM chunks")
     rows = cursor.fetchall()
 
-    # Print the results
-    print("\nViewing Database Contents:")
+    if not rows:
+        print("Database is empty. No records found.")
+        return
+
+    print("\nViewing Chunks Table:")
     print("-" * 50)
     for row in rows:
         print(f"ID: {row[0]}")
-        print(f"Content: {row[1]}")
-        print(f"Parent: {row[2]}")
-        print(f"Page: {row[3]}")
-        print(f"Type: {row[4]}")
+        print(f"Chunks: {row[1]}")
+        print(f"Title: {row[2]}")
+        print(f"Subchapter: {row[3]}")
+        print(f"Parent: {row[4]}")
+        print(f"Page: {row[5]}")
         print("-" * 50)
 
-# Process all JSON files in the data folder
-json_files = [f for f in os.listdir(data_folder) if f.endswith(".json")]
-
-for file_name in json_files:
-    file_path = os.path.join(data_folder, file_name)
-
-    with open(file_path, "r", encoding="utf-8") as f:
-        data = json.load(f)  # Load JSON data
-
-    # Extract title, content, and metadata from JSON
-    title = data.get("title", file_name.replace(".json", ""))  # Use title or fallback to file name
-    content = data.get("content", "")  # Extract content
-    metadata = data.get("metadata", {})  # Extract metadata
-
-    print(f"Processing {file_name}...\n")
-
-    # Clean the content
-    processed_content = clean_text(content)
-
-    # Print a preview of cleaned content
-    print("Original Content Preview:\n", content[:300])
-    print("\nCleaned Content Preview:\n", processed_content[:300])
-    print("\n" + "-"*50 + "\n")
-
-    # Save the cleaned content and metadata to SQLite using the title as the unique ID
-    save_to_sqlite(title, processed_content, metadata)
-
-print("All files processed and saved to SQLite database.")
-
-# View the database contents
+# View the chunks in the database
 view_database()
 
 # Close the database connection
