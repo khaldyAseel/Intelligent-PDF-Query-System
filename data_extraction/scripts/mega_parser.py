@@ -51,7 +51,7 @@ from megaparse.parser.megaparse_vision import MegaParseVision
 from langchain import OpenAI
 
 # Initialize the MegaParseVision model for text and visual content
-model = ChatOpenAI(model="gpt-4", api_key=os.getenv("OPENAI_API"))
+model = ChatOpenAI(model="gpt-4", api_key=os.getenv("OPENAI_API_KEY"))
 
 # Initialize MegaParseVision for parsing the document (you could use MegaParse if you're not using vision)
 parser = MegaParseVision(model=model)
