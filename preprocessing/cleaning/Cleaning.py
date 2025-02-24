@@ -34,10 +34,10 @@ cursor = conn.cursor()
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS documents (
     id TEXT PRIMARY KEY,  -- Unique ID for each document (title from JSON)
-    content TEXT,        -- Cleaned text content
-    parent TEXT,         -- Parent metadata
-    page INTEGER,        -- Page metadata
-    type TEXT            -- Type metadata
+    content TEXT,         -- Cleaned text content
+    parent TEXT,          -- Parent metadata
+    page INTEGER,         -- Page metadata
+    type TEXT             -- Type metadata
 )
 """)
 conn.commit()
@@ -60,7 +60,6 @@ def clean_text(paragraph):
     4. Expanding abbreviations
     5. Removing stopwords
     6. Lemmatizing words
-    7. Removing unwanted Unicode characters
     """
     # Step 1: Convert to lowercase
     paragraph = paragraph.lower()
@@ -74,17 +73,14 @@ def clean_text(paragraph):
     # Step 4: Expand abbreviations
     paragraph = expand_abbreviations(paragraph, abbreviation_dict)
 
-    # Step 5: Remove unwanted Unicode characters (e.g., \u201325 \u00b0)
-    paragraph = paragraph.encode('ascii', 'ignore').decode('ascii')
-
-    # Step 6: Tokenize the text
+    # Step 5: Tokenize the text
     tokens = word_tokenize(paragraph)
 
-    # Step 7: Remove stopwords
+    # Step 6: Remove stopwords
     stop_words = set(stopwords.words('english'))
     tokens = [word for word in tokens if word not in stop_words]
 
-    # Step 8: Lemmatize words
+    # Step 7: Lemmatize words
     lemmatizer = WordNetLemmatizer()
     tokens = [lemmatizer.lemmatize(word) for word in tokens]
 
@@ -122,7 +118,6 @@ def view_database():
         print(f"Page: {row[3]}")
         print(f"Type: {row[4]}")
         print("-" * 50)
-
 
 # Process all JSON files in the data folder
 json_files = [f for f in os.listdir(data_folder) if f.endswith(".json")]
