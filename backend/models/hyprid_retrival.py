@@ -1,22 +1,29 @@
-import os
 import sqlite3
 import ast
 import numpy as np
+from dotenv import load_dotenv
+import os
 import nltk
 from nltk.tokenize import word_tokenize
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 from rank_bm25 import BM25Okapi
-
+from together import Together
 # For splitting text into nodes (chunks)
 from llama_index.core.schema import Document
 from llama_index.core.node_parser import SentenceSplitter
-
+from transformers import pipeline
 nltk.download("punkt")
 
 # Load your SentenceTransformer model (adjust model as needed)
 model = SentenceTransformer('BAAI/bge-large-en')
 
+# Load a BERT-based Question Answering model
+qa_pipeline = pipeline("question-answering", model="deepset/roberta-base-squad2")
+
+load_dotenv(dotenv_path="../api/.env")
+api_key = os.getenv("TOGETHER_API_KEY")
+client = Together(api_key=api_key)
 
 def get_docs_from_db(db_path="../../backend/database/text_database.db"):
 	"""
@@ -25,7 +32,7 @@ def get_docs_from_db(db_path="../../backend/database/text_database.db"):
 	"""
 	conn = sqlite3.connect(db_path)
 	cursor = conn.cursor()
-	cursor.execute("SELECT id, content, parent, page, embedding FROM documents")
+	cursor.execute("SELECT id, content, parent, page, chunk_embeddings FROM documents")
 	rows = cursor.fetchall()
 	conn.close()
 
@@ -74,9 +81,9 @@ def get_nodes_from_db():
 		all_nodes.extend(nodes)
 
 	# (Optional) Print out the nodes for inspection.
-	for node in all_nodes:
-		print("NODE TEXT:", node.text)
-		print("METADATA:", node.metadata, "\n")
+	# for node in all_nodes:
+	# 	print("NODE TEXT:", node.text)
+	# 	print("METADATA:", node.metadata, "\n")
 
 	return all_nodes
 
@@ -84,7 +91,7 @@ def get_nodes_from_db():
 def hybrid_node_retrieval(query, alpha=0.6, top_k=5):
 	"""
 	Perform hybrid retrieval over nodes (chunks) using both BM25 (sparse) and
-	dense embedding similarity.
+	dense embedding similarity, but compute dense similarity only for the top-k BM25 results.
 
 	Parameters:
 	  query   : The search query.
@@ -100,17 +107,25 @@ def hybrid_node_retrieval(query, alpha=0.6, top_k=5):
 	# Extract node texts for retrieval.
 	texts = [node.text for node in nodes]
 
-	# --- Sparse Retrieval: BM25 ---
+	# --- Step 1: Sparse Retrieval (BM25) ---
 	tokenized_texts = [word_tokenize(text.lower()) for text in texts]
 	bm25 = BM25Okapi(tokenized_texts)
 	tokenized_query = word_tokenize(query.lower())
-	bm25_scores = bm25.get_scores(tokenized_query)
 
-	# --- Dense Retrieval: Compute embeddings for each node on the fly ---
+	# Get BM25 scores and retrieve top-k nodes
+	bm25_scores = bm25.get_scores(tokenized_query)
+	top_k_indices = np.argsort(bm25_scores)[::-1][:top_k]  # Get indices of top-k BM25 results
+
+	# Select top-k nodes and corresponding BM25 scores
+	top_k_nodes = [nodes[i] for i in top_k_indices]
+	top_k_bm25_scores = [bm25_scores[i] for i in top_k_indices]
+
+	# --- Step 2: Dense Retrieval (Only for top-k BM25 results) ---
 	query_embedding = model.encode(query)
 	dense_scores = []
-	for text in texts:
-		node_embedding = model.encode(text)
+
+	for node in top_k_nodes:
+		node_embedding = model.encode(node.text)
 		sim = cosine_similarity([query_embedding], [node_embedding])[0][0]
 		dense_scores.append(sim)
 
@@ -123,37 +138,51 @@ def hybrid_node_retrieval(query, alpha=0.6, top_k=5):
 			return np.ones_like(scores)
 		return (scores - min_score) / (max_score - min_score)
 
-	bm25_norm = normalize(bm25_scores)
+	bm25_norm = normalize(top_k_bm25_scores)
 	dense_norm = normalize(dense_scores)
 
-	# --- Combine scores using weighted sum ---
+	# --- Step 3: Combine Scores ---
 	hybrid_scores = alpha * dense_norm + (1 - alpha) * bm25_norm
 
-	# --- Pair each node with its hybrid score and sort ---
-	node_scores = list(zip(nodes, hybrid_scores))
+	# --- Step 4: Sort and Return Top-K Results ---
+	node_scores = list(zip(top_k_nodes, hybrid_scores))
 	node_scores.sort(key=lambda x: x[1], reverse=True)
 
-	return node_scores[:top_k]
+	return node_scores  # Return top-k results after hybrid scoring
 
+def bert_extract_answer(query, retrieved_nodes):
+	"""
+	Uses BERT-QA to extract a direct answer from the top retrieved nodes.
+	"""
+	best_answer = ""
+	best_score = -float("inf")
 
-# Example usage:
+	for node, _ in retrieved_nodes:  # Iterate through the top nodes
+		context = node.text
+		result = qa_pipeline(question=query, context=context)
+
+		# Compare confidence scores and keep the best answer
+		if result["score"] > best_score:
+			best_score = result["score"]
+			best_answer = result["answer"]
+
+	return best_answer
+
 if __name__ == "__main__":
-	query = "What factors contribute to price volatility in the cocoa market?"
+	query = "describe the differences between production of regular chocolate, milk chocolate and white chocolate"
+	# Retrieve top nodes using hybrid retrieval
 	top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
 
-	# Combine the top nodes' texts to create context for the LLM.
-	context_lst = [node.text for node, score in top_nodes]
-	all_context = "\n".join(context_lst)
+	# Extract best answer using BERT
+	bert_answer = bert_extract_answer(query, top_nodes)
 
-	print("\n--- Combined Context for LLM ---\n", all_context)
-
-# At this point, you could pass 'all_context' to your LLM for generating an answer.
-# For example:
-# response = client.chat.completions.create(
-#     model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
-#     messages=[
-#         {"role": "system", "content": "You are a helpful chatbot."},
-#         {"role": "user", "content": f"Answer the question: {query}\nUsing only the information provided here:\n{all_context}"}
-#     ]
-# )
-# print("\n--- LLM Response ---\n", response.choices[0].message.content)
+	# Combine BERT answer + retrieved context for LLaMA
+	all_context = "\n".join([node.text for node, _ in top_nodes])
+	response = client.chat.completions.create(
+		model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
+		messages=[
+			{"role": "system", "content": "You are a helpful chatbot."},
+			{"role": "user", "content": f"Answer the question: {query}. Here is an extracted answer: {bert_answer}. You can also use additional context: {all_context}"},
+		],
+	)
+	print(response.choices[0].message.content)

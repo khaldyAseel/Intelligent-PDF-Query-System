@@ -7,7 +7,6 @@
 import os
 from dotenv import load_dotenv
 from together import Together
-
 from llama_index.core.schema import Document
 from llama_index.core import SimpleDirectoryReader
 from llama_index.retrievers.bm25 import BM25Retriever

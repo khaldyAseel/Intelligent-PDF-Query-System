@@ -146,7 +146,7 @@ from sentence_transformers import SentenceTransformer, CrossEncoder
 
 ### 1️⃣ Load Documents from SQLite Database ###
 def load_documents():
-    conn = sqlite3.connect("text_database.db")
+    conn = sqlite3.connect("../../text_database.db")
     cursor = conn.cursor()
     cursor.execute("SELECT content FROM documents")
     retrieved_docs = cursor.fetchall()
@@ -195,7 +195,7 @@ def rerank_results(query, results):
 
 ### 6️⃣ Testing the Full Pipeline ###
 # query_text = "What are the different types of cocoa?"
-query_text = "Where is cocoa grown?"
+query_text = "describe the differences between production of regular chocolate, milk chocolate and white chocolate"
 
 retrieved_results = hybrid_retrieval(query_text, top_k=5)
 ranked_results = rerank_results(query_text, retrieved_results)

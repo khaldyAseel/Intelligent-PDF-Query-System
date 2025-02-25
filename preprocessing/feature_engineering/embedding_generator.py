@@ -1,38 +1,34 @@
 import sqlite3
 from sentence_transformers import SentenceTransformer
 import ast
-import numpy as np
+from transformers import AutoTokenizer
 
 # Connect to the existing database
 conn = sqlite3.connect("../../backend/database/text_database.db")
 cursor = conn.cursor()
+
 # Load the pre-trained embedding model
 model = SentenceTransformer('BAAI/bge-large-en')
+tokenizer = AutoTokenizer.from_pretrained('BAAI/bge-large-en')
+max_tokens = model.max_seq_length  # Ensure we respect model constraints
+print(max_tokens)
 
-def generate_and_save_embeddings():
-    """
-    Generate embeddings for document content stored in chunks and save them to a new column.
-    - Connects to the SQLite database.
-    - Adds an 'embedding' column if it doesn't exist.
-    - Reads the content (assumed to be split into chunks) for each document.
-    - Generates an embedding for each chunk.
-    - Averages the chunk embeddings to produce a single document embedding.
-    - Saves the document embedding to the 'embedding' column.
-    """
-    # Create the 'embedding' column if it does not exist
-    try:
-        cursor.execute("ALTER TABLE documents ADD COLUMN embedding BLOB")
-    except sqlite3.OperationalError:
-        # Likely the column already exists
-        pass
+# Add a column for chunk-wise embeddings if it doesn't exist
+try:
+    cursor.execute("ALTER TABLE documents ADD COLUMN chunk_embeddings BLOB")
+except sqlite3.OperationalError:
+    pass
 
+def generate_and_save_chunk_embeddings():
+    """
+    Generate embeddings for each chunk of document content and store them in a new column.
+    """
     # Retrieve document IDs and their content
     cursor.execute("SELECT id, content FROM documents")
     rows = cursor.fetchall()
 
     for doc_id, content in rows:
         # Convert the stored content into a list of chunks.
-        # If the content isn't in list format, treat it as a single chunk.
         try:
             chunks = ast.literal_eval(content)
             if not isinstance(chunks, list):
@@ -42,40 +38,30 @@ def generate_and_save_embeddings():
 
         # Generate embeddings for each chunk.
         chunk_embeddings = model.encode(chunks, show_progress_bar=False)
+        chunk_embeddings_list = [embedding.tolist() for embedding in chunk_embeddings]
 
-        # If there are multiple chunks, average the embeddings.
-        if len(chunk_embeddings) > 1:
-            avg_embedding = np.mean(chunk_embeddings, axis=0)
-            embedding_to_save = avg_embedding.tolist()
-        else:
-            # If there's only one chunk, use its embedding directly.
-            embedding_to_save = (
-                chunk_embeddings[0].tolist()
-                if hasattr(chunk_embeddings[0], 'tolist')
-                else list(chunk_embeddings[0])
-            )
+        # Convert the list of chunk embeddings to a string for storage
+        chunk_embeddings_blob = str(chunk_embeddings_list).encode("utf-8")
+        cursor.execute("UPDATE documents SET chunk_embeddings = ? WHERE id = ?", (chunk_embeddings_blob, doc_id))
 
-        # Convert the embedding to a string and then to a UTF-8 encoded BLOB for storage.
-        embedding_blob = str(embedding_to_save).encode("utf-8")
-        cursor.execute("UPDATE documents SET embedding = ? WHERE id = ?", (embedding_blob, doc_id))
+    conn.commit()
 
 def view_database():
     """
     Queries and displays all records from the SQLite database.
     """
-    # Query all documents
-    cursor.execute("SELECT * FROM documents")
+    cursor.execute("SELECT * FROM documents LIMIT 10")
     rows = cursor.fetchall()
-    # Print the results
     print("\nViewing Database Contents:")
     for row in rows:
         print("\n".join(map(str, row)))
         print()  # Adds an extra newline between rows
 
 # Run the embedding generation and update the database.
-generate_and_save_embeddings()
-# Now view the database using the imported view_database function.
+generate_and_save_chunk_embeddings()
+# Now view the updated database
 view_database()
+
 # Commit all changes and close the connection.
 conn.commit()
 conn.close()

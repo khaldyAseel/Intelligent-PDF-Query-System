@@ -39,8 +39,7 @@ CREATE TABLE IF NOT EXISTS documents (
     id TEXT PRIMARY KEY,  -- Unique ID for each document (title from JSON)
     content TEXT,        -- Cleaned text content
     parent TEXT,         -- Parent metadata
-    page INTEGER,        -- Page metadata
-    type TEXT            -- Type metadata
+    page INTEGER        -- Page metadata
 )
 """)
 conn.commit()
@@ -109,9 +108,9 @@ def save_to_sqlite(unique_id, cleaned_content, metadata):
     """
     # Insert the text and metadata into the database
     cursor.execute("""
-        INSERT OR REPLACE INTO documents (id, content, parent, page, type)
-        VALUES (?, ?, ?, ?, ?)
-    """, (unique_id, cleaned_content, metadata.get("parent"), metadata.get("page"), metadata.get("type")))
+        INSERT OR REPLACE INTO documents (id, content, parent, page)
+        VALUES (?, ?, ?, ?)
+    """, (unique_id, cleaned_content, metadata.get("parent"), metadata.get("page")))
     conn.commit()
 
 # Process all JSON files in the data folder
@@ -161,7 +160,6 @@ def view_database():
         print(f"Content: {row[1]}")
         print(f"Parent: {row[2]}")
         print(f"Page: {row[3]}")
-        print(f"Type: {row[4]}")
         print("-" * 50)
 process_json_files()
 # View the database contents

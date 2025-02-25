@@ -6,12 +6,12 @@ import nltk
 nltk.download('punkt')
 
 # Connect using the absolute path
-db_path = "../../database/text_database.db"
+db_path = "../../backend/database/text_database.db"
 conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
 
 # Fetch subchapter content from the documents table
-cursor.execute("SELECT id, content, parent, page FROM documents WHERE type = 'subchapter'")
+cursor.execute("SELECT id, content, parent, page FROM documents")
 subchapters = cursor.fetchall()  # List of (id, content, parent, page)
 
 # Initialize LangChain's RecursiveTextSplitter
@@ -52,7 +52,7 @@ conn.commit()
 
 
 # Fetch and display stored chunks
-cursor.execute("SELECT * FROM chunks LIMIT 10")
+cursor.execute("SELECT * FROM chunks")
 rows = cursor.fetchall()
 
 # Print sample data
