@@ -18,29 +18,23 @@ nltk.download("punkt")
 model = SentenceTransformer('BAAI/bge-large-en')
 
 
-def get_docs_from_db(db_path="../../text_database.db"):
+def get_docs_from_db(db_path="../../backend/database/text_database.db"):
 	"""
 	Retrieve documents from the database.
 	Each document should have columns: id, content, metadata, and embedding.
 	"""
 	conn = sqlite3.connect(db_path)
 	cursor = conn.cursor()
-	cursor.execute("SELECT id, content, page, embedding FROM documents")
+	cursor.execute("SELECT id, content, parent, page, embedding FROM documents")
 	rows = cursor.fetchall()
 	conn.close()
 
 	docs = []
 	for row in rows:
-		doc_id, content, metadata_blob, embedding_blob = row
+		doc_id, content, parent, page_value, embedding_blob = row
 
-		# Convert metadata (if stored as a string or BLOB) into a Python object.
-		try:
-			if isinstance(metadata_blob, bytes):
-				metadata = ast.literal_eval(metadata_blob.decode("utf-8"))
-			else:
-				metadata = ast.literal_eval(metadata_blob)
-		except Exception:
-			metadata = metadata_blob
+		# Create metadata as a dictionary with both parent and page
+		metadata = {"parent": parent, "page": page_value}
 
 		# Convert the embedding from BLOB to a Python list.
 		try:
@@ -51,8 +45,7 @@ def get_docs_from_db(db_path="../../text_database.db"):
 		docs.append({
 			"id": doc_id,
 			"content": content,
-			"page": metadata,
-			"parent":metadata,
+			"metadata": metadata,
 			"embedding": embedding
 		})
 	return docs
