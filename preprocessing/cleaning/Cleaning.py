@@ -15,6 +15,8 @@ nltk.download('wordnet')
 
 # Define the folder path containing your JSON files
 data_folder = "../../data_extraction/scripts/parsed_text_output"
+if not os.path.exists(data_folder):
+    print("Error: Folder does not exist!")
 
 # Abbreviation dictionary
 abbreviation_dict = {
