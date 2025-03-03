@@ -1,54 +1,22 @@
-# from megaparse.megaparse import MegaParse
-# from megaparse.parser.llama import LlamaParser
-# import os
-#
-# lLAMA_CLOUD_API = "llx-NuJxG1FwEceSYPdTWmRGoKrBHBoxxzjnmRQaTeGdQUt4HKq8"
-# # Initialize parser and MegaParse
-# parser = LlamaParser(api_key=lLAMA_CLOUD_API)
-# megaparse = MegaParse(parser)
+# bring in deps
+from llama_cloud_services import LlamaParse
+from llama_index.core import SimpleDirectoryReader
+import  os
+from dotenv import load_dotenv
+load_dotenv(dotenv_path="../../backend/api/.env")
 
-
-import os
-import fitz  # PyMuPDF
-from megaparse import MegaParse
-
-
-def split_pdf(input_pdf, output_dir, chunk_size=10):
-	doc = fitz.open(input_pdf)
-
-	for i in range(0, len(doc), chunk_size):
-		chunk = fitz.open()
-		chunk.insert_pdf(doc, from_page=i, to_page=min(i + chunk_size - 1, len(doc) - 1))
-		chunk_filename = f"{output_dir}/chunk_{i // chunk_size + 1}.pdf"
-		chunk.save(chunk_filename)
-		chunk.close()
-
-	print(f"PDF split into chunks and saved in: {output_dir}")
-
-
-if __name__ == "__main__":
-	input_pdf = "book.pdf"
-	output_dir = ".\chunks"
-	os.makedirs(output_dir, exist_ok=True)
-
-	# Step 1: Split the PDF
-	split_pdf(input_pdf, output_dir)
-
-	# Step 2: Load each chunk into MegaParse
-	megaparse = MegaParse()
-	all_responses = []  # Store all extracted text
-
-	with open("./Data.md", "w") as file:
-		for chunk_file in sorted(os.listdir(output_dir)):
-			chunk_path = os.path.join(output_dir, chunk_file)
-			print(f"Processing: {chunk_path}")  # Debugging print
-
-			try:
-				response = megaparse.load(chunk_path)
-				if response:
-					file.write(response + "\n\n")  # Write immediately
-					print(f"Written response for {chunk_file}")
-				else:
-					print(f"Warning: Empty response for {chunk_file}")
-			except Exception as e:
-				print(f"Error processing {chunk_file}: {e}")
+api_key = os.getenv("lLAMA_CLOUD_API")
+# set up parser
+parser = LlamaParse(
+    api_key= api_key,
+    result_type="markdown"  # "markdown" and "text" are available
+)
+# use SimpleDirectoryReader to parse our file
+file_extractor = {".pdf": parser}
+documents = SimpleDirectoryReader(input_files=['book.pdf'], file_extractor=file_extractor).load_data()
+# Extract text from documents
+extracted_content = "\n".join([doc.text for doc in documents])
+# Save extracted content to a Markdown file
+with open("book.md", "w", encoding="utf-8") as file:
+    file.write(extracted_content)
+print("PDF parsed and saved as 'book.md'.")

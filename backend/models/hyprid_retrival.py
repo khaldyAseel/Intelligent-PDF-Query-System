@@ -4,15 +4,15 @@ import numpy as np
 from dotenv import load_dotenv
 import os
 import nltk
-from nltk.tokenize import word_tokenize
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
-from rank_bm25 import BM25Okapi
+from llama_index.retrievers.bm25 import BM25Retriever
 from together import Together
 # For splitting text into nodes (chunks)
 from llama_index.core.schema import Document
 from llama_index.core.node_parser import SentenceSplitter
 from transformers import pipeline
+import Stemmer
 nltk.download("punkt")
 
 # Load your SentenceTransformer model (adjust model as needed)
@@ -71,7 +71,7 @@ def get_nodes_from_db():
 		# Create a Document object required by the splitter.
 		document = Document(
 			text=doc["content"],
-			metadata=doc["metadata"]
+			metadata=doc["metadata"],
 		)
 		nodes = splitter.get_nodes_from_documents([document])
 
@@ -79,12 +79,6 @@ def get_nodes_from_db():
 		for node in nodes:
 			node.metadata["doc_id"] = doc["id"]
 		all_nodes.extend(nodes)
-
-	# (Optional) Print out the nodes for inspection.
-	# for node in all_nodes:
-	# 	print("NODE TEXT:", node.text)
-	# 	print("METADATA:", node.metadata, "\n")
-
 	return all_nodes
 
 
@@ -104,21 +98,18 @@ def hybrid_node_retrieval(query, alpha=0.6, top_k=5):
 	# Get nodes from the database (split documents into chunks)
 	nodes = get_nodes_from_db()
 
-	# Extract node texts for retrieval.
-	texts = [node.text for node in nodes]
+	bm25_retriever = BM25Retriever.from_defaults(
+		nodes=nodes,
+		similarity_top_k=top_k,
+		stemmer=Stemmer.Stemmer("english"),
+		language="english",
+	)
 
-	# --- Step 1: Sparse Retrieval (BM25) ---
-	tokenized_texts = [word_tokenize(text.lower()) for text in texts]
-	bm25 = BM25Okapi(tokenized_texts)
-	tokenized_query = word_tokenize(query.lower())
-
-	# Get BM25 scores and retrieve top-k nodes
-	bm25_scores = bm25.get_scores(tokenized_query)
-	top_k_indices = np.argsort(bm25_scores)[::-1][:top_k]  # Get indices of top-k BM25 results
+	bm25_results = bm25_retriever.retrieve(query)
 
 	# Select top-k nodes and corresponding BM25 scores
-	top_k_nodes = [nodes[i] for i in top_k_indices]
-	top_k_bm25_scores = [bm25_scores[i] for i in top_k_indices]
+	top_k_nodes = [res.node for res in bm25_results[:top_k]]
+	top_k_bm25_scores = [res.score for res in bm25_results[:top_k]]
 
 	# --- Step 2: Dense Retrieval (Only for top-k BM25 results) ---
 	query_embedding = model.encode(query)
@@ -169,9 +160,13 @@ def bert_extract_answer(query, retrieved_nodes):
 	return best_answer
 
 if __name__ == "__main__":
-	query = "describe the differences between production of regular chocolate, milk chocolate and white chocolate"
+	query = "What is the optimal roasting time for cocoa?"
 	# Retrieve top nodes using hybrid retrieval
 	top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
+
+	# (Optional) Print out the nodes for inspection.
+	for node in top_nodes:
+		print("NODE TEXT:", node)
 
 	# Extract best answer using BERT
 	bert_answer = bert_extract_answer(query, top_nodes)
