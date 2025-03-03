@@ -171,10 +171,13 @@ embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 paragraph_embeddings = embedding_model.encode(sample_paragraphs)
 dimension = paragraph_embeddings.shape[1]
 
-faiss_index = faiss.IndexFlatL2(dimension)
+# faiss_index = faiss.IndexFlatL2(dimension)
+# faiss_index.add(np.array(paragraph_embeddings))
+
+faiss_index = faiss.IndexHNSWFlat(dimension, 32)  # HNSW with 32 neighbors
 faiss_index.add(np.array(paragraph_embeddings))
 
-def retrieve_with_faiss(query, top_k=2):
+def retrieve_with_faiss(query, top_k=5):
     query_embedding = embedding_model.encode([query])
     distances, indices = faiss_index.search(np.array(query_embedding), top_k)
     return [sample_paragraphs[i] for i in indices[0]]
@@ -194,8 +197,8 @@ def rerank_results(query, results):
     return [x for _, x in sorted(zip(scores, results), reverse=True)]  # Sort by score
 
 ### 6️⃣ Testing the Full Pipeline ###
-# query_text = "What are the different types of cocoa?"
-query_text = "Where is cocoa grown?"
+query_text = "What are the different types of cocoa?"
+# query_text = "Where is cocoa grown?"
 
 retrieved_results = hybrid_retrieval(query_text, top_k=5)
 ranked_results = rerank_results(query_text, retrieved_results)
