@@ -73,8 +73,10 @@ def clean_text(paragraph):
     # Step 2: Convert to lowercase
     paragraph = paragraph.lower()
 
-    # Step 3: Remove punctuation
-    paragraph = paragraph.translate(str.maketrans("", "", string.punctuation))
+    # Step 3: Remove punctuation (except dots)
+    # Create a custom punctuation string excluding dots
+    custom_punctuation = string.punctuation.replace(".", "")
+    paragraph = paragraph.translate(str.maketrans("", "", custom_punctuation))
 
     # Step 4: Strip extra whitespace
     paragraph = " ".join(paragraph.split())
