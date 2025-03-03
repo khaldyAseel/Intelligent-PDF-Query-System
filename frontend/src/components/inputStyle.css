@@ -1,0 +1,59 @@
+.input-container {
+  background-color: #ffffff;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid #e5e5e5;
+  padding: 0 16px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.container-body {
+  border-radius: 8px;
+  width: 100%;
+  max-width: 800px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: #f7f7f7;
+  border: 1px solid #e5e5e5;
+  padding: 0 12px;
+}
+
+.container-body > input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  font-size: 16px;
+  padding: 0 12px;
+  outline: none;
+}
+
+.container-body > input::placeholder {
+  color: #a0a0a0;
+}
+
+.container-body > button {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.container-body > button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.send-icon {
+  width: 20px;
+  height: 20px;
+  color: #4a4a4a;
+}
