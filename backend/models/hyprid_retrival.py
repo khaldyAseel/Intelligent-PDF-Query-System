@@ -111,13 +111,13 @@ def hybrid_node_retrieval(query, alpha=0.6, top_k=5):
 	top_k_nodes = [res.node for res in bm25_results[:top_k]]
 	top_k_bm25_scores = [res.score for res in bm25_results[:top_k]]
 
-	# --- Step 2: Dense Retrieval (Only for top-k BM25 results) ---
+	# --- Step 2: Dense Retrieval ---
 	query_embedding = model.encode(query)
 	dense_scores = []
 
 	for node in top_k_nodes:
-		node_embedding = model.encode(node.text)
-		sim = cosine_similarity([query_embedding], [node_embedding])[0][0]
+		#function to return all embedding for all nodes from same subchappter of the top_k nodes
+		sim = cosine_similarity([query_embedding], [all_nodes])[0][0]
 		dense_scores.append(sim)
 
 	# --- Normalize scores to [0, 1] ---
