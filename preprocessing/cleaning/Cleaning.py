@@ -133,7 +133,8 @@ def view_database():
         print(f"Type: {row[4]}")
         print("-" * 50)
 
-
+# List of sections to exclude
+exclude_sections = ["appendix", "further reading", "references"]
 # Process all JSON files in the data folder
 json_files = [f for f in os.listdir(data_folder) if f.endswith(".json")]
 
@@ -149,7 +150,11 @@ for file_name in json_files:
     metadata = data.get("metadata", {})  # Extract metadata
 
     print(f"Processing {file_name}...\n")
-
+    # Skip processing if the title is in the exclude_sections list
+    # Skip processing if the title starts with any of the excluded section names
+    if any(title.lower().startswith(section) for section in exclude_sections):
+        print(f"Skipping {title} as it starts with an excluded section name.\n")
+        continue
     # Clean the content
     processed_content = clean_text(content)
 
