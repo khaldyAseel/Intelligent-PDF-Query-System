@@ -25,159 +25,202 @@ load_dotenv(dotenv_path="../api/.env")
 api_key = os.getenv("TOGETHER_API_KEY")
 client = Together(api_key=api_key)
 
+
 def get_docs_from_db(db_path="../../backend/database/text_database.db"):
-	"""
-	Retrieve documents from the database.
-	Each document should have columns: id, content, metadata, and embedding.
-	"""
-	conn = sqlite3.connect(db_path)
-	cursor = conn.cursor()
-	cursor.execute("SELECT id, content, parent, page, chunk_embeddings FROM documents")
-	rows = cursor.fetchall()
-	conn.close()
+    """
+    Retrieve chunks from the database.
+    Each chunk should have columns: chunk_id, chunk_content, metadata, and chunk_embedding.
+    """
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
 
-	docs = []
-	for row in rows:
-		doc_id, content, parent, page_value, embedding_blob = row
+    # Fetch all chunks with embeddings
+    cursor.execute("SELECT chunk_id, chunk_content, subchapter_title, parent, page, chunk_embeddings FROM chunks")
+    rows = cursor.fetchall()
+    conn.close()
 
-		# Create metadata as a dictionary with both parent and page
-		metadata = {"parent": parent, "page": page_value}
+    docs = []
+    for row in rows:
+        chunk_id, content, subchapter, parent, page_value, embedding_blob = row
 
-		# Convert the embedding from BLOB to a Python list.
-		try:
-			embedding = ast.literal_eval(embedding_blob.decode("utf-8"))
-		except Exception:
-			embedding = embedding_blob
+        # Create metadata as a dictionary with subchapter, parent, and page
+        metadata = {"subchapter": subchapter, "parent": parent, "page": page_value}
 
-		docs.append({
-			"id": doc_id,
-			"content": content,
-			"metadata": metadata,
-			"embedding": embedding
-		})
-	return docs
+        # Convert the embedding from BLOB to a numpy array
+        if embedding_blob:
+            embedding = np.frombuffer(embedding_blob, dtype=np.float32).tolist()
+        else:
+            embedding = None  # Handle missing embeddings
 
+        docs.append({
+            "id": chunk_id,
+            "content": content,
+            "metadata": metadata,
+            "embedding": embedding
+        })
+
+    return docs
 
 def get_nodes_from_db():
-	"""
-	For each document from the database, use SentenceSplitter to split the text
-	into smaller nodes (chunks). This allows you to perform more granular retrieval.
-	"""
-	docs = get_docs_from_db()
-	splitter = SentenceSplitter(chunk_size=500, chunk_overlap=50)
-	all_nodes = []
+    """
+    For each document from the database, use SentenceSplitter to split the text
+    into smaller nodes (chunks). This allows you to perform more granular retrieval.
+    """
+    docs = get_docs_from_db()
+    splitter = SentenceSplitter(chunk_size=500, chunk_overlap=50)
+    all_nodes = []
 
-	for doc in docs:
-		# Create a Document object required by the splitter.
-		document = Document(
-			text=doc["content"],
-			metadata=doc["metadata"],
-		)
-		nodes = splitter.get_nodes_from_documents([document])
+    for doc in docs:
+        # Create a Document object required by the splitter.
+        document = Document(
+            text=doc["content"],
+            metadata=doc["metadata"],
+        )
+        nodes = splitter.get_nodes_from_documents([document])
 
-		# Optionally, include the original document ID in the node's metadata.
-		for node in nodes:
-			node.metadata["doc_id"] = doc["id"]
-		all_nodes.extend(nodes)
-	return all_nodes
+        # Optionally, include the original document ID in the node's metadata.
+        for node in nodes:
+            node.metadata["doc_id"] = doc["id"]
+        all_nodes.extend(nodes)
+    return all_nodes
+
+def embeddings_from_docs(db_path="../../backend/database/text_database.db", bm25_nodes=None):
+    """
+    Fetch embeddings from the database for given BM25 nodes.
+
+    :param db_path: Path to the SQLite database.
+    :param bm25_nodes: List of BM25 retrieved nodes.
+    :return: List of embeddings for the nodes.
+    """
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    embeddings_lst = []
+    if bm25_nodes:  # If BM25 nodes are provided
+        subchapters = list(set(node.metadata["subchapter"] for node in bm25_nodes))  # Unique subchapter titles
+        print(f"Retrieving embeddings for subchapters: {subchapters}")
+
+        query = f"SELECT chunk_embeddings FROM chunks WHERE subchapter_title IN ({','.join(['?'] * len(subchapters))})"
+        cursor.execute(query, subchapters)
+    else:
+        cursor.execute("SELECT chunk_embeddings FROM chunks")
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    # Extract embeddings from the returned tuples and deserialize
+    for row in rows:
+        embedding_bytes = row[0]  # Retrieve the binary string from the database
+        if embedding_bytes is not None:  # Check if the embedding is not None
+            embedding_array = np.frombuffer(embedding_bytes, dtype=np.float32)  # Convert bytes back to numpy array
+            embeddings_lst.append(embedding_array)
+        else:
+            print("Embedding not found for one of the nodes")
+
+    embeddings_2d_array = np.array(embeddings_lst)
+    return embeddings_2d_array
 
 
 def hybrid_node_retrieval(query, alpha=0.6, top_k=5):
-	"""
-	Perform hybrid retrieval over nodes (chunks) using both BM25 (sparse) and
-	dense embedding similarity, but compute dense similarity only for the top-k BM25 results.
+    """
+    Perform hybrid retrieval over nodes (chunks) using both BM25 (sparse) and
+    dense embedding similarity, but compute dense similarity only for the top-k BM25 results.
 
-	Parameters:
-	  query   : The search query.
-	  alpha   : Weight for the dense score (0 <= alpha <= 1). (1 - alpha) is for BM25.
-	  top_k   : Number of top nodes to return.
+    Parameters:
+      query   : The search query.
+      alpha   : Weight for the dense score (0 <= alpha <= 1). (1 - alpha) is for BM25.
+      top_k   : Number of top nodes to return.
 
-	Returns:
-	  A list of tuples: (node, hybrid_score)
-	"""
-	# Get nodes from the database (split documents into chunks)
-	nodes = get_nodes_from_db()
+    Returns:
+      A list of tuples: (node, hybrid_score)
+    """
+    # Get nodes from the database (split documents into chunks)
+    nodes = get_nodes_from_db()
 
-	bm25_retriever = BM25Retriever.from_defaults(
-		nodes=nodes,
-		similarity_top_k=top_k,
-		stemmer=Stemmer.Stemmer("english"),
-		language="english",
-	)
+    bm25_retriever = BM25Retriever.from_defaults(
+        nodes=nodes,
+        similarity_top_k=top_k,
+        stemmer=Stemmer.Stemmer("english"),
+        language="english",
+    )
 
-	bm25_results = bm25_retriever.retrieve(query)
+    bm25_results = bm25_retriever.retrieve(query)
 
-	# Select top-k nodes and corresponding BM25 scores
-	top_k_nodes = [res.node for res in bm25_results[:top_k]]
-	top_k_bm25_scores = [res.score for res in bm25_results[:top_k]]
+    # Select top-k nodes and corresponding BM25 scores
+    top_k_nodes = [res.node for res in bm25_results[:top_k]]
+    top_k_bm25_scores = [res.score for res in bm25_results[:top_k]]
 
-	# --- Step 2: Dense Retrieval ---
-	query_embedding = model.encode(query)
-	dense_scores = []
+    # --- Step 2: Dense Retrieval ---
+    query_embedding = model.encode(query)
+    dense_scores = []
+    embeddings = embeddings_from_docs(bm25_nodes=top_k_nodes)
+    # Compute cosine similarity between query and each embedding
+    for embedding in embeddings:
+        sim = cosine_similarity([query_embedding], [embedding])[0][0]
+        dense_scores.append(sim)
+    if len(dense_scores)>5:
+        # Convert scores to a NumPy array for easy sorting
+        dense_scores = np.array(dense_scores)
+        # Get the indices of the top 5 scores
+        top_indices = np.argsort(dense_scores)[-5:]  # Sort and take the highest 5
+        top_dense_scores = dense_scores[top_indices]
 
-	for node in top_k_nodes:
-		#function to return all embedding for all nodes from same subchappter of the top_k nodes
-		sim = cosine_similarity([query_embedding], [all_nodes])[0][0]
-		dense_scores.append(sim)
+    # --- Normalize scores to [0, 1] ---
+    def normalize(scores):
+        scores = np.array(scores)
+        min_score = scores.min()
+        max_score = scores.max()
+        if max_score - min_score == 0:
+            return np.ones_like(scores)
+        return (scores - min_score) / (max_score - min_score)
 
-	# --- Normalize scores to [0, 1] ---
-	def normalize(scores):
-		scores = np.array(scores)
-		min_score = scores.min()
-		max_score = scores.max()
-		if max_score - min_score == 0:
-			return np.ones_like(scores)
-		return (scores - min_score) / (max_score - min_score)
+    bm25_norm = normalize(top_k_bm25_scores)
+    dense_norm = normalize(top_dense_scores)
+    # --- Step 3: Combine Scores ---
+    hybrid_scores = alpha * dense_norm + (1 - alpha) * bm25_norm
 
-	bm25_norm = normalize(top_k_bm25_scores)
-	dense_norm = normalize(dense_scores)
+    # --- Step 4: Sort and Return Top-K Results ---
+    node_scores = list(zip(top_k_nodes, hybrid_scores))
+    node_scores.sort(key=lambda x: x[1], reverse=True)
 
-	# --- Step 3: Combine Scores ---
-	hybrid_scores = alpha * dense_norm + (1 - alpha) * bm25_norm
-
-	# --- Step 4: Sort and Return Top-K Results ---
-	node_scores = list(zip(top_k_nodes, hybrid_scores))
-	node_scores.sort(key=lambda x: x[1], reverse=True)
-
-	return node_scores  # Return top-k results after hybrid scoring
+    return node_scores  # Return top-k results after hybrid scoring
 
 def bert_extract_answer(query, retrieved_nodes):
-	"""
-	Uses BERT-QA to extract a direct answer from the top retrieved nodes.
-	"""
-	best_answer = ""
-	best_score = -float("inf")
+    """
+    Uses BERT-QA to extract a direct answer from the top retrieved nodes.
+    """
+    best_answer = ""
+    best_score = -float("inf")
 
-	for node, _ in retrieved_nodes:  # Iterate through the top nodes
-		context = node.text
-		result = qa_pipeline(question=query, context=context)
+    for node, _ in retrieved_nodes:  # Iterate through the top nodes
+        context = node.text
+        result = qa_pipeline(question=query, context=context)
 
-		# Compare confidence scores and keep the best answer
-		if result["score"] > best_score:
-			best_score = result["score"]
-			best_answer = result["answer"]
+        # Compare confidence scores and keep the best answer
+        if result["score"] > best_score:
+            best_score = result["score"]
+            best_answer = result["answer"]
 
-	return best_answer
+    return best_answer
 
 if __name__ == "__main__":
-	query = "What is the optimal roasting time for cocoa?"
-	# Retrieve top nodes using hybrid retrieval
-	top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
+    query = "What is the optimal roasting time for cocoa?"
+    # Retrieve top nodes using hybrid retrieval
+    top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
 
-	# (Optional) Print out the nodes for inspection.
-	for node in top_nodes:
-		print("NODE TEXT:", node)
+    # # (Optional) Print out the nodes for inspection.
+    # for node in top_nodes:
+    #     print("NODE TEXT:", node)
 
-	# Extract best answer using BERT
-	bert_answer = bert_extract_answer(query, top_nodes)
-
-	# Combine BERT answer + retrieved context for LLaMA
-	all_context = "\n".join([node.text for node, _ in top_nodes])
-	response = client.chat.completions.create(
-		model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
-		messages=[
-			{"role": "system", "content": "You are a helpful chatbot."},
-			{"role": "user", "content": f"Answer the question: {query}. Here is an extracted answer: {bert_answer}. You can also use additional context: {all_context}"},
-		],
-	)
-	print(response.choices[0].message.content)
+    # # Extract best answer using BERT
+    # bert_answer = bert_extract_answer(query, top_nodes)
+	#
+    # Combine BERT answer + retrieved context for LLaMA
+    all_context = "\n".join([node.text for node, _ in top_nodes])
+    response = client.chat.completions.create(
+        model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
+        messages=[
+            {"role": "system", "content": "You are a helpful chatbot."},
+            {"role": "user", "content": f"Answer the question: {query}. You can also use additional context: {all_context}"},
+        ],
+    )
+    print(response.choices[0].message.content)
