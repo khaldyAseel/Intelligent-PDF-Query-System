@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware  # Import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
-from hyprid_retrival import hybrid_node_retrieval, bert_extract_answer, client
+from hyprid_retrival import hybrid_node_retrieval, client
 
 app = FastAPI()
 
@@ -33,9 +33,6 @@ async def search(request: QueryRequest):
         # Perform hybrid retrieval to get top nodes
         top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
 
-        # Extract best answer using BERT
-        bert_answer = bert_extract_answer(query, top_nodes)
-
         # Prepare additional context for LLaMA
         all_context = "\n".join([node.text for node, _ in top_nodes])
 
@@ -45,7 +42,7 @@ async def search(request: QueryRequest):
             messages=[
                 {"role": "system", "content": "You are a helpful chatbot."},
                 {"role": "user",
-                 "content": f"Answer the question: {query}. Here is an extracted answer: {bert_answer}. You can also use additional context: {all_context}"},
+                 "content": f"Answer the question: {query}. You can also use additional context: {all_context}"},
             ],
         )
 

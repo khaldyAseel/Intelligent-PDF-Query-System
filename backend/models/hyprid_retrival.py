@@ -203,7 +203,7 @@ def bert_extract_answer(query, retrieved_nodes):
     return best_answer
 
 if __name__ == "__main__":
-    query = "What is the optimal roasting time for cocoa?"
+    query = "describe the differences between production of regular chocolate, milk chocolate and white chocolate"
     # Retrieve top nodes using hybrid retrieval
     top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
 
@@ -211,16 +211,23 @@ if __name__ == "__main__":
     # for node in top_nodes:
     #     print("NODE TEXT:", node)
 
-    # # Extract best answer using BERT
-    # bert_answer = bert_extract_answer(query, top_nodes)
-	#
-    # Combine BERT answer + retrieved context for LLaMA
+    # Combine retrieved context for LLaMA
     all_context = "\n".join([node.text for node, _ in top_nodes])
     response = client.chat.completions.create(
         model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
         messages=[
-            {"role": "system", "content": "You are a helpful chatbot."},
+            {"role": "system", "content": "Summarize in 3-4 sentences."},
             {"role": "user", "content": f"Answer the question: {query}. You can also use additional context: {all_context}"},
         ],
     )
-    print(response.choices[0].message.content)
+    response_text = response.choices[0].message.content
+
+    # Ask LLaMA to summarize in 3-4 sentences
+    summary_response = client.chat.completions.create(
+        model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
+        messages=[
+            {"role": "system", "content": "Summarize in 3-5 sentences."},
+            {"role": "user", "content": response_text},
+        ],
+    )
+    print(summary_response.choices[0].message.content)
