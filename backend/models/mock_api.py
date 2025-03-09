@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware  # Import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 from hyprid_retrival import hybrid_node_retrieval, client
+from routing_agent import route_query_with_book_context
 
 app = FastAPI()
 
@@ -33,21 +34,13 @@ async def search(request: QueryRequest):
         # Perform hybrid retrieval to get top nodes
         top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
 
-        # Prepare additional context for LLaMA
-        all_context = "\n".join([node.text for node, _ in top_nodes])
+        # Extract node scores (assuming hybrid retrieval returns (node, score))
+        node_scores = [(node, score) for node, score in top_nodes]
 
-        # Get a response from LLaMA
-        response = client.chat.completions.create(
-            model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
-            messages=[
-                {"role": "system", "content": "You are a helpful chatbot."},
-                {"role": "user",
-                 "content": f"Answer the question: {query}. You can also use additional context: {all_context}"},
-            ],
-        )
+        # Route the query
+        response = route_query_with_book_context(client, query, node_scores, threshold=0.6)
 
-        full_answer = response.choices[0].message.content
-        return SearchResult(results=[full_answer])
+        return SearchResult(results=[response])
 
     except Exception as e:
         print(f"Error: {e}")

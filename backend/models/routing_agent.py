@@ -127,16 +127,16 @@ def route_query_with_book_context(client, query, node_scores, threshold=0.6, sof
             return response.choices[0].message.content
 
 
-# Example usage
-query = "how are u today?"
-
-top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
-
-# Extract node scores (assuming hybrid retrieval returns (node, score))
-node_scores = [(node, score) for node, score in top_nodes]
-
-# Route the query
-response = route_query_with_book_context(client, query, node_scores, threshold=0.6)
-
-print(response)
+# # Example usage
+# query = "how are u today?"
+#
+# top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
+#
+# # Extract node scores (assuming hybrid retrieval returns (node, score))
+# node_scores = [(node, score) for node, score in top_nodes]
+#
+# # Route the query
+# response = route_query_with_book_context(client, query, node_scores, threshold=0.6)
+#
+# print(response)
 
