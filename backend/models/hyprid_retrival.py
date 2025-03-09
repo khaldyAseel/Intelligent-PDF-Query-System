@@ -1,5 +1,4 @@
 import sqlite3
-import ast
 import numpy as np
 from dotenv import load_dotenv
 import os
@@ -201,33 +200,3 @@ def bert_extract_answer(query, retrieved_nodes):
             best_answer = result["answer"]
 
     return best_answer
-
-if __name__ == "__main__":
-    query = "describe the differences between production of regular chocolate, milk chocolate and white chocolate"
-    # Retrieve top nodes using hybrid retrieval
-    top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
-
-    # # (Optional) Print out the nodes for inspection.
-    # for node in top_nodes:
-    #     print("NODE TEXT:", node)
-
-    # Combine retrieved context for LLaMA
-    all_context = "\n".join([node.text for node, _ in top_nodes])
-    response = client.chat.completions.create(
-        model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
-        messages=[
-            {"role": "system", "content": "Summarize in 3-4 sentences."},
-            {"role": "user", "content": f"Answer the question: {query}. You can also use additional context: {all_context}"},
-        ],
-    )
-    response_text = response.choices[0].message.content
-
-    # Ask LLaMA to summarize in 3-4 sentences
-    summary_response = client.chat.completions.create(
-        model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
-        messages=[
-            {"role": "system", "content": "Summarize in 3-5 sentences."},
-            {"role": "user", "content": response_text},
-        ],
-    )
-    print(summary_response.choices[0].message.content)
