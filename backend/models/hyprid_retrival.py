@@ -162,6 +162,12 @@ def hybrid_node_retrieval(query, alpha=0.6, top_k=5):
         # Get the indices of the top 5 scores
         top_indices = np.argsort(dense_scores)[-5:]  # Sort and take the highest 5
         top_dense_scores = dense_scores[top_indices]
+        top_bm25_scores = top_k_bm25_scores
+    elif len(dense_scores)<len(top_k_bm25_scores):
+        top_dense_scores = dense_scores
+        top_k_bm25_scores = np.array(top_k_bm25_scores)
+        top_indices_bm25 = np.argsort(top_k_bm25_scores)[-len(dense_scores):]
+        top_bm25_scores = top_k_bm25_scores[top_indices_bm25]
 
     # --- Normalize scores to [0, 1] ---
     def normalize(scores):
@@ -172,8 +178,9 @@ def hybrid_node_retrieval(query, alpha=0.6, top_k=5):
             return np.ones_like(scores)
         return (scores - min_score) / (max_score - min_score)
 
-    bm25_norm = normalize(top_k_bm25_scores)
+    bm25_norm = normalize(top_bm25_scores)
     dense_norm = normalize(top_dense_scores)
+
     # --- Step 3: Combine Scores ---
     hybrid_scores = alpha * dense_norm + (1 - alpha) * bm25_norm
 
@@ -183,20 +190,20 @@ def hybrid_node_retrieval(query, alpha=0.6, top_k=5):
 
     return node_scores  # Return top-k results after hybrid scoring
 
-def bert_extract_answer(query, retrieved_nodes):
-    """
-    Uses BERT-QA to extract a direct answer from the top retrieved nodes.
-    """
-    best_answer = ""
-    best_score = -float("inf")
-
-    for node, _ in retrieved_nodes:  # Iterate through the top nodes
-        context = node.text
-        result = qa_pipeline(question=query, context=context)
-
-        # Compare confidence scores and keep the best answer
-        if result["score"] > best_score:
-            best_score = result["score"]
-            best_answer = result["answer"]
-
-    return best_answer
+# def bert_extract_answer(query, retrieved_nodes):
+#     """
+#     Uses BERT-QA to extract a direct answer from the top retrieved nodes.
+#     """
+#     best_answer = ""
+#     best_score = -float("inf")
+#
+#     for node, _ in retrieved_nodes:  # Iterate through the top nodes
+#         context = node.text
+#         result = qa_pipeline(question=query, context=context)
+#
+#         # Compare confidence scores and keep the best answer
+#         if result["score"] > best_score:
+#             best_score = result["score"]
+#             best_answer = result["answer"]
+#
+#     return best_answer
