@@ -39,14 +39,14 @@ def is_generic_question(query):
 
 def route_query_with_book_context(client, query, node_scores, threshold=0.7, soft_margin=0.05):
     """
-    Routes the query to LLaMA with or without book context.
+    Routes the query to LLaMA with or without book context, returning metadata if relevant.
 
     :param client: The LLaMA API client.
     :param query: The user query.
     :param node_scores: List of tuples (node, similarity_score).
     :param threshold: Minimum similarity score for using book context.
     :param soft_margin: A margin to include near-threshold cases.
-    :return: The response from LLaMA.
+    :return: The response from LLaMA (with metadata if book-related).
     """
     # Step 1: If the query is generic, use outside information immediately
     if is_generic_question(query):
@@ -78,9 +78,17 @@ def route_query_with_book_context(client, query, node_scores, threshold=0.7, sof
             is_llama_says_related = True
 
     if is_llama_says_related:
-        print("✅ Using book context with summarization.")
-        relevant_chunks = [node.text for node, score in node_scores if score >= (threshold - soft_margin)]
-        context = " ".join(relevant_chunks)
+        print("✅ Using book context with metadata.")
+
+        # Extract relevant text and metadata from nodes
+        relevant_nodes = [(node.text, node.metadata) for node, score in node_scores if
+                          score >= (threshold - soft_margin)]
+        context = " ".join([text for text, _ in relevant_nodes])
+
+        # Collect metadata for the response
+        metadata_info = "\n".join(
+            [f"📖 Subchapter: {meta.get('subchapter', 'N/A')}, Page: {meta.get('page', 'N/A')}" for _, meta in
+             relevant_nodes])
 
         response = client.chat.completions.create(
             model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
@@ -100,7 +108,10 @@ def route_query_with_book_context(client, query, node_scores, threshold=0.7, sof
                 {"role": "user", "content": response_text},
             ],
         )
-        return summary_response.choices[0].message.content
+        summarized_answer = summary_response.choices[0].message.content
+
+        return f"{summarized_answer}\n\n📚 **Metadata:**\n{metadata_info}"
+
     else:
         print("❌ Using outside information (No book context detected).")
         response = client.chat.completions.create(
@@ -114,7 +125,7 @@ def route_query_with_book_context(client, query, node_scores, threshold=0.7, sof
 
 
 # Example usage
-query = "what is the weather today?"
+query = "Describe the processing steps from cocoa beans to cocoa butter"
 
 top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
 
@@ -122,7 +133,7 @@ top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
 node_scores = [(node, score) for node, score in top_nodes]
 
 # Route the query
-response = route_query_with_book_context(client, query, node_scores, threshold=0.6)
+response = route_query_with_book_context(client, query, node_scores, threshold=0.4)
 
 print(response)
 
