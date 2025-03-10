@@ -1,0 +1,1060 @@
+CHAPTER 2
+Cocoa beans: from tree to factory
+
+2.1 Introduction
+The earliest evidence of consumption of cocoa is from 1900 to 1750 BC by
+the Mokaya people, a pre‐Olmec culture from what is nowadays the southern
+part of Mexico and Guatemala (Powis, 2007). Later, cocoa was first cultivated
+and domesticated by the Mayan and Aztec peoples. It was consumed in vari-
+ous forms: as fresh beans for its sweet pulp or as a cocoa drink after roasting.
+Beans were also used as a currency until the Spanish conquest (Wood and
+Lass, 1985). The Spaniards introduced cocoa to Europe where it was first con-
+sumed by royals, before becoming a popular beverage by the mid‐seventeenth
+century.
+Cocoa is the essential ingredient of chocolate, responsible for its unique
+flavour and melt in the mouth properties. A manufacturer needs a reliable
+and sustainable supply of good quality cocoa at reasonable prices. This chapter
+examines how the growing of cocoa and the fermentation, drying, storage
+and transport can influence cocoa quality prior to arrival at the factory. Also
+discussed are the operations of the cocoa markets, quality assessment, sustain-
+ability and environmental issues. Finally, the chapter explores the use of dif-
+ferent types or origins of cocoa for chocolate.
+Cocoa has a long supply chain extending from smallholders, often in
+remote, less well‐developed tropical regions of the world, to factories and
+consumers mainly in developed industrial countries. Like any crop, it is
+susceptible to changes in the weather, to pests and diseases and to social and
+economic factors. The supply of cocoa has continued to grow throughout the
+past 30 years despite low prices on the world markets since 1990. At the
+same time, demand for cocoa has kept pace with supply and is growing
+steadily. About two‐thirds of the cocoa crop ends up in chocolate products,
+with the remainder going mainly into beverage, ice cream and bakery
+products.
+
+2.2 Growing cocoa
+2.2.1 Where cocoa is grown
+Cocoa is grown commercially between 20° north and 20° south of the equator,
+in areas with a suitable environment for cocoa (e.g. rainfall, soil type). There are
+three main growing areas: West Africa, South East Asia and South America (see
+Figure 2.1). The seven largest cocoa producing countries are Côte d”Ivoire (Ivory
+Coast), Ghana, Indonesia, Nigeria, Cameroon, Brazil and Ecuador, and between
+them they account for 90% of the world crop (see Figure 2.2). Côte d”Ivoire
+alone produces over one‐third of the world crop. The fortunes of the various
+countries have changed significantly in recent decades. A main feature of the
+current pattern of production is the huge concentration (nearly two‐thirds)
+within West Africa. This concentration means that future supply is vulnerable to
+a number of factors, such as the spread of pests and diseases, weather or climatic
+variations, political or social change. In many areas, cocoa faces competition
+from other crops such as palm oil, coffee, rubber, citrus and cloves. About 90%
+of the world’s cocoa is grown by smallholders (Smith, 1994), usually on farms
+with mixed cropping systems.
+2.2.2 Varieties of cocoa: Criollo, Forastero, Trinitario
+and Nacional
+The cocoa or cacao tree (Theobroma cacao, L.) originates from South and Central
+America. It is a small tree up to 15m height (50ft; Mossu, 1992) that grows
+naturally in the lower storey of the evergreen rain forest in the Amazon basin.
+The leaves are evergreen and are up to about 300mm (12 in) long. The flowers
+and hence the fruits (cocoa pods) grow from the trunk and thicker branches (see
+Figure 2.3).
+In the sixteenth and seventeenth centuries cocoa was introduced into Asia.
+These early movements of cocoa were of a type called Criollo. Criollo cocoa
+beans have a white or light brown appearance when cut open and a mild, nutty
+cocoa flavour. The trees are susceptible to diseases and produce low yields. This
+type is now very rare and only found in old plantations in Venezuela, Central
+America, Mexico, Madagascar, Sri Lanka and Samoa.
+The main type of cocoa is called Forastero and, in the eighteenth century, a
+Forastero variety of cocoa from the Lower Amazon was introduced into Bahia in
+Brazil. This variety of cocoa is called Amelonado, named after the melon shape
+of the pods. From Bahia, cocoa cultivation spread to West Africa in the nine-
+teenth century (Wood, 1991). The Amelonado variety was well suited to West
+African smallholder cultivation. More recent planting material is based on cocoa
+collected from the Upper Amazon rainforest and these maybe crossed (hybrid-
+ised) with the Amelonado or between themselves (called Upper Amazon
+hybrids). Fresh Forastero cocoa beans have a purple appearance when cut open
+and generally develop strong cocoa notes after fermentation and roasting.
+
+The third type of cocoa is called Trinitario. The origin of the Trinitario varie-
+ties is usually stated as the result of hybridisation between Forastero and Criollo
+trees. Consequently, some Trinitario varieties produce cocoas with special fla-
+vours such as dried fruits or molasses.
+The fourth type is Nacional which is only grown in Ecuador and probably
+originates from the Amazonian area of Ecuador. Nacional cocoa produces beans
+with “Arriba” flavour renowned for its floral note (see Section 2.7.8). Nacional
+is highly susceptible to witches’ broom and frosty pod rot (Monilia) diseases. Pure
+Nacional varieties have almost disappeared and the varieties with Arriba flavour
+in Ecuador are hybrids between Nacional and Trinitario.
+Genetic studies propose 10 different groups of cocoa (Motamayor et al.,
+2008), which include Criollo, Amelonado and Nacional groups; but Trinitario
+is no longer recognised as a separate group. This genetic knowledge will help
+with breeding programmes to develop new improved varieties. The objectives
+
+of breeding programmes are to produce cocoa varieties that are early bearing,
+resistant to pests and diseases, drought tolerant, higher yielding and some-
+times with better flavour or other quality attributes.
+The type of planting material originally introduced into an area has strongly
+influenced the type of cocoa grown today and hence the quality and uses of the
+cocoa beans (see Section 2.7).
+
+2.2.3 Climatic and environmental requirements
+Cocoa grows in areas of high rainfall, preferably 1500–2500mm (60–100 in),
+evenly distributed throughout the year. If there is a dry season of more than
+three months, some form of irrigation may be necessary. Cocoa prefers high
+humidity, typically 70–80% during the day and up to 100% at night. Strong dry
+winds can defoliate the tree and very strong winds or hurricanes can cause
+physical damage.
+The temperature requirements are a mean monthly minimum of 18°C (64°F)
+and a mean monthly maximum of 32°C (90°F). The absolute minimum is about
+10°C (50°F).
+Quite a wide range of soil is suitable for cocoa, but it grows best where the
+soil is deep, with good drainage and a pH of neutral to slightly acidic. Soil influ-
+ences one important quality aspect of cocoa: the cadmium content. Some soils,
+especially volcanic ones, can contain high levels of cadmium. If this is in an
+“available” form, it may be taken up by the plant and become present in the
+beans (see Section 2.6.4).
+
+2.2.4 Propagation of the planting material
+The most common method of propagation is by seed. Good planting material may
+be obtained from selected parents by using hand pollination. These hybrids may
+also have hybrid vigour, giving faster growth and earlier bearing. Growing cocoa
+from seed produces a tree with a straight, single, vertical trunk with branches at
+around 2m (6.5ft) above the ground. This point, where the trunk separates into
+branches, is called the jorquette. Trees grown from seed tend to be more drought
+tolerant and require less pruning. However, they often exhibit a great deal of
+variability in their agronomic characteristics which is not desirable. This can be
+overcome by using one of the techniques of vegetative propagation such as cut-
+tings, grafting or micropropagation systems. Grafting can be onto young seed-
+lings, small plants or even mature trees. Grafted trees tend to have a more open
+branching structure, usually without the straight single trunk associated with
+seedling (hybrid) cocoa.
+Micropropagation systems are under development: one system involves
+culturing some cells and growing them into plantlets, which are then transferred
+to a nursery. Micropropagation enables more rapid propagation of new varieties
+developed by plant breeders. The trees have a similar structure to seedling‐grown
+trees. All the vegetative methods produce trees that are identical genetically to
+the original tree and therefore perform similarly in respect to yield, disease
+
+resistance and quality parameters. The plants are initially grown in a nursery
+and, after 3–6 months, they will be ready to plant out in the field.
+
+2.2.5 Establishment and development of the plants in the field
+The selection of a suitable site is very important and needs to take into account
+local factors, such as weather conditions (especially rainfall, temperature and
+wind), soil fertility and drainage. Prior to planting, the site is prepared, which
+normally involves some land clearance and establishing some form of shade
+(unless it is already present). Shade protects the trees from excessive sunlight and
+wind. Initially shade requirements are high for young cocoa trees and it is com-
+mon practice to plant a temporary shade of bananas or plantains (see Figure 2.4).
+Cocoa trees are usually planted to achieve a final density of 600–1200 trees/
+ha (1500–3000 trees/acre). In the first year, the cocoa is often inter‐cropped
+with food crops. Trees come into bearing when they are 2–3 years old and full
+yield is achieved after 6–7 years. They have an economic life of 25–30 years or
+more, provided they are consistently looked after with good agricultural prac-
+tices. Maintenance of the tree is mainly pruning (to keep to a canopy height of
+3–5m (10.0–16.5ft)) and weed control. Depending on the soils, natural or
+approved chemical fertiliser may be applied to correct deficiencies and so increase
+yields, although this is unusual on small holdings.
+
+Growth occurs in “flushes” when each shoot on the tree grows a few fresh
+new leaves at the same time. The timing and extent of this “flush” growth
+depends on recent rainfall and the state of the tree.
+
+2.2.6 Major pests and diseases
+It is generally agreed that about 30% of the crop is lost to pests and diseases. The
+main pests and diseases are black pod rot, witches’ broom disease, frosty pod rot
+(Monilia), vascular streak dieback disease, swollen shoot virus, capsids, mirids
+and the cocoa pod borer moth. Squirrels, rats and monkeys can consume signifi-
+cant quantities of ripe pods. Further information is given in Table 2.1.
+
+
+Control of these pests and diseases is achieved by a combination of using
+appropriate planting material, good agricultural practices, sanitation and careful
+application of approved pesticides. In some areas, cocoa growing is not viable
+because of the effects of pests and diseases. Due to the cost of pesticides, many
+small‐holders do not use them.
+
+2.2.7 Flowering and pod development
+The flowers develop from flower cushions located on the trunk and branches.
+They are small, about 15mm (0.6 in) in diameter (see Figure 2.5). Flowering
+depends on the environment, the condition of the tree and the variety. Some
+trees flower almost continuously whereas others have well‐defined periods
+(generally twice a year). The flowers are pollinated by small insects such as
+midges. Out of thousands of flowers, only small proportions are pollinated and
+develop into pods.
+The small pods are known as cherelles. If there are too many for the tree to
+support through to maturity, the excess stop growing and die (this is known as
+cherelle wilt). After 5–6 months the pods are fully developed. They measure
+between 100 and 350mm long (4–14 in) and have a wet weight from 200g
+
+(7oz) to more than 1kg (2.2lb; Mossu, 1992). There is considerable variation in
+the shape, surface texture and colour of the pods, depending on the variety.
+
+2.2.8 Harvesting, pod opening and yields
+When they ripen, most pods change colour, usually from green or red to yellow
+or orange (see Figure 2.6). They are cut by hand from the trunks and branches.
+This is easily done with a machete (cutlass) for the pods that are low on the
+trunk, but for the pods on the upper branches it is necessary to use a special
+knife fixed on a long pole. The crop does not all ripen at the same time, so har-
+vesting has to be carried out over a period of several months. Pods are normally
+harvested every 2–4 weeks (see Figure 2.7). Frequent harvesting reduces the
+losses to cocoa pod borer moth, rats, squirrels and monkeys. It allows the farm-
+ers to sanitise the plantation by removing diseased pods and thus reducing the
+impact of diseases. In West Africa, the main harvest period is from the beginning
+of October until December. Cocoa purchased from farmers during this period
+and up to March is termed “main crop”. This is generally of higher quality than
+the secondary or intermediate harvest known as the “mid” or “light” crop.
+The pods are opened to release the beans, either by cutting with a machete
+or cracking with a simple wooden club. Pods opened with a machete can result
+
+
+in injuries to workers and damaged beans if the machete cut is too deep. It is
+therefore recommended to use a wooden tool. There are some 30–45 beans or
+seeds inside the pod attached to a central core or placenta (see Figure 2.8). The
+beans are oval or a plump almond shape, and covered in a sweet, white muci-
+laginous pulp. The beans are separated by hand and the placenta is removed.
+Each bean consists of two cotyledons (the nibs) and a small germ or embryo,
+all enclosed in a skin or testa (the shell). The cotyledons serve both as the storage
+organs containing the food for the development of the seedling and as the first
+two leaves of the plant when the seed germinates. Much of the food stored in
+the cotyledons consists of cocoa butter that amounts to about half the weight of
+the dry seed. The moisture content of the fresh beans is in the region of 65%.
+
+The yields obtained from cocoa trees vary considerably. Yield depends on the
+variety of cocoa grown, the growing system (tree density, shade levels, fertilisation,
+irrigation), the age of the trees, the farming practices (e.g. maintenance), the local
+environment (weather, soil fertility), and losses caused by pests and diseases. Yields
+of dry beans can vary from 150kg/ha (132lb/acre) in a poorly maintained small‐
+holding, through typical West African levels of 250–450kg/ha (220–400lb/acre) to
+that achieved on some plantations, which can be over 2500kg/ha (2200lb/acre).
+
+2.2.9 Environmental and sustainability aspects of cocoa
+cultivation
+In the past, expansion of cocoa production has been from new small‐holdings in
+former areas of primary forest that previously have been logged for timber. This is
+not a sustainable model for the future. There is potential to increase productivity
+by better control of pests and diseases, improved higher yielding and disease‐
+resistant planting material and better farming practices.
+If an area of primary forest has been logged, then cocoa growing becomes
+one of the most environmentally beneficial uses of the land. Essentially this is
+because it is a stable tree crop, often grown as part of a mixed cropping system
+including shade trees. Cocoa farms support a relatively high biodiversity and
+have been shown to be an important habitat in Central America for migrating
+birds. Tropical tree crop systems such as cocoa cultivation are important in pro-
+viding vegetative continuity with residual areas of primary or secondary tropical
+forests.
+Sustainability programmes (e.g. CocoaAction, coordinated by the World
+Cocoa Foundation) aim at improving the social conditions and livelihood of
+cocoa farmers, and ensure the long term supply of cocoa to the industry. Most of
+these programmes involve governments, industry and non‐governmental
+organisations (NGOs) working together in a coordinated manner. To provide
+consumers with confidence and trust, there are several certification schemes
+such as Rainforest Alliance™, Fairtrade International®
+and UTZ Certified™ who
+carry out inspections and allow their logos to be used on product packs (see
+Section 2.5).
+
+2.2.10 Labour practices on farms
+Cocoa production in West Africa is mainly on small family farms using labour‐
+intensive methods (see Section 2.5). Following media allegations about forced
+child labour in Côte d’Ivoire there have been some independent studies into
+labour practices (e.g. Gockowski, 2006; Fair Labour Association, 2012). The vast
+majority of labour on cocoa farms in West Africa is adult and is in one of three
+basic categories: full time seasonal, casual labour for a specific task or a share‐
+cropping tenancy (where the share‐cropper provides labour on part of the farm
+in exchange for a share in the crop proceeds). Family children are involved,
+especially during busy harvest periods and can be exposed to hazardous tasks
+
+such as using a machete or carrying heavy loads. Gockowski (2006) also
+reported that less than 1% of cocoa farms employed adolescent workers, that
+child slavery was uncommon and cocoa producing households sent more of
+their children to school when compared to non‐cocoa producing households.
+There is no doubt that cocoa growing provides significant benefits to many rural
+economies. Most sustainability programmes include elements on the elimina-
+tion of child labour.
+
+2.3 Fermentation and drying
+The immediate post‐harvest processes of fermentation and drying are normally
+carried out on the farm. They are essential steps during which the cocoa flavour
+precursors are formed. Drying produces a stable, non‐perishable commodity
+making the crop ideal for small‐holders in remote locations.
+
+2.3.1 Fermentation
+Fermentation is carried out in a variety of ways and some of the common prac-
+tices will be described below. The fermentation stage is usually very simple (see
+Figure 2.9). The fresh beans are heaped in a pile or in a wooden box, typically
+for five days. Natural yeasts and bacteria multiply in the pulp, causing the break-
+down of the sugars and mucilage. Much of the pulp then drains away as a liquid.
+Different types of cocoa require different amounts of fermentation.
+If the fresh beans are dried without any fermentation, the nib will be a slaty,
+grey colour rather than the brown or purple‐brown colour of fermented dried
+cocoa beans. Chocolate made entirely from slaty, unfermented beans tastes very
+bitter and astringent with little cocoa flavour. It also has a greyish brown appear-
+ance. Beans from some origins are only partially or insufficiently fermented.
+Generally these beans can be used to manufacture cocoa butter, but if they are used
+to make other cocoa products, they require blending with fully fermented cocoas.
+In West Africa, where smallholders grow nearly all the cocoa, fermentation
+is usually done in heaps enclosed by banana leaves. Heaps can be used to fer-
+ment any quantity from about 25–2500kg (55–5500lb) of fresh cocoa beans,
+although intermediate amounts are desirable. Some farmers will mix the beans
+on the second or third day. The fermentation usually lasts about five days and
+the end point is determined by experience. This traditional low input system
+produces well fermented cocoas.
+In plantations, fermentation is normally carried out in large wooden boxes
+that typically hold 1–2t of wet/fresh beans. Well‐designed boxes have provision
+for the liquefied pulp (the sweatings), to drain away and for entry of air. This is
+usually achieved by means of small holes in the bottom of the box or preferably
+through a floor of slats each separated by about 6mm (0.25 in). Boxes usually
+measure 1.0–1.5m (3.3–5.0ft) across and may be up to 1m (3.3ft) deep. However,
+
+shallow bean depths (250–500mm; 0.8–1.5ft) are preferred, especially at the
+start of fermentation, to promote good aeration which is needed for fermenta-
+tion. To increase aeration and ensure uniformity of fermentation, the beans are
+usually transferred from one box to another each day. The length of fermentation
+is the same as for smallholders, but some plantations ferment for longer periods
+such as 6 or 7 days.
+
+2.3.2 Microbiological aspects of fermentation
+Micro‐organisms are responsible for the breakdown of the pulp that surrounds
+the beans. Their activities result in the death of the bean embryo and they create
+the environment that enables the formation of cocoa flavour precursors (see
+Chapter 8).
+The pulp is an excellent medium for the growth of micro‐organisms since it
+contains water and 10–15% sugars. When the beans are removed from the pods,
+the pulp is inoculated naturally with a variety of micro‐organisms from the envi-
+ronment. The fermentation process can be considered in three stages:
+Stage 1 – Anaerobic yeasts. In the first 24–36h, yeasts convert sugar into alcohol
+under conditions of low oxygen and a pH of below 4 (i.e. quite acidic). Bean
+death usually occurs on the second day and is caused by acetic acid and alco-
+hol (the rise in temperature is relatively unimportant).
+Stage 2 – Lactic acid bacteria. These are present from the start of the fermentation,
+but only become dominant between 48–96h. Lactic acid bacteria convert sug-
+ars and some organic acids into lactic acid.
+
+Stage 3 – Acetic acid bacteria. These are also present throughout the fermentation,
+but become more significant towards the end when aeration increases. They
+are responsible for converting alcohol into acetic acid. This is a strongly exo-
+thermic reaction that is mainly responsible for the rise in temperature. This
+can reach 50°C (122°F) or higher in some fermentations.
+In practice, there is considerable overlap between the stages. The types of
+micro‐organisms vary between fermentations and between regions.
+
+2.3.3 Development of cocoa flavour precursors
+Development of the cocoa flavour precursors occurs in the cotyledons during
+fermentation and drying (see also Chapter 8). There are two important types of
+cells within the cotyledons: the storage cells containing fat and proteins and the
+pigment cells containing polyphenolic compounds and methylxanthines (theo-
+bromine and caffeine). During fermentation, there is firstly the initiation of ger-
+mination of the seed. This causes the uptake of water by the protein vacuoles
+within the storage cells. Later, after bean death has occurred, the cell walls and
+membranes break down, allowing the various compounds and enzymes to react
+together. These reactions produce the cocoa flavour precursors (see Figure 2.10).
+The reaction rates are determined by the temperature and the level of acidity.
+There are several groups of compounds responsible for flavour. The methyl-
+xanthines impart bitterness. During fermentation, their levels fall by around
+30%, probably due to diffusion from the cotyledons. There are a range of poly-
+phenolic compounds (called flavonoids) which are responsible for the colour, for
+
+imparting astringency in the mouth and for the antioxidant health benefits asso-
+ciated with cocoa (see Chapter 22). Their levels drop significantly during fer-
+mentation and drying. The anthocyanins (a type of flavonoid) are rapidly
+hydrolysed to cyanidins and sugars by glycosidase enzymes. This accounts for
+the bleaching or lightening of the colour of the purple cotyledons in Forastero
+cocoa. Other enzymes (polyphenol oxidases) convert another type of flavonoid,
+the flavanols [comprised mainly of (–)‐epicatechin] to quinones. Proteins and
+peptides complex with the polyphenolic compounds to give the brown or brown/
+purple coloration that is typical in fermented dried cocoa beans. Another impor-
+tant group of compounds is the Maillard reaction precursors. These are formed
+from the storage proteins and sucrose. Sucrose is converted by invertase into
+reducing sugars. The storage proteins are hydrolysed by peptidase enzymes into
+oligopeptides and amino acids. These cocoa flavour precursors are involved in
+Maillard reactions during roasting of the cocoa beans to form cocoa flavour
+compounds.
+
+2.3.4 Drying
+When fermentation is finished, the beans are removed from the heap or box for
+drying. In areas where the weather is comparatively dry at harvest time, the
+beans are dried in the sun by being spread out during the day in layers about
+100mm (4 in) thick on mats, trays or a terrace on the ground. Sun drying is
+environmentally friendly, low cost and produces beans of good quality. In West
+Africa, the beans are spread on any suitable horizontal surface (e.g. a concrete
+terrace or polythene sheet – see Figure 2.11). The preferred method, which is
+common in Ghana, is to spread the beans on mats made of split bamboo, which
+are placed on wooden frames at waist height (see Figure 2.12). The mats can be
+rolled up to protect the beans when it rains. They have several advantages: the
+air circulation is improved, it is easier to sort the beans and remove defectives
+and foreign materials, and there is less risk of contamination compared with
+beans being dried at ground level. In all cases the beans are raked over at inter-
+vals, heaped up and protected at night or when it rains. In Central and South
+America, a common method is to spread the beans on a floor or platform, with
+a roof on wheels that can be pushed back over the floor at night or when it rains.
+Alternatively, the platforms themselves are arranged on wheels so that several
+can be run under a single roof, one above the other to save space. It usually takes
+about a week of sunny weather to dry down to the 7 or 8% moisture content
+needed to prevent mould growth during storage.
+Where the weather is less dry and sunny at harvest time, improved methods
+of solar drying or artificial drying are adopted. Various low technology solar dry-
+ing systems have been developed. These generally involve the use of a transpar-
+ent plastic tent or roof over the cocoa and sometimes additional solar energy
+collectors. In on‐farm trials, some of these systems have proved to be very effi-
+cient and effective.
+
+In some circumstances, artificial drying is the only practical solution. In the
+simplest form, a wood fire is lit in a chamber below the drying platform and the
+combustion gases are conducted away in a flue that continues beneath the dry-
+ing platform before becoming a vertical chimney. Convection and radiation from
+the fire chamber and flue heat the drying platform. A better system is to use a
+heat exchanger to create warm dry air that is then passed through the bed of
+cocoa beans. A well maintained installation will in all cases help reduce the risk
+of combustion products coming into contact with the drying cocoa, and hence
+the risk of contaminating the cocoa with smoky notes.
+Artificial drying can affect the cocoa quality in two ways. First, the beans may
+be dried too quickly resulting in very acidic beans. This is caused by the shell
+becoming hard and locking or trapping the volatile organic acids inside the bean.
+Acidity can be reduced by using lower air temperatures or an overnight rest
+period to allow the moisture in the beans to equilibrate. The reduction in drying
+capacity or throughput is compensated by lower fuel costs resulting from more
+efficient drying. The second, more serious, problem with artificial drying is that
+smoke may find its way onto the beans. This problem is most commonly linked
+to the use of wood fires, and is liable to produce an unpleasant harsh, smoke or
+tar taste, which cannot be removed from the resulting chocolate by processing.
+While it is comparatively easy to design a drier in which the smoke is kept away
+from the cocoa, it is not so easy to maintain one in this state. After a drier has
+been operated for a number of years, the risk of smoke reaching the cocoa beans
+too often becomes a reality. This is one of the reasons why cocoas from some
+areas are in less demand and consequently command lower prices.
+Cocoa beans can sometimes be seen drying on the roadsides in areas where
+farmers do not have sufficient drying facilities. This is to be avoided as it contrib-
+utes to the contamination of the cocoa beans with chemical residues from the
+tarmac and vehicle exhausts.
+Care is also required not to over‐dry the beans. Beans dried to below 6%
+moisture become quite brittle and are easily damaged in subsequent handling,
+generating losses. During or after drying the beans, it is necessary to carry out a
+hand sorting or mechanical sieving/winnowing process to remove debris,
+clumped and broken beans. The beans are then bagged and may be stored for a
+short period prior to sale (see Figure 2.13).
+
+2.4 The cocoa supply chain
+Cocoa beans have to get from the many small farmers, who are often in remote
+areas of developing countries, to the cocoa processing factories that may be
+located in temperate countries. They can pass through a number of intermediar-
+ies, each of whom plays an important role. This section describes the steps in the
+chain, the impact on quality and how the price is determined. The next section
+
+
+looks at the cocoa value chain and the issue of farmer poverty. The price of cocoa is
+given in US$ or GB£ per tonne and is determined in the open markets of New York
+and London. The evolution of prices, production and consumption (demand or
+“grindings”) is given in Figure 2.14. From this graph one can note that production
+and consumption are closely balanced and have grown steadily at the same rate.
+However, prices are more volatile and are influenced by production, consumption,
+stock levels, political, social and economic factors and speculator activity.
+
+2.4.1 Internal market
+Typically, the farmer sells his cocoa to a co‐operative or a trader (first level col-
+lector). The important points for a farmer are the price received (% of world
+market price) and the level of service provided (location and frequency of collec-
+tion, availability of “free” credit, technical support etc.). The cocoa will then be
+taken and sold to a larger trader or collector in the nearest main town. From
+here the cocoa will go to the port and into the warehouse of an exporter or
+shipper.
+
+2.4.2 International cocoa markets
+Producers (cocoa growers, co‐operatives, government marketing boards and
+exporters) need to be able to sell their cocoa at the best price. The size and timing
+of the crop vary from season to season and this can affect the price. The users
+of cocoa (processors, grinders, and chocolate manufacturers) require a regular
+
+supply of cocoa of assured quality at competitive prices into their factories. The
+international cocoa markets function as intermediaries between producers and
+users, allowing prices to be established and providing opportunities for risks to
+be reduced for all parties.
+There are two types of cocoa market: first, the “Actuals”, cash or physical
+market and, second, the “Futures and Options” or “Terminal” market.
+
+2.4.2.1 “Actuals” market
+Anyone who buys and sells physical cocoa beans can be considered as participat-
+ing in the “Actuals” market (Dand, 1999). In practice, virtually all business is
+conducted using standardised contracts for sales that were developed by the
+cocoa trade associations. These are the Cocoa Merchants’ Association of America
+(CMAA) and the Federation of Cocoa Commerce (FCC) in Europe.
+Both associations provide arbitration procedures to resolve disputes. The
+basis of the contract prices in the “Actuals” market is determined by the price in
+the “Futures” or “Terminal” market. In the “Actuals” market, it is possible to buy
+or sell forward, for example to buy cocoa beans in June for delivery in September.
+
+2.4.2.2 “Futures and Options” or “Terminal” markets
+These markets can be used to minimise the risk of adverse price movements for
+the producer, trader and the user. They are primarily “paper” markets in that no
+physical cocoa usually changes hand. There are two active futures markets run
+by the InterContinental Exchange (ICE): one in New York and the other in
+London. The markets have standard contracts, which are restricted to certain
+weights (multiples of 10t, the lot size), certain grades or types of cocoa. They
+also state where and when the cocoa could be delivered. Each trade passes
+through a central body or clearing house in the market. Trading is conducted
+openly so the volume, price and delivery dates are public.
+
+Although futures trading rarely results in the delivery of physical cocoa, this
+possibility means that the price has to remain close to the actual value of the
+cocoa. This value is determined by supply and demand and the activity of specu-
+lators. The role of speculators is often considered to be negative as their aim is to
+maximise their profit. However, they risk their capital and contribute by bring-
+ing liquidity to the market (e.g. by enabling a producer to sell when users are not
+buying).
+
+2.4.2.3 Example of a simple hedge using the “Actuals” and “Futures”
+markets
+Traders, manufacturers and producers can use a simple hedge to reduce the risks
+associated with adverse changes in price (adapted from Dand, 1999). For exam-
+ple, it is normal for manufacturers to purchase physical cocoa for delivery in the
+months ahead. This is to guarantee that the factory will have a supply of cocoa.
+If we are in May and want to purchase 1000t of cocoa for delivery in December,
+we deal with a trader (in the Actuals or physical market) and agree a price of,
+say, US$ 2000/t. If we believe that prices may rise above this level in the next
+few months, we could do nothing and come December we would take delivery
+of 1000t of cocoa at what would then be a favourable price. If, however we
+thought prices might fall, perhaps due to an exceptionally large crop, we would
+turn to the Futures and Options market. In this market we would sell 100 lots of
+10t for delivery in December. The price changes in each market are then likely
+to offset each other (Table 2.2). This can be seen in the simple example below
+where the cocoa price declines by US$ 100 between May and December.
+In this example the manufacturer has made a profit in the Futures market of
+US$ 100 000 when he purchased 100 lots to square his position (i.e. to avoid
+having to deliver the lots of cocoa he sold in May). Whilst this profit is real, had
+he waited until December to buy his physical cocoa, he would have saved US$
+100 000 over the price he paid back in May. This is given as an assumed loss in
+the example above. So, the manufacturer has effectively guaranteed the delivery
+of cocoa in December into his factory but at the same time has cushioned himself
+(or hedged) against a fall in prices through the Futures market. Hedges can be
+used by traders, manufacturers and producers to “lock” a price and hence reduce
+
+the risks associated with price fluctuations. In addition to hedging there are
+several other trading techniques.
+
+2.4.3 Shipment of cocoa
+Cocoa is traditionally stored and transported in jute (or occasionally sisal) sacks
+containing 60–65kg (132–143lb) of dry beans. Jute sacks have a number of
+positive features: they are strong, stackable (do not slip over each other), breath-
+able (allow moisture to pass through) and are made from natural biodegradable
+fibres. Sacks can be stacked directly into the hold of a ship (break bulk). This
+method has the disadvantage of requiring significant handling at the ports,
+which is both costly and time‐consuming. Alternatively, sacks can be placed
+within ventilated shipping containers (12.5t to a maximum of 18t of beans per
+container).
+Cocoa beans can also be transported in bulk. Loose cocoa beans can be placed
+directly into shipping containers (17.5–25.0t of beans) or directly into the hold
+of a ship, similar to grain shipment (mega bulk). Up to several thousand tonnes
+can be transported in one hold. Bulk shipment methods are gaining in popular-
+ity, and it is estimated that about 70% of cocoa beans shipped to northern
+European ports now use one of these bulk methods.
+
+2.4.4 Moisture movement during shipment
+Cocoa beans can release water vapour during a voyage. There can be a 1% loss
+in weight (shrinkage) due to this release of moisture. The West African crop is
+mainly shipped during the winter months in the Northern Hemisphere. It may
+be loaded at a temperature of about 30°C (86°F). After a few days into the voy-
+age, the temperature both of the air and the sea will start to fall and, within a
+few more days, on reaching the North Atlantic it may be down close to freezing
+point. These are the conditions under which moisture will condense onto the
+cold metal of the ship and drip onto the cocoa. Hence good ventilation is essen-
+tial, along with the use of absorbent lining materials to prevent condensation
+from damaging the beans.
+Although the cocoa beans are dry, a hold containing 1000t of cocoa at 7%
+moisture amounts to 70 000l (15 000gal) of water. If the moisture content of the
+cocoa reduces by only one‐quarter percent to 6.75%, this releases 2500l (560gal)
+as water vapour which is available for condensation. This quantity of water, in
+the absence of good ventilation, is more than sufficient to cause wet patches on
+the cocoa beans, leading to mould growth.
+As well as taking precautions during shipment, it is important to unload the
+cocoa promptly on arrival. Bags with damp patches can be segregated and dried
+prior to a decision being made as to their fate. In the case of bulk cocoa, on dis-
+charge any damp beans near the edges will be thoroughly mixed back into the
+bulk during the handling, and the moisture will re‐equilibrate quite quickly
+within the lot, usually before there is time for mould to develop.
+
+
+2.4.5 Storage of cocoa
+Once they have been dried, cocoa beans are quite stable and will not deteriorate
+for several years, provided they are kept under good conditions. In order to pre-
+vent the growth of mould during storage, moisture in cocoa beans must not
+exceed 8%. High moisture levels can result from inadequate drying, moisture
+pick‐up in humid atmospheres and leaking or damp stores.
+Bagged cocoa should be stored off the floor (e.g. on wooden pallets) and
+away from the walls in dry ventilated warehouses. Individual lots of cocoa
+should be clearly segregated and labelled. Cocoa beans are susceptible to tainting
+by uptake of certain odorous substances from some other commodities (e.g.
+spices) and chemicals (e.g. fuels, paints, agrochemicals and cleaning substances).
+Therefore, they should not be stored in the same warehouse as these materials.
+Warehouses should also be free from vermin and infestation (see Section 2.4.6).
+In the tropics, when it is very humid (e.g. at night or during rainstorms),
+ventilation can be temporarily stopped and then restored when the humidity
+drops again (e.g. during the day or in drier weather). Storing cocoa under poly-
+thene sheets is not recommended other than for very short periods of time.
+The jute sacks allow water vapour to pass through, so that the cocoa beans
+gradually come into equilibrium with the humidity in which they are stored.
+The graph in Figure 2.15 shows the equilibrium moisture content for cocoa
+beans stored at different levels of relative humidity. To maintain beans below 8%
+moisture, the relative humidity must be less than about 75% for fermented
+cocoa beans. Less well fermented beans, such as those from the Dominican
+Republic and Sulawesi, are more hygroscopic and would need to be stored at a
+relative humidity below about 65% to maintain moisture of 8% or less. Partially
+fermented beans are more likely to stick together or form clumps and develop mould during storage and transport.
+
+Cocoa can be stored in bulk in large heaps confined by walls to form bays,
+each bay containing 1000 or more tonnes of beans. A more expensive way of
+bulk storage is in silos. Storage bays and silos can have forced ventilation sys-
+tems. This enables control of the temperature and humidity of the beans. It is
+also possible to apply modified atmosphere – usually air that has a low level of
+oxygen and a high level of carbon dioxide. This will control any pests within the
+cocoa (see Section 2.4.6).
+
+2.4.6 Infestation of cocoa
+Various insect pests can feed on cocoa beans and many lots of cocoa will have some
+low level of infestation. However, significant infestations are nowadays quite rare.
+Cocoa is vulnerable to a very small moth, the Tropical Warehouse moth
+(Ephestia cautella). The larva (caterpillar) enters a bean, usually where the shell
+is damaged, and feeds on the nib leaving a residue of silk and droppings. Various
+beetles and their larvae also feed on cocoa beans. Insect damage will be visible in
+the “cut test” (see Section 2.6.3).
+Some insects only rarely enter the beans, feeding mostly on the residue of
+pulp adherent to the outside. Their presence can result in a consignment being
+described as severely infested, even though the cut test on a sample of beans
+does not reveal any insect damage.
+Precautions must be taken to prevent infestation developing during storage
+and shipment. This should include routine monitoring for the major pest spe-
+cies. Control measures need to be applied as required to the structure of the store
+or ship. Only pesticides approved for use in food stores should be used.
+Cocoa beans can be fumigated with phosphine under gas‐proof sheeting. When
+carried out properly, fumigation is very effective and the cocoa should not need
+fumigating again. Unfortunately, very few fumigations are carried out effectively
+and frequently some stages of the insects (e.g. the eggs) survive the treatment. In
+some countries, there is evidence that some pests are becoming resistant to phos-
+phine. Various alternative solutions are available. Some methods rely on the use of
+very low temperatures (below freezing) or warm temperatures (around 50°C;
+122°F) to kill the insects. Another method is to use modified atmosphere, usually
+oxygen depleted with high levels of carbon dioxide. These methods have the
+advantage that there are no chemical residues. In any case, insects will be killed and
+fragments of insects will be removed during the bean cleaning and roasting steps.
+
+2.5 The cocoa value chain: long‐term perspectives
+and challenges
+The long‐term viability of the chocolate industry depends on a sustainable cocoa
+supply chain. One of the most fundamental prerequisites for a supply chain to
+be sustainable is that its participants make a reasonable living from it. The vast
+majority of cocoa is grown by small‐holders for whom it is a cash crop with no
+food or cultural value. Most farmers live below the poverty line and this does not
+encourage investment and development of the farms. In many cases, other crops
+are more profitable or require less labour. Although crop diversification is good,
+as it provides more stable incomes, there is an issue relating to the small size of
+many farms which means efficiencies and overall income will remain low.
+Another crucial element is the poor level of maintenance of the cocoa planta-
+tions, including lack of control of pests and diseases. In many areas, a further
+threat to the cocoa supply chain is that the farmers are ageing and the younger
+generations tend to migrate to the cities.
+Therefore, the challenge is to transform cocoa farming into a more profitable
+business. This would help to make cocoa more competitive versus other crops.
+Ultimately, bringing cocoa farmers out of chronic poverty would help to retain
+or attract young farmers.
+Consumers are becoming more aware and conscious of where and how their
+food is grown and processed. In response to this and other concerns, governments
+and the industry have implemented sustainability programmes in collaboration
+with NGOs and certification programmes such as Rainforest Alliance™, Fairtrade
+International®
+and UTZ Certified™ (see Figure 2.16). The main objectives of these
+certification programmes are detailed in Table 2.3.
+
+Even though the main focus of the different programmes vary, most of the
+schemes supported by the industry aim at developing a sustainable cocoa supply
+chain through a common approach structured around three pillars:
+1 Increasing the productivity: by improving planting material (yield, disease
+resistance), teaching and implementing good agricultural practices (GAPs),
+improving the access to fertilisers and the use of irrigation where required.
+2 Improving the living standards of cocoa producing communities: by focusing
+on education, women’s empowerment, the elimination of child labour, access
+to clean water, hygiene and health services.
+
+3 Optimising the supply chain: by making it more transparent and shorter, so
+that farmers receive a higher part of the cocoa price, and to ensure the required
+traceability of cocoa beans.
+The quantity of cocoa produced under these schemes has seen enormous
+growth in recent years. In the season 2012/2013 an estimated 1 438 000t was
+produced (Fountain and Hütz‐Adams 2015). From the statistics it appears that
+less than half of this cocoa is actually sold as certified cocoa. However, consump-
+tion is seeing similar growth, with several companies committing to using 100%
+sustainable cocoa by 2020 or thereabouts.
+The World Cocoa Foundation (WCF), several chocolate manufacturers and
+the governments of Côte d”Ivoire and Ghana have started to join forces under a
+common initiative (CocoaAction) in order to build on the strengths and the
+experience developed through the various individual programmes. This will
+allow harmonising the companies and private‐public partnerships and develop-
+ing a coordinated strategy.
+The challenge for the future is to measure and demonstrate the impact of
+these programmes for the communities in a harmonised and comprehensible
+way. Another challenge is also to achieve a sustainable development across the
+whole of the cocoa supply chain without encouraging over‐production of cocoa,
+by managing production versus demand and thus the price of cocoa beans. This
+has traditionally been a role of the International Cocoa Organisation (ICCO).
+
+2.6 Quality assessment of cocoa
+2.6.1 Composition of cocoa beans
+Cocoa beans are essentially comprised of the cotyledons which are protected by
+the shell. Broken fragments of cotyledon are called nib. The shell is usually con-
+sidered to be a waste material and is either used as a fuel or composted and sold
+as garden mulch. However, it can be treated, ground to a powder and sold as
+cocoa fibre products. These materials can be used as a substitute for cocoa pow-
+der or incorporated into chocolate (depending on local regulations).
+The nib is the most valuable part of the bean. Roasted ground nib (cocoa mass
+or cocoa liquor) is used directly in chocolate manufacturing. Alternatively it can
+be pressed to extract the fat, cocoa butter, an essential ingredient in chocolate (see
+Chapters 3 and 7). The residue from the pressing stage, the press cake, is then
+ground into cocoa powder which is used mainly in beverages, baking, ice cream
+and desserts. Table 2.4 shows the composition of cocoa beans, nib and shell.
+
+2.6.2 Cocoa beans: quality aspects and contracts
+Good quality beans are a prerequisite for the production of a good quality choco-
+late. The quality aspects of cocoa beans can be divided into three areas:
+1 Food Safety. These are absolute standards. Some of these limits are covered by
+the national food legislation in the country where the factory is located or
+
+where the products are to be sold. Any cocoa failing to meet food safety stand-
+ards must not enter the human food chain. The fermentation and drying pro-
+cess results in high microbial levels on raw cocoa beans and the occasional
+presence of Salmonella bacteria. This hazard is controlled at the roasting stage
+and/or by debacterisation prior to or after roasting (see Chapter 25). The pres-
+ence of Salmonella is not a reason to reject a consignment of raw cocoa beans.
+2 Economic factors. These relate to yield of useful material and are key determi-
+nants of the price a manufacturer is prepared to pay relative to other cocoas.
+
+3 Qualitative aspects. This includes desirable flavours and absence of off‐flavours
+and some physical properties such as cocoa butter hardness. Qualitative fac-
+tors determine whether a type of cocoa will be included in blends or recipes
+for chocolate.
+In addition to these three areas, consumers are increasingly concerned about
+environmental and ethical aspects and some want environment friendly, organic
+or Fairtrade certification and labelling. This requires total traceability of the
+cocoa through the supply chain and compliance with the necessary standards
+(see Section 2.5).
+The quality requirements from a manufacturer’s view are summarised in
+Table 2.5. However, most cocoa is purchased using standard trade contracts,
+which may not include all the aspects considered important by the manufac-
+turer. In Europe, the Federation of Cocoa Commerce (FCC) sets contract stand-
+ards for cocoa bean quality. In the United States, the Food and Drugs
+Administration (FDA) and The Cocoa Merchants’ Association of America
+(CMAA) set the standards (see Table 2.6). The cocoa trade associations have
+arbitration schemes to cover the situation when the lots of cocoa tendered fail to
+meet the contract terms and this may result in the supplier having to pay an
+allowance or replace the disputed beans. The producing countries usually have
+their own internal standards that are often mandatory (ITC, 2001).
+
+2.6.3 Cocoa beans: sampling and the “cut test”
+Proper sampling is an essential first step to making an assessment of quality.
+Cocoa beans in sacks are sampled using a trier or sampling stick, which is inserted
+between the fibres of the bag. Typically between 20% and one‐third of the sacks
+will be sampled according to one of several prescribed procedures. Alternative
+arrangements are made for cocoa shipped in bulk. The samples maybe combined
+and bulked or mixed and then reduced in size (“quartered”).
+First, beans are classified by weight (usually the number of beans in 100g (3.5oz).
+Second, the level of unsatisfactory beans (also termed faulty or defective
+beans) is determined by the “cut test” (see Figure 2.17). This test identifies beans
+that are visibly mouldy, slaty (i.e. unfermented), infested, germinated, or flat
+(i.e. containing no nib or cotyledon). The cut test normally uses the same beans
+that have been weighed and counted. Many methods specify that 300 beans will
+be cut lengthwise to expose the cotyledon. This is somewhat tedious and the
+number of beans is frequently reduced, which also lowers markedly the statisti-
+cal validity of the results. Alternatively, a guillotine device is available (Magra
+cutter), which will cut 50 beans at a time.
+Mould is especially undesirable. Indeed, even as few as 3% mouldy beans
+can give unpleasant musty or mouldy flavours to chocolate. Some moulds under
+certain conditions also produce harmful fungal toxins collectively called myco-
+toxins (see Section 2.6.4). Mouldy beans can have high levels of free fatty acids
+(FFA) which affect the quality of the cocoa butter (see Section 2.6.5).
+
+
+Slaty beans are beans in which more than 50% of the cotyledon is grey or
+slaty in colour. These beans have not undergone fermentation and they have a
+low level of cocoa flavour with high levels of astringency. The cut test is often
+used to assess the degree of fermentation by counting the fully brown, brown/
+purple and purple coloured beans. This is very subjective and is unreliable except
+when a single assessor is checking beans from a single source. The results do not
+correlate directly with the quality of the chocolate made from the beans.
+Insect‐damaged beans are those where the bean has been penetrated by an
+insect, which feeds on the cotyledon. These should not be present. Any number
+will involve loss of material and a risk of contamination with fragments of the
+insects. Germinated beans are those where the seed has started to grow before
+being killed during the fermentation or drying process and the shell has been
+pierced by the growth of the first root. In the dry germinated bean, the root usu-
+ally drops out, leaving a hole, which makes the bean more easily attacked by
+insects and moulds. Flat beans are those which have begun to form, but have
+not developed or filled out. There is no useful cotyledon in them so they simply
+add to the shell content, which is waste.
+For the chocolate manufacturer, the yield of nib from a lot of cocoa is eco-
+nomically very important, as is the amount of cocoa butter within the nib.
+Higher levels of cocoa butter mean that lower amounts will need to be added
+later on in the manufacturing process. Nib yields are determined in the labo-
+ratory, normally by shelling a number of beans by hand. Results are usually
+expressed on a dry basis (i.e. at 0% moisture). It is important to note that
+
+laboratory measurements do not take account of bean cleaning losses and ease
+of winnowing. Therefore actual yields should be assessed on the production
+plant (see Chapter 3).
+
+2.6.4 Contaminants and residues
+Modern methods of analysis can detect minute or trace levels of undesirable mate-
+rials in foodstuffs (see Chapter 25). This has given rise both to some legitimate
+concerns and some “food scares” which were not based on sound rationale.
+Heavy metals, such as lead and cadmium, are found at very low levels in
+many foodstuffs including cocoa products. The source is mainly environmental
+including soil type, fertilisers, pesticides or vehicle emissions. The levels found
+depend on the origins of the cocoa materials and the recipe and process. There is
+a concern that some products could provide a significant proportion of the toler-
+able daily intake. Therefore, limits on cadmium are proposed, ranging from 0.2
+to 2.0mg/kg, depending on the level of cocoa solids in the product (dark choco-
+late with >50% cocoa solids will have the high limit). These limits will be applied
+in the European Union from 1 January 2019.
+Mineral hydrocarbons have been used in the past in manufacturing jute
+sacks. Very small quantities of mineral oil were transferred to the cocoa beans
+and then into cocoa products. As a result of a joint initiative covering several
+foodstuffs, the sack manufacturers carried out some developments and have
+switched to using a food grade vegetable oil.
+Polycyclic aromatic hydrocarbons (PAH), such as benzo‐a‐pyrene [B(a)P]
+result from combustion products and are generally present at low levels in the
+environment. In cocoa, the main risk is from artificial drying or sun drying in
+polluted areas such as roadsides. Hydrocarbons are fat soluble and will be found
+at higher concentrations in cocoa butter.
+Mycotoxins [such as ochratoxin A (OTA) or aflatoxin] are produced by some
+types of moulds under certain conditions. However, there is no correlation
+between the level of visible mould revealed in the cut test and the amount of
+mycotoxins present. Generally, aflatoxin is not a concern in cocoa. OTA is present
+in cereals and most agricultural commodities. In cocoa, it is frequently present at
+extremely low levels, and cocoa products are not a significant source of OTA in
+the diet. OTA appears to develop in damaged pods prior to the fermentation stage.
+The manufacturer needs to have a monitoring process in place for these con-
+taminants and also needs to keep aware of new, potential contaminants. In all
+cases, the manufacturer must ensure food safety and compliance with the rele-
+vant legislation.
+
+2.6.5 Cocoa butter hardness
+The quantity of fat and its melting characteristics, especially hardness, depends on
+the variety or type of cocoa, the fermentation and drying and the environmental
+conditions (see Chapter 7). In particular, the average daily temperature during the
+
+last few months of pod development affects the hardness of the cocoa butter.
+Lower temperatures give butters that are softer or have a lower melting point.
+Generally, cocoa butters made from Indonesian beans are harder than West
+African butters, which in turn are harder than Brazilian butters from Bahia region.
+Mouldy cocoa beans, caused by inadequate drying, contain high levels of
+FFA. This also has an undesirable softening effect on the cocoa butter and the
+level of FFA is limited by regulations in some countries (e.g. 1.75% in the coun-
+tries of the European Union) and by FCC contract rules.
+Quality criteria that can be applied to the semi‐processed cocoa materials
+(cocoa butter, powder and mass) are described in Chapter 3.
+
+2.6.6 Sensory evaluation
+Flavour is the most important property for chocolate consumers and hence man-
+ufacturers (see Chapter 21). Off‐flavours (such as smoke or putrid over‐fermen-
+tation flavours) can be readily detected by tasting roasted ground nib or cocoa
+mass (cocoa liquor) directly. Alternatively these can be made more palatable by
+mixing the mass with finely ground sugar and/or water or preparing a small‐
+scale dark chocolate. These tests are essential for beans from origins that are
+inconsistent in quality or prone to off‐flavours. The level of cocoa flavour and
+other flavours (such as acidity, bitterness, astringency and any ancillary flavours
+for fine cocoas) are more difficult to assess. A well‐trained sensory evaluation
+panel with appropriate test designs and statistical analysis of results is required.
+
+2.7 Types and origins of cocoa beans used in chocolate
+Chocolate manufacturers need to produce a product of consistent quality from a
+raw material that may be variable. It is common practice for chocolate manufac-
+turers to purchase cocoa mass or liquor from cocoa processors. Increasingly,
+these may be situated in the cocoa producing countries (known as origin
+processors).
+The only significant volumes of cocoa exports in the world are from West
+Africa and Indonesia; the other large producing countries having internal mar-
+kets for their cocoa products. It is usual to apply some selection to the origin and
+type of cocoa beans or mass used for chocolate making. Cocoa processors will
+frequently blend beans from different origins and/or deliveries to achieve a con-
+sistent product of the desired quality. In choosing the type of cocoa and the
+recipe or blend there are a number of factors to consider. These include availabil-
+ity of the required quantity of beans, the reliability of supply, consistency of
+quality (especially flavour), price, yield (both of cocoa mass and the % fat in the
+mass) and how easy it is to process. Blending can be carried out before or after
+roasting. If it is carried out after roasting, this allows different levels of roasting
+to be used for different types of beans.
+
+2.7.1 Sources of bulk cocoas
+Over 95% of the world’s cocoa production is classed as “bulk”, “basic” or “ordi-
+nary” cocoa. This does not refer to the delivery size or method of transportation,
+neither does it imply cocoa of inferior quality. Bulk cocoas generally come from
+the Forastero type cocoa trees (see Section 2.2.2). They are used to manufacture
+milk and dark chocolate, cocoa mass, cocoa butter and cocoa powder. The other
+type of cocoa is “fine” or “flavour” cocoa (see Section 2.7.9).
+Some of the characteristics of the main origins and types of cocoa are
+described below.
+
+2.7.2 Côte d’Ivoire
+Since 1977 the Côte d’Ivoire (Ivory Coast) has been the world’s largest producer
+of cocoa. The country now produces about 1.5 million tonnes of beans each year
+(ca. 38% of the world crop – see Figure 2.2). The cocoa is nearly all grown by
+smallholders, many of whom are immigrants.
+The type of cocoa grown is Forastero. Originally it was the Amelonado vari-
+ety but this has virtually all been replaced by improved Upper Amazon hybrids
+(see Section 2.2.2). Most cocoa is properly fermented in heaps and is sun dried.
+Cocoa is often not fully dried on the farm. This can sometimes lead to higher
+levels of both mould in the beans and FFA in the cocoa butter. Cocoa beans are
+dried to final moisture and blended in the ports to achieve minimum export
+grade standards. This cocoa tends to have a slightly lower yield of nib and cocoa
+butter than cocoa from Ghana, a fact which is reflected in the price.
+A significant quantity of Côte d’Ivoire cocoa (ca. 30%) is processed locally
+and the semi‐finished products exported. The local market for confectionery is
+very small. The 2012 cocoa reform by the government has contributed to restor-
+ing quality and reducing the vulnerability of the supply.
+
+2.7.3 Ghana
+Cocoa first arrived in West Africa in the late nineteenth century from the island
+of Fernando Po (Bioko) into Ghana. Cocoa growing developed strongly during
+the twentieth century. Ghana is currently the second largest producer in the
+world with around 21% of the world crop (around 870 000t – see Figure 2.2).
+A large amount (ca. 25%) of the cocoa beans is processed locally.
+The Ghanaian farmer uses the traditional heap method to ferment the cocoa
+and drying is on raised mats in the sun. Due to absence of artificial drying, there
+is no risk of smoke contamination. The hybrid planting material, based on Upper
+Amazon Forastero and Amelonado varieties, and the traditional processing
+methods give a full chocolate flavour, very suitable for the manufacture of choc-
+olate. The quality control in the internal cocoa marketing system is also well
+established and effective. This has resulted in Ghana cocoa being the world’s
+foremost quality bulk cocoa against which other cocoas are judged. Hence, it
+commands a price premium on the world market.
+
+2.7.4 Indonesia
+Cocoa production in Indonesia expanded rapidly at the end of the twentieth
+century and is currently around 400 000t (ca. 10% of the world cocoa crop).
+Cocoa is grown in most parts of Indonesia, but the principal areas are Sulawesi,
+Sumatra and Java.
+Indonesia is mainly a bulk cocoa producer with the cocoa coming from varie-
+ties derived from Upper Amazon and Trinitario types.
+In Sulawesi, most of the production is from smallholders but some 95% of
+the production currently receives little or no fermentation. The cocoa is nor-
+mally dried in the sun and is consequently free from the smoke contamination
+frequently associated with artificial drying. The lack of fermentation produces a
+cocoa that is very bitter and astringent. Fermented or partially fermented
+Sulawesi cocoa has a medium level of cocoa flavour. It has high shell content
+and a low percentage of fat in the nib. These factors explain why Sulawesi cocoa
+is traded at a discount. For chocolate makers, the plus points are the hard cocoa
+butter (high melting point) and the absence of off‐flavours (the bitterness and
+astringency are flavours normal to cocoa). Sulawesi cocoa can be included in
+blends with other beans to make chocolate.
+Generally, Indonesian bulk cocoa is of variable quality although efforts are
+underway to improve the quality. The majority of the crop (63% in the 2012/3
+season; ICCO 2015) is processed in Indonesia. Purchasers of cocoa materials
+should note that these factories may also import cocoa from West Africa and
+other origins, mainly to improve the quality of the cocoa products.
+There is a small production of a fine cocoa that is concentrated in Java. This is
+a light‐breaking, “Criollo” type of cocoa (also called Java Fine or Edel cocoa).
+Actually, this is not a true Criollo cocoa but a Trinitario type that produces white
+cocoa seeds. Java light‐breaking cocoa is mainly used for its colour. A dark choco-
+late made from these beans has the light brown appearance of a milk chocolate.
+
+2.7.5 Nigeria
+Production levels are increasing slowly and now stand at around 244 000t (6%
+of the world crop). Cocoa in Nigeria is normally properly fermented and then
+sun dried on concrete terraces. The cocoa is similar in type and quality to Côte
+d’Ivoire, although quality is considered by some to be less consistent. Several
+processors and manufacturers use Nigerian cocoa interchangeably with Côte
+d’Ivoire or even Ghana cocoa.
+
+2.7.6 Cameroon
+Unlike the rest of West Africa, Cameroonian cocoa is of the Trinitario variety. It
+is generally purchased to make reddish coloured cocoa powder. Very little
+Cameroonian cocoa is used to make chocolate due to the risk of smoke flavour
+(from the artificial drying) and the price which is sometimes at a premium. The
+annual production is between 200 000–220 000t.
+
+2.7.7 Brazil
+Brazil used to be a substantial producer and exporter of cocoa. The largest cocoa
+growing area in Brazil is in Bahia (around 65%), where cocoa is grown on both
+medium sized farms and in large plantations. Brazilian production grew strongly
+reaching just over 400 000t before declining sharply in the late 1980s and 1990s
+due to Witches’ Broom disease becoming established in Bahia. Production has
+now stabilised at around 210 000t.
+Brazilian cocoa has a good level of cocoa flavour. It tends to be more acidic
+than West African due to the fermentation method (in large wooden boxes). In
+addition, artificial drying is the practice and it is not always done satisfactorily
+due to the lack of maintenance of dryers. There is a risk of finding smoky fla-
+vours, which can be reduced by careful selection of the beans. However about
+25% of the production comes from the state of Para where the climate does not
+require artificial drying. Hence the risk of smoky beans is reduced.
+Brazilian cocoa butter from Bahia beans has a lower melting point (i.e. it is
+softer) than West African.
+There is a large local processing industry and market for chocolate
+products. Consequently there is very little export of cocoa beans and 30 000–
+60 000 t of beans are imported each year, mainly from West Africa to satisfy
+local demand.
+
+2.7.8 Ecuador
+Ecuador is an exporter of bulk cocoa and the largest exporter of “fine” or “fla-
+vour” cocoa (see Table 2.7). Its annual production is around 200 000t and is
+foreseen to grow steadily until 2020. There is a small local processing industry.
+The fine cocoa character comes from the Nacional cocoa and hybrids of Nacional
+with Venezuelan Trinitario. This cocoa, commonly known as Arriba, has a full
+cocoa flavour with additional floral spicy notes. Some manufacturers seek and
+pay substantial premiums for good quality Arriba cocoa for use in speciality
+chocolate. The availability of this cocoa is limited and is even decreasing, prob-
+ably representing less than half of the Ecuadorian crop. New plantings of cocoa
+frequently use the high yielding CCN51 variety. However, this variety does not
+give Arriba flavour but a rather fruity and acidic flavour.
+
+2.7.9 Speciality and “fine” or “flavour” cocoas
+The term speciality cocoa covers a range of types or grades which generally com-
+mand premium prices over bulk cocoas. They are not traded as a commodity but
+have their own supply chains which preserve the identity of the individual lots
+and frequently allow for the purchaser to test the quality prior to delivery. The
+cocoas may be from specific geographic origins, crops or varieties, or even har-
+vested and fermented in a specific way (see Sections 2.2.2, 2.3.1 and 2.5). The
+market for chocolate products made from speciality cocoas has been showing
+strong growth for over two decades (see Chapter 18).
+
+“Fine” or “flavour” cocoas are the oldest and largest category of speciality
+cocoa. There are various estimates for the export volume of fine cocoas (263
+000t, ca. 9% of the world crop – see Table 2.5). There is no agreed definition of
+“fine” or “flavour” cocoas except they are purchased at a premium price for their
+flavour or colour (e.g. light-breaking). Also, according to the ICCO (2010), the
+difference between fine and bulk cocoa is in the flavour rather than other qual-
+ity aspects. Fine or flavour cocoas have some ancillary flavours that are described
+variously as fruity, raisin, brown fruit, floral, spicy, aromatic, nutty, molasses and
+caramel (Fowler, 1994). They are mainly used to make dark chocolate in which
+their special flavours or colour can be appreciated. These cocoas generally come
+from Criollo, Trinitario or Nacional type trees. However, not all cocoas of these
+varieties are classified as “fine” or “flavour”. If they do not have the desirable
+flavour characteristics or if the fermentation and drying is poor, they are traded
+as bulk cocoas and may even sell at a discount to the main bulk origins. Prices
+depend on supply and demand for each type. Typical premiums start from about
+20%, rising to double or even treble the bulk cocoa bean prices.
+The above definition of “fine” or “flavour” cocoa can be seen as subjective,
+and people have attempted to find definitions based on scientific evidence. For
+example Amores et al. (2007) found that the theobromine/caffeine ratio can
+“clearly differentiate fine from bulk cocoa”.
+The Arriba cocoa (see Section 2.7.8) from Ecuador represents ca. 50% of the
+worldwide volume of fine cocoa. Amongst other “fine” or “flavour” cocoas, the
+majority is from varieties of Trinitario trees, but some from Madagascar and
+Venezuela is from much sought after light‐breaking Criollo varieties, although
+not all their production is of this type. A unique cocoa to be mentioned is the
+light‐breaking cocoa from Java, Indonesia (see Section 2.7.4).
+
+Conclusions
+It is impossible to make chocolate without cocoa, and its quality and availability
+is of paramount importance to the confectionery industry. Therefore, no choco-
+late manufacturer can afford to neglect this vital ingredient and remain divorced
+from the issues surrounding cocoa production.
+Cocoa makes a substantial economic contribution to many rural economies.
+There is great potential to improve both yields of cocoa plantings and farmer
+incomes. These are two challenges that need to be addressed by coordinated
+actions from the industries, the governments and some NGOs. Also, with the
+cocoa production concentrated in a few countries in West Africa, future supplies
+are by no means assured.
+Quality, including food safety, traceability, origins, sustainability, living conditions
+of cocoa farmers and environmental impact are very important and will continue to
+provide challenging issues to the complex supply chain that exists with cocoa.
+
+Demand for cocoa products is expected to continue to increase, mainly due
+to the universal appeal of the unique cocoa flavour and the history and myths
+related to it. The ultimate objective is to ensure that cocoa, and thus chocolate,
+can be enjoyed by as many consumers as possible. This requires the transforma-
+tion of the cocoa supply chain into an efficient, profitable and sustainable one.
+This is in the interest of consumers, the cocoa and chocolate industry and the
+producing countries.
