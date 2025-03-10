@@ -189,21 +189,3 @@ def hybrid_node_retrieval(query, alpha=0.6, top_k=5):
     node_scores.sort(key=lambda x: x[1], reverse=True)
 
     return node_scores  # Return top-k results after hybrid scoring
-
-# def bert_extract_answer(query, retrieved_nodes):
-#     """
-#     Uses BERT-QA to extract a direct answer from the top retrieved nodes.
-#     """
-#     best_answer = ""
-#     best_score = -float("inf")
-#
-#     for node, _ in retrieved_nodes:  # Iterate through the top nodes
-#         context = node.text
-#         result = qa_pipeline(question=query, context=context)
-#
-#         # Compare confidence scores and keep the best answer
-#         if result["score"] > best_score:
-#             best_score = result["score"]
-#             best_answer = result["answer"]
-#
-#     return best_answer
