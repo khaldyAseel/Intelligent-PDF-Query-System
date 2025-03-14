@@ -37,103 +37,94 @@ def is_generic_question(query):
     return any(phrase in query.lower() for phrase in generic_phrases)
 
 
-def route_query_with_book_context(client, query, node_scores, threshold=0.7, soft_margin=0.05):
+def route_query_with_book_context(client, query, threshold=0.4, soft_margin=0.05):
     """
-    Routes the query to LLaMA with or without book context, returning metadata if relevant.
+    Routes the query to LLaMA with or without book context, deciding whether to call hybrid retrieval.
 
     :param client: The LLaMA API client.
     :param query: The user query.
-    :param node_scores: List of tuples (node, similarity_score).
     :param threshold: Minimum similarity score for using book context.
     :param soft_margin: A margin to include near-threshold cases.
     :return: The response from LLaMA (with metadata if book-related).
     """
+    print(f"Query: {query}")
+
     # Step 1: If the query is generic, use outside information immediately
     if is_generic_question(query):
         print("⚠️ Generic question detected! Using outside information.")
         response = client.chat.completions.create(
             model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
-            messages=[
-                {"role": "system", "content": "You are a helpful chatbot."},
-                {"role": "user", "content": query},
-            ],
+            messages=[{"role": "user", "content": query}],
         )
         return response.choices[0].message.content
 
     # Step 2: Ask LLaMA if the query is book-related
     is_llama_says_related = is_query_book_related(client, query)
 
-    # Step 3: Compute similarity stats only if LLaMA says 'No'
-    if not is_llama_says_related:
-        similarity_scores = [score for _, score in node_scores]
-        avg_similarity = sum(similarity_scores) / len(similarity_scores) if similarity_scores else 0
-        high_score_nodes = sum(1 for score in similarity_scores if score >= threshold)
+    # Step 3: Always run hybrid retrieval to check similarity scores
+    print("🔍 Running hybrid retrieval to check similarity relevance...")
+    node_scores = []
+    top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
+    node_scores = [(node, score) for node, score in top_nodes]
 
-        print(
-            f"LLaMA says related: {is_llama_says_related} | Avg Sim: {avg_similarity} | Nodes above threshold: {high_score_nodes}")
+    # Step 4: Compute similarity scores to verify book relevance
+    similarity_scores = [score for _, score in node_scores]
+    avg_similarity = sum(similarity_scores) / len(similarity_scores) if similarity_scores else 0
+    high_score_nodes = sum(1 for score in similarity_scores if score >= threshold)
 
-        # Override LLaMA if similarity is consistently high
-        if avg_similarity >= (threshold - soft_margin) and high_score_nodes >= 2:
-            print("⚠️ LLaMA said 'No', but high average similarity detected. Using book context.")
-            is_llama_says_related = True
+    # Step 5: Override LLaMA's decision if similarity is strong
+    if not is_llama_says_related and avg_similarity >= (threshold - soft_margin) and high_score_nodes >= 2:
+        print("⚠️ LLaMA said 'No', but high similarity detected. Overriding decision.")
+        is_llama_says_related = True
 
+    # Step 4: If book-related, use book context
     if is_llama_says_related:
         print("✅ Using book context with metadata.")
-
-        # Extract relevant text and metadata from nodes
-        relevant_nodes = [(node.text, node.metadata) for node, score in node_scores if
-                          score >= (threshold - soft_margin)]
+        relevant_nodes = [(node.text, node.metadata) for node, score in node_scores if score >= (threshold - soft_margin)]
         context = " ".join([text for text, _ in relevant_nodes])
 
-        # Collect metadata for the response
-        metadata_info = "\n".join(
-            [f"📖 Subchapter: {meta.get('subchapter', 'N/A')}, Page: {meta.get('page', 'N/A')}" for _, meta in
-             relevant_nodes])
+        # Collect metadata
+        metadata_dict = {}
+        for _, meta in relevant_nodes:
+            subchapter = meta.get("subchapter", "N/A")
+            page = meta.get("page", "N/A")
+            if subchapter not in metadata_dict:
+                metadata_dict[subchapter] = set()
+            metadata_dict[subchapter].add(page)
 
+        # Format metadata
+        metadata_info = "\n".join([f"📖 Subchapter: {sub}, Pages: {', '.join(map(str, sorted(pages)))}" for sub, pages in metadata_dict.items()])
+
+        # Get LLaMA response with context
         response = client.chat.completions.create(
             model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
-            messages=[
-                {"role": "system", "content": "Provide a detailed response."},
-                {"role": "user",
-                 "content": f"Answer the question: {query}. You can also use additional context: {context}"},
-            ],
+            messages=[{"role": "user", "content": f"Answer the question: {query}. Use context: {context}"}],
         )
         response_text = response.choices[0].message.content
 
-        # Summarize in 3-5 sentences
+        # Summarize
         summary_response = client.chat.completions.create(
             model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
-            messages=[
-                {"role": "system", "content": "Summarize in 3-5 sentences."},
-                {"role": "user", "content": response_text},
-            ],
+            messages=[{"role": "user", "content": response_text}],
         )
         summarized_answer = summary_response.choices[0].message.content
 
         return f"{summarized_answer}\n\n📚 **Metadata:**\n{metadata_info}"
 
-    else:
-        print("❌ Using outside information (No book context detected).")
-        response = client.chat.completions.create(
-            model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
-            messages=[
-                {"role": "system", "content": "You are a helpful chatbot."},
-                {"role": "user", "content": query},
-            ],
-        )
-        return response.choices[0].message.content
+    # Step 5: If not book-related, use general chatbot response
+    print("❌ Using outside information (No book context detected).")
+    response = client.chat.completions.create(
+        model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
+        messages=[{"role": "user", "content": query}],
+    )
+    return response.choices[0].message.content
 
 
-# Example usage
-query = "Describe the processing steps from cocoa beans to cocoa butter"
-
-top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
-
-# Extract node scores (assuming hybrid retrieval returns (node, score))
-node_scores = [(node, score) for node, score in top_nodes]
-
-# Route the query
-response = route_query_with_book_context(client, query, node_scores, threshold=0.4)
-
-print(response)
+# # Example usage
+# query = "What is the optimal roasting time for cocoa?"
+#
+# # Route the query
+# response = route_query_with_book_context(client, query, threshold=0.4)
+#
+# print(response)
 

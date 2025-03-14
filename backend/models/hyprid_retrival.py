@@ -132,6 +132,7 @@ def hybrid_node_retrieval(query, alpha=0.6, top_k=5):
     Returns:
       A list of tuples: (node, hybrid_score)
     """
+    print(f"queryyyy:{query}")
     # Get nodes from the database (split documents into chunks)
     nodes = get_nodes_from_db()
 
