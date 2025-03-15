@@ -1,25 +1,4 @@
 from hyprid_retrival import hybrid_node_retrieval, client
-import openai
-
-def is_query_book_related(client, query):
-    """
-    Uses LLaMA to classify whether the query is related to book knowledge.
-
-    :param client: The LLaMA API client.
-    :param query: The user query.
-    :return: True if the query is book-related, False otherwise.
-    """
-    response = client.chat.completions.create(
-        model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
-        messages=[
-            {"role": "system",
-             "content": "Determine if the query is related to book content. Respond with only 'yes' or 'no'."},
-            {"role": "user", "content": f"Is this query related to book content? {query}"},
-        ],
-    )
-    answer = response.choices[0].message.content.strip().lower()
-    return answer == "yes"
-
 
 def is_generic_question(query):
     """
@@ -58,8 +37,6 @@ def route_query_with_book_context(client, query, threshold=0.4, soft_margin=0.05
         )
         return response.choices[0].message.content
 
-    # Step 2: Ask LLaMA if the query is book-related
-    is_llama_says_related = is_query_book_related(client, query)
 
     # Step 3: Always run hybrid retrieval to check similarity scores
     print("🔍 Running hybrid retrieval to check similarity relevance...")
@@ -73,12 +50,7 @@ def route_query_with_book_context(client, query, threshold=0.4, soft_margin=0.05
     high_score_nodes = sum(1 for score in similarity_scores if score >= threshold)
 
     # Step 5: Override LLaMA's decision if similarity is strong
-    if not is_llama_says_related and avg_similarity >= (threshold - soft_margin) and high_score_nodes >= 2:
-        print("⚠️ LLaMA said 'No', but high similarity detected. Overriding decision.")
-        is_llama_says_related = True
-
-    # Step 4: If book-related, use book context
-    if is_llama_says_related:
+    if avg_similarity >= (threshold - soft_margin) and high_score_nodes >= 1:
         print("✅ Using book context with metadata.")
         relevant_nodes = [(node.text, node.metadata) for node, score in node_scores if score >= (threshold - soft_margin)]
         context = " ".join([text for text, _ in relevant_nodes])
@@ -109,7 +81,7 @@ def route_query_with_book_context(client, query, threshold=0.4, soft_margin=0.05
         )
         summarized_answer = summary_response.choices[0].message.content
 
-        return f"{summarized_answer}\n\n📚 **Metadata:**\n{metadata_info}"
+        return f"{summarized_answer}\n\n📚 Metadata:\n{metadata_info}"
 
     # Step 5: If not book-related, use general chatbot response
     print("❌ Using outside information (No book context detected).")

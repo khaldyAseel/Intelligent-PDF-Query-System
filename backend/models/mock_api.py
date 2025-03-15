@@ -34,7 +34,6 @@ async def search(request: QueryRequest):
         if not query:
             raise HTTPException(status_code=400, detail="Query cannot be empty.")
 
-
         response = route_query_with_book_context(client, query, threshold=0.4)
 
         return SearchResult(results=[response])
