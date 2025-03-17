@@ -46,7 +46,7 @@ def view_database():
         print()  # Adds an extra newline between rows
 
 # Run the embedding generation and update the database
-# generate_and_save_chunk_embeddings()
+generate_and_save_chunk_embeddings()
 view_database()
 
 # Commit and close the connection

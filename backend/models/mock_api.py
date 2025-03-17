@@ -28,22 +28,18 @@ class SearchResult(BaseModel):
 @app.post("/search", response_model=SearchResult)
 async def search(request: QueryRequest):
     try:
-        print(request)
-        query = request.query
-        print(query)
-        # Perform hybrid retrieval to get top nodes
-        top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
+        query = request.query.strip()  # Remove extra spaces
+        print(f"📩 Received query: {query}")  # Debugging log
 
-        # Extract node scores (assuming hybrid retrieval returns (node, score))
-        node_scores = [(node, score) for node, score in top_nodes]
+        if not query:
+            raise HTTPException(status_code=400, detail="Query cannot be empty.")
 
-        # Route the query
-        response = route_query_with_book_context(client, query, node_scores, threshold=0.6)
+        response = route_query_with_book_context(client, query, threshold=0.4)
 
         return SearchResult(results=[response])
 
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"❌ Error: {e}")
         raise HTTPException(status_code=500, detail="Model inference failed.")
 
 
