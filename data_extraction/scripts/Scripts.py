@@ -109,4 +109,3 @@ if __name__ == "__main__":
     toc_text = extract_toc(pdf_path)
     save_chapters_to_json(pdf_path, toc_text, output_dir)
     print(f"Extracted data saved in: {output_dir}")
-
