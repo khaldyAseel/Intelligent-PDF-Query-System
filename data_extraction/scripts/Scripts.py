@@ -3,6 +3,58 @@ import re
 import json
 import os
 import fitz  # PyMuPDF
+import datetime
+
+# Step 1: Extract Metadata
+def extract_pdf_metadata(pdf_path):
+    """Extract metadata from a PDF file."""
+    doc = fitz.open(pdf_path)
+    metadata = doc.metadata
+    title = metadata.get("title", "Unknown Title")
+    editors = metadata.get("author", "Unknown Editors").split(", ")
+    total_pages = len(doc)
+
+    # Read the first few pages for edition, publisher, and publication year
+    text_content = ""
+    for page_num in range(min(10, total_pages)):  # Read first 10 pages max
+        text_content += doc[page_num].get_text() + "\n"
+
+        # Search for edition
+        edition_match = re.search(
+            r"(\bFirst|\bSecond|\bThird|\bFourth|\bFifth|\bSixth|\bSeventh|\bEighth|\bNinth|\bTenth) Edition",
+            text_content, re.IGNORECASE)
+        edition = edition_match.group(0) if edition_match else "Unknown Edition"
+
+        # Search for publisher (John Wiley & Sons is common for academic books)
+        publisher_match = re.search(r"by ([A-Za-z\s&]+)", text_content)
+        publisher = publisher_match.group(1).split("\n")[0] if publisher_match else "Unknown Publisher"
+
+        # Search for publication year (e.g., "© 2017" or "First published in 2017")
+        year_match = re.search(r"© (\d{4})|First published in (\d{4})", text_content)
+        publication_year = year_match.group(1) if year_match else "Unknown Year"
+
+    return {
+        "title": title,
+        "editors": editors,
+        "edition": edition,
+        "publisher": publisher,
+        "publication year": publication_year,
+        "total pages": total_pages,
+        "copyright": "© 2017 John Wiley & Sons Ltd"
+    }
+
+
+# Step 2: Save metadata to JSON
+def save_metadata(pdf_path, output_dir):
+    """Extracts and saves metadata to a JSON file."""
+    metadata = extract_pdf_metadata(pdf_path)
+
+    metadata_file = os.path.join(output_dir, "book_metadata.json")
+    with open(metadata_file, "w", encoding="utf-8") as f:
+        json.dump(metadata, f, indent=4)
+
+    print("📜 Metadata extracted and saved successfully!")
+    return metadata
 
 # Step 1: Parse TOC
 def extract_toc(pdf_path):
@@ -55,9 +107,25 @@ def sanitize_filename(title):
     return "".join(c if c.isalnum() or c in " _-" else "_" for c in title)
 
 # Step 4: Save structured data
-def save_chapters_to_json(pdf_path, toc, output_dir):
+def save_chapters_to_json(pdf_path, toc, output_dir,book_metadata):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
+
+    # Structure book-level metadata like a chapter
+    book_metadata_entry = {
+        "title": book_metadata.get("title", "Unknown Book"),
+        "content":book_metadata,
+        "metadata": {
+            "page": 1,
+            "type": "metadata",
+            "parent": None
+        }
+    }
+
+    # Save book metadata as a JSON file
+    metadata_filename = os.path.join(output_dir, "book_metadata.json")
+    with open(metadata_filename, "w", encoding="utf-8") as f:
+        json.dump(book_metadata_entry, f, indent=4)
 
     # Find the "Glossary" section page number
     glossary_page = next((entry["page"] for entry in toc if "glossary" in entry["title"].lower()), None)
@@ -88,7 +156,7 @@ def save_chapters_to_json(pdf_path, toc, output_dir):
             "metadata": {
                 "page": start_page,
                 "type": "subchapter",
-                "parent": parent_chapter  # Attach the last seen chapter
+                "parent": parent_chapter , # Attach the last seen chapter
             }
         }
 
@@ -106,7 +174,11 @@ if __name__ == "__main__":
     output_dir = "parsed_text_output"
     script_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(script_dir)
+    # Extract and save metadata
+    metadata = save_metadata(pdf_path, output_dir)
+    print("Extracted Metadata:", metadata)
     toc_text = extract_toc(pdf_path)
-    save_chapters_to_json(pdf_path, toc_text, output_dir)
+    save_chapters_to_json(pdf_path, toc_text, output_dir,metadata)
     print(f"Extracted data saved in: {output_dir}")
+
 

@@ -37,7 +37,6 @@ def route_query_with_book_context(client, query, threshold=0.4, soft_margin=0.05
         )
         return response.choices[0].message.content
 
-
     # Step 3: Always run hybrid retrieval to check similarity scores
     print("🔍 Running hybrid retrieval to check similarity relevance...")
     node_scores = []
@@ -92,11 +91,10 @@ def route_query_with_book_context(client, query, threshold=0.4, soft_margin=0.05
     return response.choices[0].message.content
 
 
-# # Example usage
-# query = "What is the optimal roasting time for cocoa?"
-#
-# # Route the query
-# response = route_query_with_book_context(client, query, threshold=0.4)
-#
-# print(response)
+# Example usage
+query = "what is the publication year of the book ?"
+# Route the query
+response = route_query_with_book_context(client, query, threshold=0.4)
+
+print(response)
 

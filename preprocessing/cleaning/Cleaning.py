@@ -39,9 +39,23 @@ CREATE TABLE IF NOT EXISTS documents (
     id TEXT PRIMARY KEY,  -- Unique ID for each document (title from JSON)
     content TEXT,        -- Cleaned text content
     parent TEXT,         -- Parent metadata
-    page INTEGER        -- Page metadata
+    page INTEGER,        -- Page metadata
+    type TEXT            -- type metadata 
 )
 """)
+
+cursor.execute("""
+        CREATE TABLE IF NOT EXISTS BookMetadata (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT,
+            edition TEXT,
+            editors TEXT,
+            publication_year TEXT,
+            publisher TEXT,
+            total_pages INTEGER,
+            copyright TEXT
+        )
+    """)
 conn.commit()
 
 def expand_abbreviations(text, abbreviation_dict):
@@ -108,9 +122,10 @@ def save_to_sqlite(unique_id, cleaned_content, metadata):
     """
     # Insert the text and metadata into the database
     cursor.execute("""
-        INSERT OR REPLACE INTO documents (id, content, parent, page)
-        VALUES (?, ?, ?, ?)
-    """, (unique_id, cleaned_content, metadata.get("parent"), metadata.get("page")))
+            INSERT OR REPLACE INTO documents (id, content, parent, page, type)
+            VALUES (?, ?, ?, ?, ?)
+        """, (unique_id, cleaned_content, metadata.get("parent"), metadata.get("page"),metadata.get("type")))
+
     conn.commit()
 
 # Process all JSON files in the data folder
@@ -130,19 +145,47 @@ def process_json_files():
 
         print(f"Processing {file_name}...\n")
 
-        # Clean the content
-        processed_content = clean_text(content)
+        # 🔹 Skip cleaning if the file is **metadata**
+        if metadata.get("type") == "metadata":
+            processed_content = content  # No cleaning for metadata
+            processed_content = json.dumps(processed_content, ensure_ascii=False)
+        else:
+            processed_content = clean_text(content)  # Clean only if not metadata
 
         # Print a preview of cleaned content
-        print("Original Content Preview:\n", content[:300])
-        print("\nCleaned Content Preview:\n", processed_content[:300])
+        print("Original Content Preview:\n", content)
+        print("\nCleaned Content Preview:\n", processed_content)
         print("\n" + "-"*50 + "\n")
 
-        # Save only if the type is "subchapter"
-        if metadata.get("type") == "subchapter":
-            save_to_sqlite(title, processed_content, metadata)
+
+        save_to_sqlite(title, processed_content, metadata)
 
     print("All files processed and saved to SQLite database.")
+
+def save_metadata_to_db( metadata_file):
+    """Loads book metadata from JSON and saves it to the database."""
+    # Load metadata from JSON file
+    with open(metadata_file, "r", encoding="utf-8") as f:
+        metadata = json.load(f)
+
+    # Convert editors list to a comma-separated string
+    editors_str = ", ".join(metadata.get("editors", []))
+
+    cursor.execute("""
+        INSERT INTO BookMetadata 
+        (title, edition, editors, publication_year, publisher, total_pages, copyright)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (
+        metadata.get("title", "Unknown Title"),
+        metadata.get("edition", "Unknown Edition"),
+        editors_str,
+        metadata.get("publication_year", "Unknown Year"),
+        metadata.get("publisher", "Unknown Publisher"),
+        metadata.get("total_pages", 0),
+        metadata.get("copyright", "Unknown Copyright")
+    ))
+    conn.commit()
+    return cursor.lastrowid  # Return the book_id of the inserted record
 
 def view_database():
     """
@@ -160,10 +203,32 @@ def view_database():
         print(f"Content: {row[1]}")
         print(f"Parent: {row[2]}")
         print(f"Page: {row[3]}")
+        print(f"type:{row[4]}")
         print("-" * 50)
+
+def view_metadata_table():
+    """Fetches and displays all records from the BookMetadata table."""
+    cursor.execute("SELECT * FROM BookMetadata")
+    rows = cursor.fetchall()
+
+    if not rows:
+        print("📭 No metadata records found.")
+    else:
+        print("\n📖 Book Metadata Table:\n")
+        for row in rows:
+            print(f"ID: {row[0]}")
+            print(f"Title: {row[1]}")
+            print(f"Edition: {row[2]}")
+            print(f"Editors: {row[3]}")
+            print(f"Publication Year: {row[4]}")
+            print(f"Publisher: {row[5]}")
+            print(f"Total Pages: {row[6]}")
+            print(f"Copyright: {row[7]}")
+            print("-" * 50)
+
 process_json_files()
+save_metadata_to_db(metadata_file="../../data_extraction/scripts/parsed_text_output/book_metadata.json")
 # View the database contents
 view_database()
-
 # Close the database connection
 conn.close()
