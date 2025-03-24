@@ -1,4 +1,4 @@
-from hyprid_retrival import hybrid_node_retrieval, client
+from hyprid_retrival import retrieved_nodes_and_scores, client
 
 def is_generic_question(query):
     """
@@ -39,19 +39,16 @@ def route_query_with_book_context(client, query, threshold=0.4, soft_margin=0.05
 
     # Step 3: Always run hybrid retrieval to check similarity scores
     print("🔍 Running hybrid retrieval to check similarity relevance...")
-    node_scores = []
-    top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
-    node_scores = [(node, score) for node, score in top_nodes]
-
+    top_nodes,node_scores = retrieved_nodes_and_scores(query, alpha=0.6, top_k=5)
     # Step 4: Compute similarity scores to verify book relevance
-    similarity_scores = [score for _, score in node_scores]
+    similarity_scores = list(node_scores)
     avg_similarity = sum(similarity_scores) / len(similarity_scores) if similarity_scores else 0
     high_score_nodes = sum(1 for score in similarity_scores if score >= threshold)
 
     # Step 5: Override LLaMA's decision if similarity is strong
     if avg_similarity >= (threshold - soft_margin) and high_score_nodes >= 1:
         print("✅ Using book context with metadata.")
-        relevant_nodes = [(node.text, node.metadata) for node, score in node_scores if score >= (threshold - soft_margin)]
+        relevant_nodes = [(node.text, node.metadata) for node, score in zip(top_nodes, node_scores) if score >= (threshold - soft_margin)]
         context = " ".join([text for text, _ in relevant_nodes])
 
         # Collect metadata
@@ -92,7 +89,7 @@ def route_query_with_book_context(client, query, threshold=0.4, soft_margin=0.05
 
 
 # Example usage
-query = "what is the publication year of the book ?"
+query = "who the editors of the book ?"
 # Route the query
 response = route_query_with_book_context(client, query, threshold=0.4)
 

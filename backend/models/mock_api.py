@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware  # Import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
-from hyprid_retrival import hybrid_node_retrieval, client
+from hyprid_retrival import client
 from routing_agent import route_query_with_book_context
 
 app = FastAPI()
@@ -19,7 +19,6 @@ app.add_middleware(
 # Request and Response Models
 class QueryRequest(BaseModel):
     query: str
-
 
 class SearchResult(BaseModel):
     results: List[str]
