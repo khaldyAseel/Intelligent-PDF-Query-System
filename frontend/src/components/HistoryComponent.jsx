@@ -19,7 +19,7 @@ export const HistoryComponent = ({ history, onHistoryClick }) => {
             <img src="src/assets/img1.png" />
             <img src="src/assets/img6.webp" />
       </div>
-      <p className="bottom-text">Our partners dasdf ad a</p>
+      <p className="bottom-text">Our partners</p>
     </div>
   );
 };
