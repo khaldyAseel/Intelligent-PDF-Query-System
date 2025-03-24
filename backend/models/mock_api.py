@@ -5,6 +5,8 @@ from typing import List
 from hyprid_retrival import hybrid_node_retrieval, client
 from routing_agent import route_query_with_book_context
 
+
+
 app = FastAPI()
 
 # Add CORS middleware
@@ -29,16 +31,23 @@ class SearchResult(BaseModel):
 async def search(request: QueryRequest):
     try:
         print(request)
+        print(f" Received API Call: {request}")  # ✅ Log request received
+
+        # query = request.query.strip().lower()
         query = request.query
-        print(query)
+        # print(f"🔍 Query Processed: {query}")  # ✅ Log processed query
+
+
+        print("query",query)
         # Perform hybrid retrieval to get top nodes
         top_nodes = hybrid_node_retrieval(query, alpha=0.6, top_k=5)
-
+        # print(f"📖 Retrieved Nodes: {top_nodes}")
         # Extract node scores (assuming hybrid retrieval returns (node, score))
         node_scores = [(node, score) for node, score in top_nodes]
 
         # Route the query
-        response = route_query_with_book_context(client, query, node_scores, threshold=0.6)
+        response = route_query_with_book_context(client, query, node_scores, threshold=0.4)
+        print(f" Final Response: {response}")
 
         return SearchResult(results=[response])
 

@@ -1,5 +1,7 @@
 from hyprid_retrival import hybrid_node_retrieval, client
 import openai
+import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 def is_query_book_related(client, query):
     """

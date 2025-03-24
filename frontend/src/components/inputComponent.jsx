@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import './inputStyle.css'
 export const InputComponent = ({ onSendMessage }) => {
   const [inputValue, setInputValue] = useState("");
 
@@ -17,9 +17,9 @@ export const InputComponent = ({ onSendMessage }) => {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onKeyPress={(e) => e.key === "Enter" && handleSend()}
-        placeholder="Type your question here..."
+        placeholder="Ask me a question..."
       />
-      <button onClick={handleSend}>
+      <button className="send-btn" onClick={handleSend}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
