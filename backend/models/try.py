@@ -175,6 +175,7 @@ def embedding_retriever(query, top_k_bm25_nodes, subchapters_nodes_dict, top_k):
     nodes_with_embeddings = []
 
     subchapters = [node.metadata["subchapter"] for node in top_k_bm25_nodes]
+    print(subchapters)
     subchapters_nodes_lists = [subchapters_nodes_dict[subchapter] for subchapter in subchapters]
 
     for lst in subchapters_nodes_lists:

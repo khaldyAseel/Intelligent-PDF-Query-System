@@ -1,0 +1,20 @@
+{
+  "name": "intelligent-pdf-query-system",
+  "version": "1.0.0",
+  "description": "## Project Overview This project builds a system that can extract data from a PDF book and allow users to ask questions, such as, “What is the origin of cacao?” The system retrieves and answers questions based on the extracted and processed content of the PDF. The system leverages embeddings, a pre-trained language model (e.g., Mistral-7B), and an efficient database for storing and querying the processed data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khaldyAseel/Intelligent-PDF-Query-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/khaldyAseel/Intelligent-PDF-Query-System/issues"
+  },
+  "homepage": "https://github.com/khaldyAseel/Intelligent-PDF-Query-System#readme"
+}

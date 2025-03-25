@@ -7,8 +7,8 @@ from llama_index.retrievers.bm25 import BM25Retriever
 from together import Together
 import Stemmer
 import pickle
-db_path=r"../database/text_database.db"
-pickle_db_path=r"../database/pickle_database.pkl"
+db_path="../../backend/database/text_database.db"
+pickle_db_path=r"../../backend/database/pickle_database.pkl"
 
 # Load your SentenceTransformer model (adjust model as needed)
 model = SentenceTransformer('BAAI/bge-large-en')
@@ -83,6 +83,7 @@ def embedding_retriever(query, top_k_bm25_nodes, subchapters_nodes_dict, top_k):
     nodes_with_embeddings = []
 
     subchapters = [node.metadata["subchapter"] for node in top_k_bm25_nodes]
+    print(subchapters)
     subchapters_nodes_lists = [subchapters_nodes_dict[subchapter] for subchapter in subchapters]
 
     for lst in subchapters_nodes_lists:
