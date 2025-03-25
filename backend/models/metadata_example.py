@@ -1,4 +1,5 @@
-metadata_context = ["title: Beckett’s Industrial Chocolate Manufacture and Use",
+metadata_context = [
+    "title: Beckett’s Industrial Chocolate Manufacture and Use",
     "edition: 5th Edition",
     "authors: S. T. Beckett, Mark Fowler, Gregory Ziegler",
     "publisher: Wiley",
@@ -8,7 +9,6 @@ metadata_context = ["title: Beckett’s Industrial Chocolate Manufacture and Use
     "pages: 800",
     "formats: Hardcover and eBook",
     "main_subject: Industrial chocolate processing, food science, confectionery",
-
     "focus_area: Chocolate manufacturing, confectionery processing, cocoa processing",
     "target_audience: Food scientists, Food engineers,Confectionery technologists, R&D professionals, "
      "Quality assurance specialists, Academics.",

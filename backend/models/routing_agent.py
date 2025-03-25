@@ -19,18 +19,30 @@ def is_generic_question(query):
 
     return any(phrase in query.lower() for phrase in generic_phrases)
 
+
 def is_metadata_related(client, query, metadata_keywords):
-    metadata_kw_str ="\n".join(metadata_keywords)
+    """
+    Determines if a query is related to book metadata (e.g., title, author, publisher, ISBN, etc.).
+
+    :param client: The LLaMA API client.
+    :param query: The user query.
+    :param metadata_keywords: List of metadata-related keywords.
+    :return: True if the query is metadata-related, False otherwise.
+    """
+    metadata_kw_str = ", ".join(metadata_keywords)  # More natural formatting for LLaMA
     response = client.chat.completions.create(
         model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
         messages=[
-            {"role": "system",
-             "content": "Determine if the query is related to content. Respond with only 'yes' or 'no'."},
-            {"role": "user", "content": f"Is this {query}, related to {metadata_kw_str}?"},
+            {"role": "system", "content":
+                "Determine if the following query is related to book metadata, such as title, author, publisher, ISBN, edition, format, language, and publication year. "
+                "Respond with only 'yes' or 'no' and no extra words."},
+            {"role": "user", "content": f"Query: {query}\nMetadata categories: {metadata_kw_str}"},
         ],
     )
+
     answer = response.choices[0].message.content.strip().lower()
-    return answer == "yes"
+    return "yes" in answer  # More flexible check
+
 
 def route_query(client, query, threshold=0.6, soft_margin=0.05):
     """
@@ -57,17 +69,16 @@ def route_query(client, query, threshold=0.6, soft_margin=0.05):
 
     #Step 2: check if it's a Metadata question
     metadata_related = is_metadata_related(client, query, metadata_keywords)
-    print(metadata_related)
     if metadata_related:
         metadata_context_str = "\n".join(metadata_context)
         response = client.chat.completions.create(
             model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
             messages=[
-                {"role": "system", "content": "You are a helpful chatbot."},
+                {"role": "system", "content": "You are a book assistant with knowledge about book metadata."},
                 {"role": "user",
-                    "content": f"Answer the question: {query}. You can also use additional context: {metadata_context_str}"},
+                 "content": f"Answer the question: {query} based on the following metadata: {metadata_context_str}"},
             ],
-            )
+        )
         return response.choices[0].message.content
 
     # Step 3: Always run hybrid retrieval to check similarity scores

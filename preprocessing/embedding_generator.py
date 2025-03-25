@@ -3,7 +3,7 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 
 # Connect to the existing database
-conn = sqlite3.connect("../../backend/database/text_database.db")
+conn = sqlite3.connect("../backend/database/text_database.db")
 cursor = conn.cursor()
 
 # Load the pre-trained embedding model
