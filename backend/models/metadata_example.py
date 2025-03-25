@@ -1,7 +1,7 @@
 metadata_context = [
     "title: Beckett’s Industrial Chocolate Manufacture and Use",
     "edition: 5th Edition",
-    "authors: S. T. Beckett, Mark Fowler, Gregory Ziegler",
+    "editors: S. T. Beckett, Mark Fowler, Gregory Ziegler",
     "publisher: Wiley",
     "publication_year: 2017",
     "isbn: 978-1-118-93975-0",

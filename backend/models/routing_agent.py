@@ -122,7 +122,7 @@ def route_query(client, query, threshold=0.6, soft_margin=0.05):
         return response.choices[0].message.content
 
 
-query = "what is the title of the book?"
-
-response = route_query(client,query,threshold=0.6, soft_margin=0.05)
-print(response)
+# query = "who is the editors of the book?"
+#
+# response = route_query(client,query,threshold=0.6, soft_margin=0.05)
+# print(response)
