@@ -166,8 +166,6 @@ def hybrid_retriever(top_k_bm25_nodes, top_k_bm25_scores ,top_emb_nodes, top_den
     final_scores = [doc["hybrid score"] for doc in nodes_and_scores_sorted[:top_k]]
     return final_nodes, final_scores
 
-
-
 def retrieved_nodes_and_scores(query,alpha=0.6, top_k=5):
     """
     This function gets the query and runs the pipeline to return the top nodes and their scores.

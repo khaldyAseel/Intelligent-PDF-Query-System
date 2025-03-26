@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware  # Import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
-from hyprid_retrival import retrieved_nodes_and_scores, client
+from hyprid_retrival import client
 from routing_agent import route_query
 
 app = FastAPI()
@@ -20,22 +20,26 @@ app.add_middleware(
 class QueryRequest(BaseModel):
     query: str
 
-
 class SearchResult(BaseModel):
     results: List[str]
 
 
 @app.post("/search", response_model=SearchResult)
 async def search(request: QueryRequest):
+    print("hiiii")
     try:
         query = request.query
         # Route the query
-        response = route_query(client, query, threshold=0.6,soft_margin=0.05)
+        response = route_query(client, query, threshold=0.6)
+        print(f"✅ Response from route_query: {response}")  # Debugging print
+
+        if not response:
+            raise HTTPException(status_code=404, detail="No relevant response found.")
 
         return SearchResult(results=[response])
 
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"❌ Error in search function: {e}")
         raise HTTPException(status_code=500, detail="Model inference failed.")
 
 

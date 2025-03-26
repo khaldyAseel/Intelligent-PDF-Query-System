@@ -1,4 +1,5 @@
-from hyprid_retrival import retrieved_nodes_and_scores, client
+import time
+from hyprid_retrival import retrieved_nodes_and_scores
 from metadata_example import metadata_context, metadata_keywords
 
 def is_generic_question(query):
@@ -55,6 +56,7 @@ def route_query(client, query, threshold=0.6, soft_margin=0.05):
     :param soft_margin: A margin to include near-threshold cases.
     :return: The response from LLaMA (with metadata if book-related).
     """
+    print("hiii")
     # Step 1: If the query is generic, use outside information immediately
     if is_generic_question(query):
         print("⚠️ Generic question detected! Using outside information.")
@@ -95,9 +97,11 @@ def route_query(client, query, threshold=0.6, soft_margin=0.05):
         context = " ".join([text for text, _ in relevant_nodes])
 
         # Collect metadata for the response
-        metadata_info = "\n".join(
-            [f"📖 Subchapter: {meta.get('subchapter', 'N/A')}, Page: {meta.get('page', 'N/A')}" for _, meta in
-             relevant_nodes])
+        metadata_set = {
+            f"📖 Subchapter: {meta.get('subchapter', 'N/A')}, Page: {meta.get('page', 'N/A')}"
+            for _, meta in relevant_nodes
+        }
+        metadata_info = "\n".join(metadata_set)
 
         response = client.chat.completions.create(
             model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
@@ -121,8 +125,9 @@ def route_query(client, query, threshold=0.6, soft_margin=0.05):
         )
         return response.choices[0].message.content
 
-
-# query = "who is the editors of the book?"
-#
-# response = route_query(client,query,threshold=0.6, soft_margin=0.05)
-# print(response)
+# start_time = time.time()
+# query = "What is the optimal roasting time for cocoa?"
+# # response = route_query(client,query,threshold=0.6, soft_margin=0.05)
+# end_time = time.time()
+# # print(response)
+# print(f"time for answer:{end_time-start_time}")
