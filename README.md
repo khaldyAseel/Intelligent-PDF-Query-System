@@ -28,8 +28,8 @@ This project builds a system that can extract data from a PDF book and allow use
    - Tool: Sentence-Transformers.
    - Generate high-dimensional vector embeddings to capture semantic meaning.
 
-### 4. **Embedding Storage**
-   - Store embeddings in a database (e.g., MySQL or PostgreSQL) or as .parquet files for easy access.
+### 4. **Embedding and text Storage**
+   - Store embeddings and test in a database (SQLite) .
 
 ### 5. **Question Answering**
    - Using a pre-trained language model (e.g., Mistral-7B) to answer questions.
